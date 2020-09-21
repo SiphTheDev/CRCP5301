@@ -1,4 +1,4 @@
-class Enemy {
+class Enemy{
     constructor (name, speed, farben, x){
     this.name = name;
     this.speed = speed;
@@ -6,15 +6,15 @@ class Enemy {
     this.x = x;
   }
   
-  move(speed){
-    x += speed;
-    if(speed > width || speed < 0){
-      speed = -speed;
+  move(){
+    this.x += this.speed;
+    if(this.speed > width || this.speed < 0){
+      this.speed = -this.speed;
     }   
   }
   
-  drawFoe(farben){
-    fill(farben);
-    ellipse(x, 250, 25,25);
+  drawFoe(){
+    fill(this.farben);
+    ellipse(this.x, 250, 25,25);
   }
 }
