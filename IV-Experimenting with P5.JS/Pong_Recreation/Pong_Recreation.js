@@ -3,9 +3,9 @@
     let leftScore = 0;
     let rightScore = 0;
 
-    let leftBar = new Bar(this, 100, 300, 255,0);
-    let rightBar = new Bar(this, 700, 300,0,255);
-    let ball = new Ball(this);
+    let leftBar = new Bar(100, 300, 255,0);
+    let rightBar = new Bar(700, 300,0,255);
+    let ball = new Ball();
 
 
 function setup() {

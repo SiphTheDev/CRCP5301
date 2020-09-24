@@ -11,60 +11,60 @@ class Ball{
     }
 
     drawBall(){
-        p.noStroke();
-        p.fill(r,g,b);
-        p.ellipse(xPos, yPos, 30,30);
+        noStroke();
+        fill(this.r,this.g,this.b);
+        ellipse(this.xPos, this.yPos, 30,30);
     }
 
     move(){
-        xPos = xPos + xSpeed;
-        yPos += ySpeed;
+        this.xPos = this.xPos + this.xSpeed;
+        this.yPos += this.ySpeed;
 
-        if(yPos > 585 || yPos < 15){
-            ySpeed = -ySpeed;
+        if(this.yPos > 585 || this.yPos < 15){
+            this.ySpeed = -this.ySpeed;
         }
 
     }
 
-    collideCheck(bar bar){
-        if(yPos < bar.yPos + 35 && yPos > bar.yPos && xPos > bar.xPos && xPos < bar.xPos + 15){
-            if(xSpeed > 0){
-                xSpeed ++;
+    collideCheck(bar){
+        if(this.yPos < bar.yPos + 35 && this.yPos > bar.yPos && this.xPos > bar.xPos && this.xPos < bar.xPos + 15){
+            if(this.xSpeed > 0){
+                this.xSpeed ++;
             }
             else{
-                xSpeed --;
+                this.xSpeed --;
             }
-            xSpeed = -xSpeed;
-            ySpeed = -2;
+            this.xSpeed = -this.xSpeed;
+            this.ySpeed = -2;
             if(bar.xPos > 400){
-                b = 255;
-                r = 0;
-                g = 0;
+                this.b = 255;
+                this.r = 0;
+                this.g = 0;
             }
             else if(bar.xPos < 400){
-                r = 255;
-                b = 0;
-                g = 0;
+                this.r = 255;
+                this.b = 0;
+                this.g = 0;
             }
         }
-        else if(yPos < bar.yPos + 75 && yPos > bar.yPos + 35 && xPos > bar.xPos && xPos < bar.xPos + 15){
-            if(xSpeed > 0){
-                xSpeed ++;
+        else if(this.yPos < bar.yPos + 75 && this.yPos > bar.yPos + 35 && this.xPos > bar.xPos && this.xPos < bar.xPos + 15){
+            if(this.xSpeed > 0){
+                this.xSpeed ++;
             }
             else{
-                xSpeed --;
+                this.xSpeed --;
             }
-            xSpeed = -xSpeed;
-            ySpeed = 2;
+            this.xSpeed = -this.xSpeed;
+            this.ySpeed = 2;
             if(bar.xPos > 400){
-                b = 255;
-                r = 0;
-                g = 0;
+                this.b = 255;
+                this.r = 0;
+                this.g = 0;
             }
             else if(bar.xPos < 400){
-                r = 255;
-                b = 0;
-                g = 0;
+                this.r = 255;
+                this.b = 0;
+                this.g = 0;
             }
         }
     }
