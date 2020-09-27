@@ -4,23 +4,38 @@
 ## Preparation & Inspiration: 
 
 ### I - Brainstorming & Idea Development
+Various sources of inspiration and spitballing ideas
 - Inspirational Images
 - Links and References
 - The List of 100
 - The List of 10
 
 ### II - Mapping
+The elements of forming a general outline of the project
 - Mapping Lists
 - Quicker List Summaries
 - PersonalMap.jpg
 
 ### III - ProjectProposal
-- p5.js test programs
+Bringing the Project into focus and putting together a timeline
+- Learning p5.js
+- Gantt Chart
+- Project Proposal and sketch
 
+### IV - Experimenting With P5.js
+Sample projects as I familiarize myself with p5.js and its differences from processing
+- Pong_Recreation
+- PreLoadTesting
+
+### V - Prototyping Elements
+Individual sketches to work out code challenges independently of the full project
+- Enemy & Grid Test
+
+***
 
 ## Project Resources
 
-### Assets
+### Placeholder Assets
 
 ***
 Thomas Park
