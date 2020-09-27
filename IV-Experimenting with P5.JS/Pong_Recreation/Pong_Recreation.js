@@ -9,7 +9,7 @@
 
 
 function setup() {
-{
+  createCanvas(800,600);
 }
 
 
@@ -21,7 +21,7 @@ function draw() {
         stroke(255);
         ellipse(400,300,100,100);
         leftBar.drawBar();
-        rightBar.drawBar();
+ /*       rightBar.drawBar();
         ball.drawBall();
         ball.move();
         ball.collideCheck(leftBar);
@@ -74,5 +74,5 @@ function draw() {
         }
 
 
-    }
+    } */
 }
