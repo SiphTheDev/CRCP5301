@@ -10,6 +10,9 @@
 
 function setup() {
   createCanvas(800,600);
+  //var canvas = createCanvas(800,600);
+  //canvas.parent('sketch-div');
+  background(0);
 }
 
 
