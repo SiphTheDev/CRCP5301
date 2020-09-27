@@ -2,7 +2,7 @@ class Ball{
 
     constructor(){
     this.xPos = 400;
-    this.yPos = 300;
+    this.yPos = 325;
     this.xSpeed = 5;
     this.ySpeed = 0;
     this.r = 255;

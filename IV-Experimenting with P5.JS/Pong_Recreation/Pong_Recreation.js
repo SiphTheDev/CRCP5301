@@ -21,13 +21,13 @@ function draw() {
         stroke(255);
         ellipse(400,300,100,100);
         leftBar.drawBar();
- /*       rightBar.drawBar();
+        rightBar.drawBar();
         ball.drawBall();
         ball.move();
         ball.collideCheck(leftBar);
         ball.collideCheck(rightBar);
 
-        if(keyPressed) {
+        if(keyIsPressed) { //Had to change keyPressed to keyIsPressed
             if (key == 'w' && leftBar.yPos > 0) {
                 leftBar.yPos -= 5;
             } else if (key == 's' && leftBar.yPos < 525) {
@@ -51,7 +51,8 @@ function draw() {
         text("w = up, s = down", 100,60);
         text("i = up, k = down", 500,60);
     }
-    function ScoreCheck(){
+    
+    function scoreCheck(){ //fixed capitalization typo
         if(ball.xPos < 0 ){
             rightScore ++;
             ball.xSpeed = -5;
@@ -74,5 +75,4 @@ function draw() {
         }
 
 
-    } */
-}
+    } 
