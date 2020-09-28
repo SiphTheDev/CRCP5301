@@ -6,3 +6,13 @@
 	- some amount of the currency for bonus side areas
 	- number of kills for main path
 	- mini-boss (a tough wave or single new enemy type) at the top of the level that must be defeated to advance to next screen. 
+
+3. If have extra time, look into storing progress between people's visits to the site.
+		- Can it 1 create a json (or xml, etc) file for each indiv visitor
+		- Can it 2 Retrieve some unique identifier from the visitor (ip?)
+		- Can it 3 Compare a new visitor's identifier to all past ones to see if they're a repeat?
+			- Perhaps Store just a list of past visitors in one json (etc) and then search that. If there's a match, can plug that name into the title of the proper json, and then read that.
+
+4. Title Ideas:
+	- Faces to the Sky
+	- Rise (too vague, I fear)
