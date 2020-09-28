@@ -1,11 +1,13 @@
 //Enemy & World Grid Test
 
-//Sprite sheet loading based on example "Animations - Sprite Sheet" from p5.play library resources:
-//Link to example: http://molleindustria.github.io/p5.play/examples/index.html?fileName=animation_sprite_sheet.js
-
+//Sprite Methods based on p5.play library's examples section.
 var testSprites;
 var spriteCycleAnim;
 var spriteSheetFull;
+
+function preLoad(){
+
+}
 
 function setup() {
   createCanvas(500,500);
