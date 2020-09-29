@@ -16,3 +16,7 @@
 4. Title Ideas:
 	- Faces to the Sky
 	- Rise (too vague, I fear)
+
+5. Use tile map for pathing:
+
+	- You'll already have an array of all the tiles on the screen [or at least, can convert it to a 2D array easily], and the type of tile determines where enemies can go (ie only on foePaths, which could be tiles # 004,006,007,024, etc). Then pathing alg should be able to more easily follow those. Or if hard code, can just have them jump from one tile to next, listing the tile numbers. The point is, the world's already a grid, so you might as well use it. 

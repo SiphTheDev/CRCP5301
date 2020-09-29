@@ -33,6 +33,10 @@ function draw() {
   xPos+= xSpd;
   
   image(backGround, 0, 0, 0, height); //myImage, xPos, yPos, width (zero = scale proportionally), height);
+  image(backGround,[sx=50],[sy=50],[sWidth=100],[sHeight=100],[dx=200],[dy=200],[48],[48]); 
+  
+  //image(img,[sx=0],[sy=0],[sWidth=img.width],[sHeight=img.height],[dx=0],[dy=0],[dWidth],[dHeight]) - Example by Mutawa on p5 github. - https://github.com/processing/p5.js/issues/1567
+    // Warning by ogrotten in same thread: s & d inverted now
   image(pyrWalk,xPos,50,100,100);
   
   
