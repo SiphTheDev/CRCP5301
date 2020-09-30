@@ -21,26 +21,34 @@ worldTileMap = [ 0, 1, 2, 1, 3,
 function draw() {
 background(255);
 //image(tileSheet,0,0,100,100,0,0,64,64); 
+
+/* - These test that tiles are loading the correct files.
+image(tileSheet,0,0,100,100,0,0,64,64);
+image(tileSheet,100,0,100,100,64,0,64,64);
+image(tileSheet,200,0,100,100,128,0,64,64);
+image(tileSheet,300,0,100,100,192,0,64,64);
+*/
+
 drawTileMap();
   // file, screenX,screenY,width on screen, height on screen, file x, file y, file width, file height
 }
 
 function drawTileMap(){
   let i = 0;
-  for(let r = 0; r < 5; r ++){
+  for(let r = 0; r < 5; r++){
     for(let c = 0; c < 5; c++){
       i++;
       if(worldTileMap[i] == 0){
-        image(tileSheet,r*64,c*64,100,100,0,0,64,64); //Use r & c to adjust first two vals, leave the 100s alone, the next two 0s will hard code for each 0,1,2,3, then leave the 64s alone
+        image(tileSheet,c*100,r*100,100,100,0,0,64,64); //Use r & c to adjust first two vals, leave the 100s alone, the next two 0s will hard code for each 0,1,2,3, then leave the 64s alone
       }
       else if(worldTileMap[i] == 1){
-        image(tileSheet,r*64,c*64,100,100,64,0,64,64); 
+        image(tileSheet,c*100,r*100,100,100,64,0,64,64); 
       }
       else if(worldTileMap[i] == 2){
-        image(tileSheet,r*64,c*64,100,100,128,0,64,64); 
+        image(tileSheet,c*100,r*100,100,100,128,0,64,64); 
       }
       else if(worldTileMap[i] == 3){
-        image(tileSheet,r*64,c*64,100,100,192,0,64,64); 
+        image(tileSheet,c*100,r*100,100,100,192,0,64,64); 
       }
       else{}//In future, set this to a default missing texture file. 
     }
