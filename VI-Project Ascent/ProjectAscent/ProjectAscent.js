@@ -8,6 +8,7 @@
 let gridTileMap = [];
 let cols = 28;
 let rows = 14;
+let jim = new Enemy(200,200, 25);
 
 function preload() {
   //gridSpriteSheet = loadImage('assets/dungeonTiles.png');
@@ -22,6 +23,8 @@ function setup() {
 function draw() {
   background(235);
   drawTileMap();
+  jim.move();
+  jim.render();
 }
 
 function loadTileMap() {
@@ -41,15 +44,7 @@ function loadTileMap() {
                  b, b, b, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, e, e, p, p, b, b, b,
                  b, b, b, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, e, e, p, p, b, b, b,                 
                  b, b, b, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, p, p, b, b, b,
-                 b, b, b, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, p, p, b, b, b,]; //Determines what type of tile belongs in each space.
-
-  /* for (let r = 0; r < rows; r++) {
-   for (let c = 0; c < cols; c++) {
-   if(c < 3 || c > 24){
-   gridTileMap[i] = 10; //Borders
-   }
-   
-   */
+                 b, b, b, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, p, p, b, b, b,]; //Determines what type of tile belongs in each space. Will move to JSON or XML later to allow level loading later.
 }
 
 function drawTileMap() {
