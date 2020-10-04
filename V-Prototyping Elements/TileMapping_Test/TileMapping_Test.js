@@ -17,12 +17,11 @@ function setup() {
     -1, 0, 0, 1, 3, 
     0, 0, 1, 2, 3];
   console.log(worldTileMap);
-  drawTileMap();
 }
 
 
 function draw() {
- // background(255);
+  background(255);
   //image(tileSheet,0,0,100,100,0,0,64,64); 
 
   /* - These test that tiles are loading the correct files.
@@ -32,7 +31,7 @@ function draw() {
    image(tileSheet,300,0,100,100,192,0,64,64);
    */
 
-  //drawTileMap();
+  drawTileMap();
   // file, screenX,screenY,width on screen, height on screen, file x, file y, file width, file height
 }
 
@@ -41,7 +40,6 @@ function drawTileMap() {
   for (let r = 0; r < 5; r++) {
     for (let c = 0; c < 5; c++) {
       
-      console.log(worldTileMap[i]);
       if (worldTileMap[i] == 0) {
         image(tileSheet, c*100, r*100, 100, 100, 0, 0, 64, 64); //Use r & c to adjust first two vals, leave the 100s alone, the next two 0s will hard code for each 0,1,2,3, then leave the 64s alone
       } else if (worldTileMap[i] == 1) {

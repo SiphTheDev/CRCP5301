@@ -28,8 +28,15 @@ Sample projects as I familiarize myself with p5.js and its differences from proc
 - PreLoadTesting
 
 ### V - Prototyping Elements
-Individual sketches to work out code challenges independently of the full project
+Individual sketches to work out code challenges independently of the full project - the apparent redundance between these is the result of several false starts testing different libraries. 
 - Enemy & Grid Test
+- Grid Test Two
+- Image and Animation Test
+- Tile Mapping Test
+
+### VI - Project Ascent
+The home of the actual game files
+- Project Ascent
 
 ***
 
