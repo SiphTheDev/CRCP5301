@@ -7,7 +7,7 @@ class Enemy{
   }
   
   render(){
-    fill(0);
+    fill(0,0,0);
     ellipse(this.x,this.y,this.r);
   }
   

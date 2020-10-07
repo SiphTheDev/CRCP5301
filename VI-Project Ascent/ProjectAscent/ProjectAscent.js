@@ -1,7 +1,7 @@
 //Project Ascent
 //Thomas Park
 
-/*TODO: next: Make a file with classes for player, enemy, and background grid squares. Then adjust loadTileMap to load the classes. (Do a loop that reads the letters & loads the classes?)
+/*TODO: next: adjust loadTileMap to load the classes. (Do a loop that reads the letters & loads the classes?)
  then: Draw the graphics (still rects, for now) through class methods. 
  afterwards: Work on enemy motion - stay within the bounds of their grid-type. - bounce off interior borders for now, as a test?
  later: create a player class & a projectile class similarly. 
@@ -22,8 +22,8 @@ function preload() {
 function setup() {
   createCanvas(1400, 700);
   createTileMap();
-  loadTileMap();
-  drawTileMap();
+  loadArray();
+  drawArray();
 }
 
 
@@ -54,12 +54,12 @@ function createTileMap() { //temp until put this data in a json or elsewhere.
     b, b, b, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, p, p, b, b, b, ]; //Determines what type of tile belongs in each space. Will move to JSON or XML later to allow level loading later.
 }
 
-function loadTileMap() { //Once you change the gridTileMap to a JSON, use typeNames instead of these arbitrary numbers? Or still avoid strings?
+function loadArray() { //Once you change the gridTileMap to a JSON, use typeNames instead of these arbitrary numbers? Or still avoid strings?
   let i = 0;
   let type;
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
-      if (gridTileMap[i] == 10) {
+      if (gridTileMap[i] == 'b') {
         type = 1;
       } else if (gridTileMap[i] == 20) {
         type = 2;
@@ -75,11 +75,10 @@ function loadTileMap() { //Once you change the gridTileMap to a JSON, use typeNa
 
 }
 
-function drawTileMap() {
-     print("Rendering");
+function drawArray() {
   for (let i = 0; i < gridArray.length; i++) {
     gridArray[i].render();
- 
+    //print("Rendered: " + i);
   }
-     print("Rendered!");
+     
 }
