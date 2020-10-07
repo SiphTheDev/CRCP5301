@@ -11,10 +11,12 @@ class Enemy{
     ellipse(this.x,this.y,this.r);
   }
   
-  move(){
-    this.x++;
-    this.y++;
+  move(){ //put pathfind here later.
+    this.x ++;
+    this.y ++;
   }
+  
+  
   
   
 }

@@ -2,7 +2,7 @@
 //Thomas Park
 
 /*TODO: 
- next: Work on enemy motion - stay within the bounds of their grid-type. - bounce off interior borders for now, as a test?
+ next: Work on enemy motion - pathfinding
  later: create a player class & a projectile class similarly. 
  much later: do actual pathfinding &/or projectile tracking. 
  
@@ -12,7 +12,7 @@ let gridTileMap = []; //placeholder
 let gridArray = [];
 let cols = 28;
 let rows = 14;
-let jim = new Enemy(200, 200, 25);
+let jim = new Enemy(700, 25, 25); //when spawning enemies properly, do it from a grid space, not a set coord. 
 
 function preload() {
   //gridSpriteSheet = loadImage('assets/dungeonTiles.png');
@@ -22,11 +22,12 @@ function setup() {
   createCanvas(1400, 700);
   createTileMap();
   loadGridArray();
+  drawGridArray();
 }
 
 
 function draw() {
-  drawGridArray();
+  //drawGridArray();
   jim.move();
   jim.render();
 }
@@ -63,7 +64,7 @@ function loadGridArray() { //Once you change the gridTileMap to a JSON, use type
       } else if (gridTileMap[i] == 30) {
         type = 3;
       }
-      gridArray[i] = new GridSpace(c*50, r*50, type); //if you make the grid only half the screen & need to shift it over, do this here via addition. 
+      gridArray[i] = new GridSpace(c*(width/28), r*(height/14), type); //if you make the grid only half the screen & need to shift it over, do this here via addition. 
       i++;
     }
   }
