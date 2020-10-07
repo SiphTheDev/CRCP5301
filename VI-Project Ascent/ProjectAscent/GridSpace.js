@@ -7,14 +7,10 @@ class GridSpace {
   }
 
   render() {
-    
-    
-    //noStroke();
+    noStroke();
     if (this.type == 0) { //Empty spaces
-      //noFill();
-      //print("THE VOID");
+      noFill();
     } else if (this.type == 1) { //Borders & Walls
-      stroke(0);
       fill(0, 0, 255);
       //print("A wall");
     } else if (this.type == 2) { //Enemy Terrain
@@ -26,7 +22,6 @@ class GridSpace {
     }
     rect(this.x, this.y, 50, 50);
 
-    //print("I'm drawing @ " + this.x + ", " + this.y);
     //For the future: image(gridSpriteSheet, c*100, r*100, 100, 100, 0, 0, 64, 64); //Use r & c to adjust first two vals, leave the 100s alone, the next two 0s will hard code for each 0,1,2,3, then leave the 64s alone
   }
 }
