@@ -1,4 +1,4 @@
-class Grid{
+class GridSpace{
 
   constructor(x,y, type){
     this.x = x;

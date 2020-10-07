@@ -9,7 +9,8 @@
 
 */
 //let gridSpriteSheet;
-let gridTileMap = [];
+let gridTileMap = []; //placeholder
+let gridArray = [];
 let cols = 28;
 let rows = 14;
 let jim = new Enemy(200,200, 25);
@@ -20,6 +21,7 @@ function preload() {
 
 function setup() {
   createCanvas(1400, 700);
+  createTileMap();
   loadTileMap();
 }
 
@@ -31,7 +33,7 @@ function draw() {
   jim.render();
 }
 
-function loadTileMap() {
+function createTileMap() { //temp until put this data in a json or elsewhere.
   let b = 10; //borders
   let e = 20; //enemies
   let p = 30; //players
@@ -49,6 +51,15 @@ function loadTileMap() {
                  b, b, b, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, e, e, p, p, b, b, b,                 
                  b, b, b, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, p, p, b, b, b,
                  b, b, b, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, p, p, b, b, b,]; //Determines what type of tile belongs in each space. Will move to JSON or XML later to allow level loading later.
+}
+
+function loadTileMap(){
+  for(let i = 0; i < gridTileMap.length; i++){
+    let type;
+      if(gridTileMap[i] == 10){}
+      
+      gridArray[i] = new gridSpace(c*50, r*50, type); //Will this work? Is .i better?
+  }
 }
 
 function drawTileMap() {
