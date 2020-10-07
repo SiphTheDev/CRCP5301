@@ -1,9 +1,13 @@
 //Project Ascent
 //Thomas Park
 
-//Remember: Try to have as little code in this file as is reasonable by the end. But refactor later. Functionality 1st
+/*TODO: next: Make a file with classes for player, enemy, and background grid squares. Then adjust loadTileMap to load the classes. (Do a loop that reads the letters & loads the classes?)
+        then: Draw the graphics (still rects, for now) through class methods. 
+        afterwards: Work on enemy motion - stay within the bounds of their grid-type. - bounce off interior borders for now, as a test?
+        later: create a player class & a projectile class similarly. 
+        much later: do actual pathfinding &/or projectile tracking. 
 
-
+*/
 //let gridSpriteSheet;
 let gridTileMap = [];
 let cols = 28;
