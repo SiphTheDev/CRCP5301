@@ -10,6 +10,7 @@
 //let gridSpriteSheet;
 let gridTileMap = []; //placeholder
 let gridArray = [];
+//let testNest = [];
 let cols = 28;
 let rows = 14;
 let jim = new Enemy(700, 25, 25); //when spawning enemies properly, do it from a grid space, not a set coord. 
@@ -23,6 +24,15 @@ function setup() {
   createTileMap();
   loadGridArray();
   drawGridArray();
+  /*let k = 0;
+  for(let i = 0; i < 10; i++){
+    testNest[i] = [];
+    for(let j = 0; j < 10; j++){
+      testNest[i][j] = k;
+      k++;
+      print(testNest[i][j]);
+    }
+  }*/
 }
 
 
@@ -56,6 +66,7 @@ function loadGridArray() { //Once you change the gridTileMap to a JSON, use type
   let i = 0;
   let type;
   for (let r = 0; r < rows; r++) {
+    gridArray[r] = [];
     for (let c = 0; c < cols; c++) {
       if (gridTileMap[i] == 10) {
         type = 1;
@@ -64,7 +75,7 @@ function loadGridArray() { //Once you change the gridTileMap to a JSON, use type
       } else if (gridTileMap[i] == 30) {
         type = 3;
       }
-      gridArray[i] = new GridSpace(c*(width/28), r*(height/14), type); //if you make the grid only half the screen & need to shift it over, do this here via addition. 
+      gridArray[r][c] = new GridSpace(c*(width/28), r*(height/14), type); //if you make the grid only half the screen & need to shift it over, do this here via addition. 
       i++;
     }
   }
@@ -74,7 +85,9 @@ function loadGridArray() { //Once you change the gridTileMap to a JSON, use type
 
 function drawGridArray() {
   for (let i = 0; i < gridArray.length; i++) {
-    gridArray[i].render();
+    for(let j = 0; j < gridArray[i].length; j++){
+      gridArray[i][j].render();
+    }
   }
      
 }
