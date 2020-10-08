@@ -25,14 +25,14 @@ function setup() {
   createCanvas(1400, 700);
   createTileMap();
   loadGridArray();
-  drawGridArray();
-  findAdjacent(gridArray[5][5]); //c,r
-  print(toSearch);
+  //drawGridArray();
+  findAdjacent(gridArray[5][5]); //c,r //A test for findAdjacent
+  //print(toSearch);
 }
 
 
 function draw() {
-  //drawGridArray();
+  drawGridArray();
   jim.move();
   jim.render();
 }
@@ -60,17 +60,21 @@ function createTileMap() { //temp until put this data in a json or elsewhere. //
 function loadGridArray() { //Once you change the gridTileMap to a JSON, use typeNames instead of these arbitrary numbers? Or still avoid strings?
   let i = 0;
   let type;
+  let farbe;
   for (let r = 0; r < rows; r++) {
     gridArray[r] = [];
     for (let c = 0; c < cols; c++) {
       if (gridTileMap[i] == 10) {
         type = 1;
+        farbe = color(255,0,0);
       } else if (gridTileMap[i] == 20) {
         type = 2;
+        farbe = color(0,255, 0);
       } else if (gridTileMap[i] == 30) {
         type = 3;
+        farbe = color(0, 0, 255);
       }
-      gridArray[r][c] = new GridSpace(r, c, c*(width/28), r*(height/14), type); //if you make the grid only half the screen & need to shift it over, do this here via addition. 
+      gridArray[r][c] = new GridSpace(r, c, c*(width/28), r*(height/14), type, farbe); //if you make the grid only half the screen & need to shift it over, do this here via addition. 
       i++;
     }
   }
@@ -88,29 +92,56 @@ function findAdjacent(node) {
   if (node.r < 13){
     if (gridArray[node.c][node.r+1].type == 2) { //type 2 = enemy terrain.
       toSearch[toSearch.length] = gridArray[node.c][node.r+1];
-      fill(255, 255, 255);
-      ellipse(gridArray[node.c][node.r+1].x, gridArray[node.c][node.r+1].y, 25);
+      gridArray[node.c][node.r+1].gridFrom = node;
+      gridArray[node.c][node.r+1].farbe = color(0,200,100);
+      //fill(255, 255, 255);
+      //ellipse(gridArray[node.c][node.r+1].x, gridArray[node.c][node.r+1].y, 25);
     }
   }
   if (node.c < 6) {
     if (gridArray[node.c+1][node.r].type == 2) { 
       toSearch[toSearch.length] = gridArray[node.c+1][node.r];
-      fill(255, 255, 255);
-      ellipse(gridArray[node.c+1][node.r].x, gridArray[node.c+1][node.r].y, 25);
+      gridArray[node.c+1][node.r].gridFrom = node;
+      gridArray[node.c+1][node.r].farbe = color(0,200,100);
+      //fill(255, 255, 255);
+      //ellipse(gridArray[node.c+1][node.r].x, gridArray[node.c+1][node.r].y, 25);
     }
   }
   if (node.r > 0) {
     if (gridArray[node.c][node.r-1].type == 2) { 
       toSearch[toSearch.length] = gridArray[node.c][node.r-1];
-      fill(255, 255, 255);
-      ellipse(gridArray[node.c][node.r-1].x, gridArray[node.c][node.r-1].y, 25);
+      gridArray[node.c][node.r-1].gridFrom = node;
+      gridArray[node.c][node.r-1].farbe = color(0,200,100);
+      //fill(255, 255, 255);
+      //ellipse(gridArray[node.c][node.r-1].x, gridArray[node.c][node.r-1].y, 25);
     }
   }
   if (node.c > 0) {
     if (gridArray[node.c-1][node.r].type == 2) {
       toSearch[toSearch.length] = gridArray[node.c-1][node.r];
+      gridArray[node.c-1][node.r].gridFrom = node;
+      gridArray[node.c-1][node.r].farbe = color(0,200,100);
       fill(255, 255, 255);
       ellipse(gridArray[node.c-1][node.r].x, gridArray[node.c-1][node.r].y, 25);
     }
   }
 }
+
+function pathFind(startNode, endNode){
+  findAdjacent(startNode);
+  //loop through the elems in toSearch, calcing g & h in separate funcs, and f afterwards. 
+  //loop to find lowest F from the list, then check it's adj notes. 
+  //Once end found, loop through the nodes backwards checking where they came from and putting them into a global "path" array. 
+  
+}
+/*
+function calcGHF(startNode, endNode){
+  let endFound = false;
+  while(endFound == false){
+     for(let i = 0; i < toSearch.length; i++){
+       let distBtwn = dist(startNode.x, startNode.y, toSearch[i].x, toSearch[i].y);
+         
+     }
+  }
+  //toSearch
+} */
