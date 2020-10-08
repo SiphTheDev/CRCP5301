@@ -1,6 +1,6 @@
 class GridSpace {
 
-  constructor(c, r, x, y, type, farbe, gridFrom = null, Gcost = null, Hcost = null, Fcost = null) {
+  constructor(c, r, x, y, type, farbe, gridFrom = null, Gcost = null, Hcost = null, Fcost = null, searched = false) {
     this.c = c;
     this.r = r;  
     this.x = x;
@@ -11,6 +11,7 @@ class GridSpace {
     this.Gcost = Gcost;
     this.Hcost = Hcost;
     this.Fcost = Fcost;
+    this.searched = searched;
   } 
 
   render() {

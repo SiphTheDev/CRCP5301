@@ -90,28 +90,28 @@ function drawGridArray() {
 }
 
 function findAdjacent(node) {
-  if (node.r < 13) {
+  if (node.r < 13 && !gridArray[node.c][node.r+1].searched) {
     if (gridArray[node.c][node.r+1].type == 2) { //type 2 = enemy terrain.
       toSearch[toSearch.length] = gridArray[node.c][node.r+1];
       gridArray[node.c][node.r+1].gridFrom = node;
       gridArray[node.c][node.r+1].farbe = color(0, 200, 100); // for testing
     }
   }
-  if (node.c < 6) {
+  if (node.c < 6 && !gridArray[node.c+1][node.r].searched) {
     if (gridArray[node.c+1][node.r].type == 2) { 
       toSearch[toSearch.length] = gridArray[node.c+1][node.r];
       gridArray[node.c+1][node.r].gridFrom = node;
       gridArray[node.c+1][node.r].farbe = color(0, 200, 100); // for testing
     }
   }
-  if (node.r > 0) {
+  if (node.r > 0 && !gridArray[node.c][node.r-1].searched) {
     if (gridArray[node.c][node.r-1].type == 2) { 
       toSearch[toSearch.length] = gridArray[node.c][node.r-1];
       gridArray[node.c][node.r-1].gridFrom = node;
       gridArray[node.c][node.r-1].farbe = color(0, 200, 100); //for testing
     }
   }
-  if (node.c > 0) {
+  if (node.c > 0 && !gridArray[node.c-1][node.r].searched) {
     if (gridArray[node.c-1][node.r].type == 2) {
       toSearch[toSearch.length] = gridArray[node.c-1][node.r];
       gridArray[node.c-1][node.r].gridFrom = node;
@@ -127,24 +127,41 @@ function pathFind(startNode, endNode) {
   findAdjacent(startNode);
 
   //while (!endFound) {
-    //Step a: loop through the elems in toSearch, calcing g & h in separate funcs, and f afterwards. 
-    for (let i = 0; i < toSearch.length; i++) { //learn how to remove stuff from toSearch between sweeps later.
-      toSearch[i].g = calcG(toSearch[i], startNode);
-      toSearch[i].h = calcH(toSearch[i], endNode);
-      
-      //if (toSearch[i].h == 0) { //checks if we've reached our destination. 
-      //  endFound = true;
-      //  print("endFound");
-      //}
-      
-      toSearch[i].f = toSearch[i].g + toSearch[i].h;
-    }
+  //Step a: loop through the elems in toSearch, calcing g & h in separate funcs, and f afterwards. 
+  calcGHF(startNode, endNode);
 
-    //Steb b: search through toSearch to see which tile/node has the lowest F value. Then find all nodes adjacent to that tile.
-    findAdjacent(findBestTile());
+  //Steb b: search through toSearch to see which tile/node has the lowest F value. Then find all nodes adjacent to that tile.
+  findAdjacent(findBestTile());
+  //print("BestTile: " + findBestTile());
+  cleanSearchArray();
+  calcGHF(startNode, endNode);
+  findAdjacent(findBestTile());
+  //print("BestTile: " + findBestTile());
+  cleanSearchArray();
+  calcGHF(startNode, endNode);
+  findAdjacent(findBestTile());  
+  //print("BestTile: " + findBestTile());
+  cleanSearchArray();
+
+
+  //if (toSearch[i].h == 0) { //checks if we've reached our destination. 
+  //  endFound = true;
+  //  print("endFound");
   //}
-  //loop to find lowest F from the list, then check it's adj notes. 
+  //}
+
   //Once end found, loop through the nodes backwards checking where they came from and putting them into a global "path" array.  - all above this goes in a while loop.
+}
+
+function calcGHF(startNode, endNode) {
+  for (let i = 0; i < toSearch.length; i++) { //learn how to remove stuff from toSearch between sweeps later.
+    toSearch[i].g = calcG(toSearch[i], startNode);
+    toSearch[i].h = calcH(toSearch[i], endNode);
+    //print(i + "'s h is: " + toSearch[i].h);
+    toSearch[i].f = toSearch[i].g + toSearch[i].h;
+    toSearch[i].searched = true;
+    print("searched = true");
+  }
 }
 
 function calcG(node, startNode) {
@@ -155,14 +172,35 @@ function calcH(node, endNode) {
   return(abs(endNode.c - node.c)+abs(endNode.r - node.r));
 }
 
-function findBestTile(){
-let lowestF = 10000;
-    let bestTile;
-    for (let i = 0; i < toSearch.length; i++) {
-      if (toSearch[i].f < lowestF) {
-        lowestF = toSearch[i].f;
-        bestTile = toSearch[i];
-      }
+function cleanSearchArray() {
+  let tempArray = [];
+  let j = 0;
+
+  for (let i = toSearch.length-1; i > 1; i--) {
+    //print(toSearch[i].x);
+    if(toSearch[i].searched == false) {
+      tempArray.push(toSearch[i]);
+      j++;
+      print("TempArrayJ: " + tempArray[0]);
     }
-    return bestTile;
+    toSearch[i] = null;
+  }
+  for (let i = 0; i < tempArray.length; i++) {
+    toSearch[i] = tempArray[i];
+  }
+  //print(tempArray);
+  //print(toSearch);
+}
+
+function findBestTile() {  //loop to find lowest F from the list, then check it's adj nodes/tiles. 
+  let lowestF = 10000;
+  let bestTile;
+  for (let i = 0; i < toSearch.length; i++) {
+    if (toSearch[i].f < lowestF) {
+      //print("F " + toSearch[i].f);
+      lowestF = toSearch[i].f;
+      bestTile = toSearch[i];
+    }
+  }
+  return bestTile;
 }
