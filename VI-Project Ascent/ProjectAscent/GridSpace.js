@@ -1,6 +1,6 @@
 class GridSpace {
 
-  constructor(c, r, x, y, type, farbe, gridFrom, Gcost, Hcost, Fcost) {
+  constructor(c, r, x, y, type, farbe, gridFrom = null, Gcost = null, Hcost = null, Fcost = null) {
     this.c = c;
     this.r = r;  
     this.x = x;
