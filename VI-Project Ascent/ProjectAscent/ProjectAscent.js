@@ -13,6 +13,7 @@ let gridTileMap = []; //placeholder
 let gridArray = [];
 let cols = 28;
 let rows = 14;
+let tempColorAdj = 5;
 
 let toSearch = [];
 
@@ -28,7 +29,7 @@ function setup() {
   loadGridArray();
   //drawGridArray();
   //findAdjacent(gridArray[5][5]); //c,r //A test for findAdjacent
-  pathFind(gridArray[5][5], gridArray[5][10]);
+  pathFind(gridArray[5][7], gridArray[5][10]);
   //print(toSearch);
 }
 
@@ -95,28 +96,32 @@ function findAdjacent(node) {
     if (gridArray[node.c][node.r+1].type == 2) { //type 2 = enemy terrain.
       toSearch[toSearch.length] = gridArray[node.c][node.r+1];
       gridArray[node.c][node.r+1].gridFrom = node;
-      gridArray[node.c][node.r+1].farbe = color(0, 200, 100); // for testing
+      gridArray[node.c][node.r+1].farbe = color(0, 200 + tempColorAdj, 100); // for testing
+      tempColorAdj += 10;
     }
   }
   if (node.c < 6 && !gridArray[node.c+1][node.r].searched) {
     if (gridArray[node.c+1][node.r].type == 2) { 
       toSearch[toSearch.length] = gridArray[node.c+1][node.r];
       gridArray[node.c+1][node.r].gridFrom = node;
-      gridArray[node.c+1][node.r].farbe = color(0, 200, 100); // for testing
+      gridArray[node.c+1][node.r].farbe = color(0, 200 + tempColorAdj, 100); // for testing
+      tempColorAdj += 10;
     }
   }
   if (node.r > 0 && !gridArray[node.c][node.r-1].searched) {
     if (gridArray[node.c][node.r-1].type == 2) { 
       toSearch[toSearch.length] = gridArray[node.c][node.r-1];
       gridArray[node.c][node.r-1].gridFrom = node;
-      gridArray[node.c][node.r-1].farbe = color(0, 200, 100); //for testing
+      gridArray[node.c][node.r-1].farbe = color(0, 200 + tempColorAdj, 100); // for testing
+      tempColorAdj += 10;
     }
   }
   if (node.c > 0 && !gridArray[node.c-1][node.r].searched) {
     if (gridArray[node.c-1][node.r].type == 2) {
       toSearch[toSearch.length] = gridArray[node.c-1][node.r];
       gridArray[node.c-1][node.r].gridFrom = node;
-      gridArray[node.c-1][node.r].farbe = color(0, 200, 100); //for testing
+      gridArray[node.c-1][node.r].farbe = (0, 200 + tempColorAdj, 100); // for testing
+      tempColorAdj += 10;
     }
   }
 }
@@ -133,16 +138,13 @@ function pathFind(startNode, endNode) {
 
   //Steb b: search through toSearch to see which tile/node has the lowest F value. Then find all nodes adjacent to that tile.
   findAdjacent(findBestTile());
-  //print("BestTile: " + findBestTile());
-  cleanSearchArray();
-  calcGHF(startNode, endNode);
-  findAdjacent(findBestTile());
-  //print("BestTile: " + findBestTile());
-  cleanSearchArray();
-  calcGHF(startNode, endNode);
-  findAdjacent(findBestTile());  
-  //print("BestTile: " + findBestTile());
-  cleanSearchArray();
+
+  //calcGHF(startNode, endNode);
+  //findAdjacent(findBestTile());
+
+  //calcGHF(startNode, endNode);
+  //findAdjacent(findBestTile());  
+
 
 
   //if (toSearch[i].h == 0) { //checks if we've reached our destination. 
@@ -156,19 +158,17 @@ function pathFind(startNode, endNode) {
 
 function calcGHF(startNode, endNode) {
   for (let i = 0; i < toSearch.length; i++) { //learn how to remove stuff from toSearch between sweeps later.
-  if(toSearch[i] != null){
     toSearch[i].g = calcG(toSearch[i], startNode);
     toSearch[i].h = calcH(toSearch[i], endNode);
-    //print(i + "'s h is: " + toSearch[i].h);
+    print(i + "'s h is: " + toSearch[i].h);
+    //print(tempColorAdj);
     toSearch[i].f = toSearch[i].g + toSearch[i].h;
     toSearch[i].searched = true;
     //print("searched = true");
   }
-  }
 }
 
 function calcG(node, startNode) {
-    print("madeIt");
   return(abs(startNode.c - node.c)+abs(startNode.r - node.r));
 
 } 
@@ -176,57 +176,46 @@ function calcG(node, startNode) {
 function calcH(node, endNode) {
   return(abs(endNode.c - node.c)+abs(endNode.r - node.r));
 }
-
-function cleanSearchArray() {
+/*
+function cleanSearchArray() { //To make this work, first fix all uses of the array to use push & pop (verify they work, first). 
   let tempArray = [];
   let j = 0;
 
   for(let i = 0; i<toSearch.length; i++){
-    if(toSearch[i] != null){
+    //if(toSearch[i] != null){
     if(toSearch[i].searched){
       toSearch[i] = null;
     }
     else{
       tempArray.push(toSearch[i]);
       toSearch[i] = null;
+          print("Temp Array: " + tempArray[i].c);
     }
-    }
-    print("Temp Array: " + tempArray);
+    //}
+
     
     for(let i = 0; i < tempArray.length; i++){
       toSearch[i] = tempArray[i];
+      print("toSearch: " + toSearch[i].c);
     }
-    print("toSearch: " + toSearch);
-  }
-/*
-  for (let i = toSearch.length-1; i > 1; i--) {
-    //print(toSearch[i].x);
-    if(toSearch[i].searched == false) {
-      tempArray.push(toSearch[i]);
-      j++;
-      print("TempArrayJ: " + tempArray[0]);
-    }
-    toSearch[i] = null;
-  }
-  for (let i = 0; i < tempArray.length; i++) {
-    toSearch[i] = tempArray[i];
-  }
-  //print(tempArray);
-  //print(toSearch);
-  */
-}
 
+  }
+}
+*/
 function findBestTile() {  //loop to find lowest F from the list, then check it's adj nodes/tiles. 
   let lowestF = 10000;
   let bestTile;
   for (let i = 0; i < toSearch.length; i++) {
-    if(toSearch[i] != null){
+    print("grid " + toSearch[i].c + "," + toSearch[i].r + " has " + toSearch[i].f);
+    //if(toSearch[i] != null){
     if (toSearch[i].f < lowestF) {
       //print("F " + toSearch[i].f);
       lowestF = toSearch[i].f;
       bestTile = toSearch[i];
+      print("Lowest F: " + lowestF);
+      print("best tile: " + bestTile);
     }
-    }
+//}
   }
   return bestTile;
 }
