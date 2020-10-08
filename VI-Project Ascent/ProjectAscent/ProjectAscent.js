@@ -14,6 +14,7 @@ let gridArray = [];
 let cols = 28;
 let rows = 14;
 let tempColorAdj = 5;
+let tempFriendAr = [];
 
 let toSearch = [];
 
@@ -38,6 +39,29 @@ function draw() {
   drawGridArray();
   jim.move();
   jim.render();
+  drawTowerArray();
+}
+
+function mousePressed(){
+  print("pressed");
+  let n = 0;
+  for(let i = 0; i < gridArray.length; i++){ 
+    for(let j = 0; j < gridArray[i].length; j++){
+    if(mouseX > gridArray[i][j].x && mouseX < gridArray[i][j].x + 50 && mouseY > gridArray[i][j].y && mouseY < gridArray[i][j].y + 50){
+      tempFriendAr[n] = (new Tower(mouseX, mouseY, 50));
+      print("new Tower buddy!");
+      print(tempFriendAr[n]);
+    }
+    n++;
+    }
+  }
+  //drawTowerArray();
+}
+
+function drawTowerArray(){
+  for(let i = 0; i < tempFriendAr.length; i++){
+    tempFriendAr[i].render();
+  }
 }
 
 function createTileMap() { //temp until put this data in a json or elsewhere. //maybe make this a 2d array in future?
