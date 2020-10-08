@@ -3,6 +3,7 @@
 
 /*TODO: 
  next: Work on enemy motion - pathfinding
+ then: Fix array so rather than filling with nulls, it actually pushes & pops properly. 
  later: create a player class & a projectile class similarly. 
  much later: do actual pathfinding &/or projectile tracking. 
  far beyond: put all this into a new class (lv 1 or gamePlay or the like) & make this fundamentally just a scene manager. - maybe leave the preload stuff. Can you have diff draw loops in diff files for proc?
@@ -155,17 +156,21 @@ function pathFind(startNode, endNode) {
 
 function calcGHF(startNode, endNode) {
   for (let i = 0; i < toSearch.length; i++) { //learn how to remove stuff from toSearch between sweeps later.
+  if(toSearch[i] != null){
     toSearch[i].g = calcG(toSearch[i], startNode);
     toSearch[i].h = calcH(toSearch[i], endNode);
     //print(i + "'s h is: " + toSearch[i].h);
     toSearch[i].f = toSearch[i].g + toSearch[i].h;
     toSearch[i].searched = true;
-    print("searched = true");
+    //print("searched = true");
+  }
   }
 }
 
 function calcG(node, startNode) {
+    print("madeIt");
   return(abs(startNode.c - node.c)+abs(startNode.r - node.r));
+
 } 
 
 function calcH(node, endNode) {
@@ -176,6 +181,24 @@ function cleanSearchArray() {
   let tempArray = [];
   let j = 0;
 
+  for(let i = 0; i<toSearch.length; i++){
+    if(toSearch[i] != null){
+    if(toSearch[i].searched){
+      toSearch[i] = null;
+    }
+    else{
+      tempArray.push(toSearch[i]);
+      toSearch[i] = null;
+    }
+    }
+    print("Temp Array: " + tempArray);
+    
+    for(let i = 0; i < tempArray.length; i++){
+      toSearch[i] = tempArray[i];
+    }
+    print("toSearch: " + toSearch);
+  }
+/*
   for (let i = toSearch.length-1; i > 1; i--) {
     //print(toSearch[i].x);
     if(toSearch[i].searched == false) {
@@ -190,16 +213,19 @@ function cleanSearchArray() {
   }
   //print(tempArray);
   //print(toSearch);
+  */
 }
 
 function findBestTile() {  //loop to find lowest F from the list, then check it's adj nodes/tiles. 
   let lowestF = 10000;
   let bestTile;
   for (let i = 0; i < toSearch.length; i++) {
+    if(toSearch[i] != null){
     if (toSearch[i].f < lowestF) {
       //print("F " + toSearch[i].f);
       lowestF = toSearch[i].f;
       bestTile = toSearch[i];
+    }
     }
   }
   return bestTile;
