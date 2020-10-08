@@ -5,14 +5,16 @@
  next: Work on enemy motion - pathfinding
  later: create a player class & a projectile class similarly. 
  much later: do actual pathfinding &/or projectile tracking. 
- 
+ far beyond: put all this into a new class (lv 1 or gamePlay or the like) & make this fundamentally just a scene manager. - maybe leave the preload stuff. Can you have diff draw loops in diff files for proc?
  */
 //let gridSpriteSheet;
 let gridTileMap = []; //placeholder
 let gridArray = [];
-//let testNest = [];
 let cols = 28;
 let rows = 14;
+
+let toSearch = [];
+
 let jim = new Enemy(700, 25, 25); //when spawning enemies properly, do it from a grid space, not a set coord. 
 
 function preload() {
@@ -24,15 +26,8 @@ function setup() {
   createTileMap();
   loadGridArray();
   drawGridArray();
-  /*let k = 0;
-  for(let i = 0; i < 10; i++){
-    testNest[i] = [];
-    for(let j = 0; j < 10; j++){
-      testNest[i][j] = k;
-      k++;
-      print(testNest[i][j]);
-    }
-  }*/
+  findAdjacent(gridArray[5][7]); //c,r
+  print(toSearch);
 }
 
 
@@ -75,19 +70,31 @@ function loadGridArray() { //Once you change the gridTileMap to a JSON, use type
       } else if (gridTileMap[i] == 30) {
         type = 3;
       }
-      gridArray[r][c] = new GridSpace(c*(width/28), r*(height/14), type); //if you make the grid only half the screen & need to shift it over, do this here via addition. 
+      gridArray[r][c] = new GridSpace(r, c, c*(width/28), r*(height/14), type); //if you make the grid only half the screen & need to shift it over, do this here via addition. 
       i++;
     }
   }
-
-
 }
 
 function drawGridArray() {
   for (let i = 0; i < gridArray.length; i++) {
-    for(let j = 0; j < gridArray[i].length; j++){
+    for (let j = 0; j < gridArray[i].length; j++) {
       gridArray[i][j].render();
     }
   }
-     
+}
+
+function findAdjacent(node){
+  if(gridArray[node.c][node.r+1].type == 2){ //type 2 = enemy terrain.
+    toSearch[toSearch.length] = gridArray[node.c][node.r+1];
+  }
+  if(gridArray[node.c+1][node.r].type == 2){ 
+    toSearch[toSearch.length] = gridArray[node.c+1][node.r];
+  }
+  if(gridArray[node.c][node.r-1].type == 2){ 
+    toSearch[toSearch.length] = gridArray[node.c][node.r-1];
+  }
+  if(gridArray[node.c-1][node.r].type == 2){
+    toSearch[toSearch.length] = gridArray[node.c-1][node.r];
+  }
 }
