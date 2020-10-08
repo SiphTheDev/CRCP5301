@@ -26,7 +26,7 @@ function setup() {
   createTileMap();
   loadGridArray();
   drawGridArray();
-  findAdjacent(gridArray[5][7]); //c,r
+  findAdjacent(gridArray[5][5]); //c,r
   print(toSearch);
 }
 
@@ -84,17 +84,33 @@ function drawGridArray() {
   }
 }
 
-function findAdjacent(node){
-  if(gridArray[node.c][node.r+1].type == 2){ //type 2 = enemy terrain.
-    toSearch[toSearch.length] = gridArray[node.c][node.r+1];
+function findAdjacent(node) {
+  if (node.r < 13){
+    if (gridArray[node.c][node.r+1].type == 2) { //type 2 = enemy terrain.
+      toSearch[toSearch.length] = gridArray[node.c][node.r+1];
+      fill(255, 255, 255);
+      ellipse(gridArray[node.c][node.r+1].x, gridArray[node.c][node.r+1].y, 25);
+    }
   }
-  if(gridArray[node.c+1][node.r].type == 2){ 
-    toSearch[toSearch.length] = gridArray[node.c+1][node.r];
+  if (node.c < 6) {
+    if (gridArray[node.c+1][node.r].type == 2) { 
+      toSearch[toSearch.length] = gridArray[node.c+1][node.r];
+      fill(255, 255, 255);
+      ellipse(gridArray[node.c+1][node.r].x, gridArray[node.c+1][node.r].y, 25);
+    }
   }
-  if(gridArray[node.c][node.r-1].type == 2){ 
-    toSearch[toSearch.length] = gridArray[node.c][node.r-1];
+  if (node.r > 0) {
+    if (gridArray[node.c][node.r-1].type == 2) { 
+      toSearch[toSearch.length] = gridArray[node.c][node.r-1];
+      fill(255, 255, 255);
+      ellipse(gridArray[node.c][node.r-1].x, gridArray[node.c][node.r-1].y, 25);
+    }
   }
-  if(gridArray[node.c-1][node.r].type == 2){
-    toSearch[toSearch.length] = gridArray[node.c-1][node.r];
+  if (node.c > 0) {
+    if (gridArray[node.c-1][node.r].type == 2) {
+      toSearch[toSearch.length] = gridArray[node.c-1][node.r];
+      fill(255, 255, 255);
+      ellipse(gridArray[node.c-1][node.r].x, gridArray[node.c-1][node.r].y, 25);
+    }
   }
 }
