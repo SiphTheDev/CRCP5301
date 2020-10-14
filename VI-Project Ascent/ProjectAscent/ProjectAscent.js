@@ -163,8 +163,12 @@ function pathFind(startNode, endNode) {
   calcGHF(startNode, endNode);
 
   //Steb b: search through toSearch to see which tile/node has the lowest F value. Then find all nodes adjacent to that tile.
+  cleanSearchArray();
   findAdjacent(findBestTile());
-  
+  cleanSearchArray();
+  findAdjacent(findBestTile());
+  cleanSearchArray();
+  findAdjacent(findBestTile());
     //clear toSearch of the searched tiles between each iteration.
 
   //calcGHF(startNode, endNode);
@@ -191,7 +195,7 @@ function calcGHF(startNode, endNode) {
     print(i + "'s h is: " + toSearch[i].h);
     //print(tempColorAdj);
     toSearch[i].f = toSearch[i].g + toSearch[i].h;
-    toSearch[i].searched = true; //Change this in FindBest, not here?
+    //toSearch[i].searched = true; //Change this in FindBest, not here?
     //print("searched = true");
   }
 }
@@ -204,13 +208,27 @@ function calcG(node, startNode) {
 function calcH(node, endNode) {
   return(abs(endNode.c - node.c)+abs(endNode.r - node.r));
 }
-/*
-function cleanSearchArray() { //To make this work, use Splice() - it has the ability to clear spaces. 
 
-
+function cleanSearchArray() { //Splice doesn't seem to be working (still leaves and array of undefs. Can you change array.length? Try new approach - needs research: array.slice or just set array.length.)
+ //Error may be elsewhere. Look through program flow to see if you're calling this at the right point.
   let tempArray = [];
-  let j = 0;
 
+
+  for(let i= 0; i < toSearch.length; i++){
+    tempArray[i] = toSearch[i];
+  }
+  
+  toSearch.length = 0; //1000 is functionally infinity, as more than the num o' spaces. But find a more concrete solution later.
+  
+  for(let i = 0; i < tempArray.length; i++){
+    if(!tempArray[i].searched){
+      toSearch.push(tempArray[i]);
+    }
+  }
+}
+/*
+  
+    let j = 0;
   for(let i = 0; i<toSearch.length; i++){
     //if(toSearch[i] != null){
     if(toSearch[i].searched){
@@ -247,6 +265,6 @@ function findBestTile() {  //loop to find lowest F from the list, then check it'
     }
 //}
   }
-  //set tile as searched?
+  bestTile.searched = true;//set tile as searched?
   return bestTile;
 }
