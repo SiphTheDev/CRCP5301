@@ -2,19 +2,22 @@
 //Thomas Park
 
 /*TODO: 
+ now: Either get tower placement & drawing working or comment it out & go back to pathfinding.
  next: Work on enemy motion - pathfinding
  then: Fix array so rather than filling with nulls, it actually pushes & pops properly. 
  later: create a player class & a projectile class similarly. 
  much later: do actual pathfinding &/or projectile tracking. 
  far beyond: put all this into a new class (lv 1 or gamePlay or the like) & make this fundamentally just a scene manager. - maybe leave the preload stuff. Can you have diff draw loops in diff files for proc?
  */
+ 
+ 
 //let gridSpriteSheet;
 let gridTileMap = []; //placeholder
 let gridArray = [];
 let cols = 28;
 let rows = 14;
 let tempColorAdj = 5;
-let tempFriendAr = [];
+//let tempFriendAr = [];
 
 let toSearch = [];
 
@@ -37,12 +40,12 @@ function setup() {
 
 function draw() {
   drawGridArray();
-  jim.move();
+  //jim.move();
   jim.render();
-  drawTowerArray();
+  //drawTowerArray();
 }
 
-function mousePressed(){
+/*function mousePressed(){
   print("pressed");
   let n = 0;
   for(let i = 0; i < gridArray.length; i++){ 
@@ -62,8 +65,7 @@ function drawTowerArray(){
   for(let i = 0; i < tempFriendAr.length; i++){
     tempFriendAr[i].render();
   }
-}
-
+}*/
 function createTileMap() { //temp until put this data in a json or elsewhere. //maybe make this a 2d array in future?
   let b = 10; //borders
   let e = 20; //enemies
@@ -162,6 +164,8 @@ function pathFind(startNode, endNode) {
 
   //Steb b: search through toSearch to see which tile/node has the lowest F value. Then find all nodes adjacent to that tile.
   findAdjacent(findBestTile());
+  
+    //clear toSearch of the searched tiles between each iteration.
 
   //calcGHF(startNode, endNode);
   //findAdjacent(findBestTile());
@@ -187,7 +191,7 @@ function calcGHF(startNode, endNode) {
     print(i + "'s h is: " + toSearch[i].h);
     //print(tempColorAdj);
     toSearch[i].f = toSearch[i].g + toSearch[i].h;
-    toSearch[i].searched = true;
+    toSearch[i].searched = true; //Change this in FindBest, not here?
     //print("searched = true");
   }
 }
@@ -201,7 +205,9 @@ function calcH(node, endNode) {
   return(abs(endNode.c - node.c)+abs(endNode.r - node.r));
 }
 /*
-function cleanSearchArray() { //To make this work, first fix all uses of the array to use push & pop (verify they work, first). 
+function cleanSearchArray() { //To make this work, use Splice() - it has the ability to clear spaces. 
+
+
   let tempArray = [];
   let j = 0;
 
@@ -241,5 +247,6 @@ function findBestTile() {  //loop to find lowest F from the list, then check it'
     }
 //}
   }
+  //set tile as searched?
   return bestTile;
 }

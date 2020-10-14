@@ -15,7 +15,7 @@ class GridSpace {
   } 
 
   render() {
-    noStroke();
+    //noStroke();
     if (this.type == 0) { //Empty spaces
       noFill();
     } else if (this.type == 1) { //Borders & Walls
