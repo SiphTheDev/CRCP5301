@@ -9,8 +9,8 @@
  much later: do actual pathfinding &/or projectile tracking. 
  far beyond: put all this into a new class (lv 1 or gamePlay or the like) & make this fundamentally just a scene manager. - maybe leave the preload stuff. Can you have diff draw loops in diff files for proc?
  */
- 
- 
+
+
 //let gridSpriteSheet;
 let gridTileMap = []; //placeholder
 let gridArray = [];
@@ -46,26 +46,26 @@ function draw() {
 }
 
 /*function mousePressed(){
-  print("pressed");
-  let n = 0;
-  for(let i = 0; i < gridArray.length; i++){ 
-    for(let j = 0; j < gridArray[i].length; j++){
-    if(mouseX > gridArray[i][j].x && mouseX < gridArray[i][j].x + 50 && mouseY > gridArray[i][j].y && mouseY < gridArray[i][j].y + 50){
-      tempFriendAr[n] = (new Tower(mouseX, mouseY, 50));
-      print("new Tower buddy!");
-      print(tempFriendAr[n]);
-    }
-    n++;
-    }
-  }
-  //drawTowerArray();
-}
-
-function drawTowerArray(){
-  for(let i = 0; i < tempFriendAr.length; i++){
-    tempFriendAr[i].render();
-  }
-}*/
+ print("pressed");
+ let n = 0;
+ for(let i = 0; i < gridArray.length; i++){ 
+ for(let j = 0; j < gridArray[i].length; j++){
+ if(mouseX > gridArray[i][j].x && mouseX < gridArray[i][j].x + 50 && mouseY > gridArray[i][j].y && mouseY < gridArray[i][j].y + 50){
+ tempFriendAr[n] = (new Tower(mouseX, mouseY, 50));
+ print("new Tower buddy!");
+ print(tempFriendAr[n]);
+ }
+ n++;
+ }
+ }
+ //drawTowerArray();
+ }
+ 
+ function drawTowerArray(){
+ for(let i = 0; i < tempFriendAr.length; i++){
+ tempFriendAr[i].render();
+ }
+ }*/
 function createTileMap() { //temp until put this data in a json or elsewhere. //maybe make this a 2d array in future?
   let b = 10; //borders
   let e = 20; //enemies
@@ -156,33 +156,57 @@ function pathFind(startNode, endNode) {
   let endFound = false;
   let currentBest = startNode;
 
- 
-  //Step 0: find all the tiles/nodes adjacent to the starting node, then calculate their GHF values. 
-  findAdjacent(startNode);
-  calcGHF(startNode, endNode);
+  //part a:
+  while (!endFound) {
+    //Step 1: find all tiles adjacent to the currentBest node, and add them to toSearch[].
+    findAdjacent(currentBest); 
+    print("Step 1: find adj");
+    //Step 2: calculate the G,H, & F values of all tiles in toSearch[].
+    calcGHF(startNode, endNode);
+    print("Step 2: calcGHF");
+    //Step 3: set currentBest to be the tile with the lowest F value in toSerach[].
+    currentBest = findBestTile();
+    print("Step 3: findBest");
+    //Step 4: Check if currentBest is the endNode (ie currentBest.h = 0); Break if it does.
+    if(atEnd(currentBest)){endFound = true;}
+    print("Step 4: atEnd?");
+    //Step 5: remove all searched tiles from toSearch    
+    removePrevSearched();//Clean Search Array
+    print("Step 5: removeSearchedFromArray");
+    //Step 6: repeat until end reached. 
+  }
+  print("We found the end! " + currentBest.c + ", " + currentBest.r);
 
-  //while (!endFound) {
-              //Step a: loop through the elems in toSearch, calcing g & h in separate funcs, and f afterwards.
-  currentBest = findBestTile(); //get the best tile of all those in the toSearch array.
-    //check if at the end(h=0) if yes, set it's foundFrom val, and breakLoop. - do in findBest? No. 
-    //                         if no, clean the search array
-  
-  
-    //
-    //clean search array, then repeat
-  
-  
-  
+
+  //Step 0: find all the tiles/nodes adjacent to the starting node, then calculate their GHF values. 
+  //findAdjacent(startNode);
   //calcGHF(startNode, endNode);
 
-  //Steb b: search through toSearch[] to see which tile/node has the lowest F value. Then find all nodes adjacent to that tile.
+
+  //while (!endFound) {
+  //Step a: loop through the elems in toSearch, calcing g & h in separate funcs, and f afterwards.
+  //currentBest = findBestTile(); //get the best tile of all those in the toSearch array.
+  //check if at the end(h=0) if yes, set it's foundFrom val, and breakLoop. - do in findBest? No. 
+  //                         if no, clean the search array
+
+
+  //
+  //clean search array, then repeat
+
+
+
+  //calcGHF(startNode, endNode);
+
+  //Step b: search through toSearch[] to see which tile/node has the lowest F value. Then find all nodes adjacent to that tile.
+  /*
   cleanSearchArray();
   findAdjacent(findBestTile());
   cleanSearchArray();
   findAdjacent(findBestTile());
   cleanSearchArray();
   findAdjacent(findBestTile());
-    //clear toSearch of the searched tiles between each iteration.
+  */
+  //clear toSearch of the searched tiles between each iteration.
 
   //calcGHF(startNode, endNode);
   //findAdjacent(findBestTile());
@@ -198,88 +222,90 @@ function pathFind(startNode, endNode) {
   //}
   //}
 
-  //Once end found, loop through the nodes backwards checking where they came from and putting them into a global "path" array.  - all above this goes in a while loop.
+  //part b: Once end found, loop through the nodes backwards checking where they came from and putting them into a global "path" array.  - all above this goes in a while loop.
 }
 
 function calcGHF(startNode, endNode) {
-  for (let i = 0; i < toSearch.length; i++) { //learn how to remove stuff from toSearch between sweeps later.
-    toSearch[i].g = calcG(toSearch[i], startNode);
-    toSearch[i].h = calcH(toSearch[i], endNode);
-    //print(i + "'s h is: " + toSearch[i].h);
-    //print(tempColorAdj);
+  for (let i = 0; i < toSearch.length; i++) { 
+    toSearch[i].g = calcG(toSearch[i], startNode); //distance from startNode
+    toSearch[i].h = calcH(toSearch[i], endNode); //distance from endNode
     toSearch[i].f = toSearch[i].g + toSearch[i].h;
-    //toSearch[i].searched = true; //Change this in FindBest, not here?
-    //print("searched = true");
   }
 }
 
 function calcG(node, startNode) {
   return(abs(startNode.c - node.c)+abs(startNode.r - node.r));
-
 } 
 
 function calcH(node, endNode) {
   return(abs(endNode.c - node.c)+abs(endNode.r - node.r));
 }
 
-function cleanSearchArray() { //Splice doesn't seem to be working (still leaves and array of undefs. Can you change array.length? Try new approach - needs research: array.slice or just set array.length.)
- //Error may be elsewhere. Look through program flow to see if you're calling this at the right point.
-  let tempArray = [];
-
-
-  for(let i= 0; i < toSearch.length; i++){
-    tempArray[i] = toSearch[i];
-  }
-  
-  toSearch.length = 0; 
-  
-  for(let i = 0; i < tempArray.length; i++){
-    if(!tempArray[i].searched){
-      toSearch.push(tempArray[i]);
-    }
-  }
-}
-/*
-  
-    let j = 0;
-  for(let i = 0; i<toSearch.length; i++){
-    //if(toSearch[i] != null){
-    if(toSearch[i].searched){
-      toSearch[i] = null;
-    }
-    else{
-      tempArray.push(toSearch[i]);
-      toSearch[i] = null;
-          print("Temp Array: " + tempArray[i].c);
-    }
-    //}
-
-    
-    for(let i = 0; i < tempArray.length; i++){
-      toSearch[i] = tempArray[i];
-      print("toSearch: " + toSearch[i].c);
-    }
-
-  }
-}
-*/
 function findBestTile() {  //loop to find lowest F from the list, then check it's adj nodes/tiles. 
   let lowestF = 10000; //placeholder for infinitely large
   let bestTile;
   for (let i = 0; i < toSearch.length; i++) {
-    print("grid " + toSearch[i].c + "," + toSearch[i].r + " has " + toSearch[i].f); //column, row, f-val
-    //if(toSearch[i] != null){
+    print("grid " + toSearch[i].c + "," + toSearch[i].r + " has F: " + toSearch[i].f); //column, row, f-val
     if (toSearch[i].f < lowestF) {
-      //print("F " + toSearch[i].f);
       lowestF = toSearch[i].f;
       bestTile = toSearch[i];
       print("Lowest F now is: " + lowestF);
     }
-//}
   }
-  
-  
+
   print("best tile found: " + bestTile.c + ", " + bestTile.r);
   bestTile.searched = true;//set tile as searched?
   return bestTile;
 }
+
+function atEnd(bestNode){
+  if(bestNode.h == 0){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+function removePrevSearched() { //Splice doesn't seem to be working (still leaves and array of undefs. Can you change array.length? Try new approach - needs research: array.slice or just set array.length.)
+  let tempArray = [];
+
+  for (let i= 0; i < toSearch.length; i++) {
+    tempArray[i] = toSearch[i];
+  }
+  print("tempArr: " + tempArray);
+
+  toSearch.length = 0; 
+  print("toSearchEmpty?: " + toSearch);
+
+  for (let i = 0; i < tempArray.length; i++) {
+    if (!tempArray[i].searched) {
+      toSearch.push(tempArray[i]);
+    }
+  }
+  print("toSearchRefill? " + toSearch);
+}
+/*
+  
+ let j = 0;
+ for(let i = 0; i<toSearch.length; i++){
+ //if(toSearch[i] != null){
+ if(toSearch[i].searched){
+ toSearch[i] = null;
+ }
+ else{
+ tempArray.push(toSearch[i]);
+ toSearch[i] = null;
+ print("Temp Array: " + tempArray[i].c);
+ }
+ //}
+ 
+ 
+ for(let i = 0; i < tempArray.length; i++){
+ toSearch[i] = tempArray[i];
+ print("toSearch: " + toSearch[i].c);
+ }
+ 
+ }
+ }
+ */
