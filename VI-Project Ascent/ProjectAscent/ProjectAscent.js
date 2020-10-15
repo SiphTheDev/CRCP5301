@@ -3,11 +3,10 @@
 
 /*TODO: 
  now: Either get tower placement & drawing working or comment it out & go back to pathfinding.
- next: Work on enemy motion - pathfinding
- then: Fix array so rather than filling with nulls, it actually pushes & pops properly. 
+ next: Work on enemy motion - pathfinding 
  later: create a player class & a projectile class similarly. 
- much later: do actual pathfinding &/or projectile tracking. 
- far beyond: put all this into a new class (lv 1 or gamePlay or the like) & make this fundamentally just a scene manager. - maybe leave the preload stuff. Can you have diff draw loops in diff files for proc?
+ much later: projectile tracking. 
+ far beyond: put all this into a new class (lv 1 or gamePlay or the like) & make this doc fundamentally just a scene manager. - maybe leave the preload stuff. Can you have diff draw loops in diff files for proc?
  */
 
 
@@ -16,7 +15,7 @@ let gridTileMap = []; //placeholder
 let gridArray = [];
 let cols = 28;
 let rows = 14;
-let tempColorAdj = 5;
+let tempColorAdj = 15;
 //let tempFriendAr = [];
 
 let toSearch = [];
@@ -33,10 +32,10 @@ function setup() {
   loadGridArray();
   //drawGridArray();
   //findAdjacent(gridArray[5][5]); //c,r //A test for findAdjacent
-  pathFind(gridArray[8][5], gridArray[8][10]); //inverted TEMP because gridArray
-  /*gridArray[5][7].farbe = 0;
-  gridArray[6][7].farbe = 50;
-  gridArray[7][7].farbe = 100;
+  pathFind(gridArray[0][12], gridArray[5][20]); //inverted TEMP because gridArray
+  //gridArray[1][13].farbe = 0;
+  //gridArray[12][13].farbe = 50;
+  /*gridArray[7][7].farbe = 100;
   gridArray[8][7].farbe = 150;
   gridArray[8][3].farbe = 200;
   gridArray[8][4].farbe = 250;*/
