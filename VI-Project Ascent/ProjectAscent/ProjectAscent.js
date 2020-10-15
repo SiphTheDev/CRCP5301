@@ -117,50 +117,6 @@ function drawGridArray() {
   }
 }
 
-function findAdjacent(node) { //lator factor this out into a func that does the adding and accepts any r/c grid, and the overarching thing here that checks if it can add smthg and calls the first func only if so.
-  print("NODE BEST: " + node.c + ", " + node.r);
- // let tempC = node.r;
- // let tempR = node.c;
- // node.r = tempR;
- // node.c = tempC;
-  if (node.r < 13 && !gridArray[node.c][node.r+1].searched) { //if it is within the bounds of the grid && has not already been searched, add the tile below node to toSearch[].
-    if (gridArray[node.c][node.r+1].type == 2) { //type 2 = enemy terrain.
-      toSearch[toSearch.length] = gridArray[node.c][node.r+1];
-      gridArray[node.c][node.r+1].gridFrom = node;
-      gridArray[node.c][node.r+1].farbe = color(0, 200 + tempColorAdj, 100); // for testing
-      tempColorAdj += 10;
-      print("ADDING: " + node.c + ", " + node.r+1);
-    }
-  }
-  if (node.c < 6 && !gridArray[node.c+1][node.r].searched) {
-    if (gridArray[node.c+1][node.r].type == 2) { 
-      toSearch[toSearch.length] = gridArray[node.c+1][node.r];
-      gridArray[node.c+1][node.r].gridFrom = node;
-      gridArray[node.c+1][node.r].farbe = color(0, 200 + tempColorAdj, 100); // for testing
-      tempColorAdj += 10;
-      print("ADDING: " + node.c+1 + ", " + node.r);
-    }
-  }
-  if (node.r > 0 && !gridArray[node.c][node.r-1].searched) {
-    if (gridArray[node.c][node.r-1].type == 2) { 
-      toSearch[toSearch.length] = gridArray[node.c][node.r-1];
-      gridArray[node.c][node.r-1].gridFrom = node;
-      gridArray[node.c][node.r-1].farbe = color(0, 200 + tempColorAdj, 100); // for testing
-      tempColorAdj += 10;
-      print("ADDING: " + node.c + ", " + node.r-1);
-    }
-  }
-  if (node.c > 0 && !gridArray[node.c-1][node.r].searched) {
-    if (gridArray[node.c-1][node.r].type == 2) {
-      toSearch[toSearch.length] = gridArray[node.c-1][node.r];
-      gridArray[node.c-1][node.r].gridFrom = node;
-      gridArray[node.c-1][node.r].farbe = (0, 200 + tempColorAdj, 100); // for testing
-      tempColorAdj += 10;
-      print("ADDING: " + node.c-1 + ", " + node.r);
-    }
-  }
-}
-
 function pathFind(startNode, endNode) {
   let endFound = false;
   let currentBest = startNode;
@@ -188,6 +144,55 @@ function pathFind(startNode, endNode) {
   print("We found the end! " + currentBest.c + ", " + currentBest.r);
 
   //part b: Once end found, loop through the nodes backwards checking where they came from and putting them into a global "path" array.  - all above this goes in a while loop.
+  //while (current node.searched != startNode){add this spot to an array.}
+}
+
+function findAdjacent(node) { //lator factor this out into a func that does the adding and accepts any r/c grid, and the overarching thing here that checks if it can add smthg and calls the first func only if so.
+  print("NODE BEST: " + node.c + ", " + node.r);
+  //let tempC = node.r;
+  //let tempR = node.c;
+  //node.r = tempR;
+  //node.c = tempC;
+  if (node.r < 13 && !gridArray[node.c][node.r+1].searched) { //if it is within the bounds of the grid && has not already been searched, add the tile below node to toSearch[].
+    if (gridArray[node.c][node.r+1].type == 2) { //type 2 = enemy terrain.
+      toSearch[toSearch.length] = gridArray[node.r+1][node.c+1];
+      gridArray[node.c][node.r+1].gridFrom = node;
+      gridArray[node.c][node.r+1].farbe = color(0, 200 + tempColorAdj, 100); // for testing
+      tempColorAdj += 10;
+      print("ADDING: " + node.c + ", " + (node.r+1));
+    }
+  }
+  if (node.c < 27 && !gridArray[node.c+1][node.r].searched) {
+    if (gridArray[node.c+1][node.r].type == 2) { 
+      toSearch[toSearch.length] = gridArray[node.r+1][node.c+1];
+      gridArray[node.c+1][node.r].gridFrom = node;
+      gridArray[node.c+1][node.r].farbe = color(0, 200 + tempColorAdj, 100); // for testing
+      tempColorAdj += 10;
+      print("ADDING: " + (node.c+1) + ", " + node.r);
+    }
+  }
+  if (node.r > 0 && !gridArray[node.c][node.r-1].searched) {
+    if (gridArray[node.c][node.r-1].type == 2) { 
+      toSearch[toSearch.length] = gridArray[node.r-1][node.c];
+      gridArray[node.c][node.r-1].gridFrom = node;
+      gridArray[node.c][node.r-1].farbe = color(0, 200 + tempColorAdj, 100); // for testing
+      tempColorAdj += 10;
+      print("ADDING: " + node.c + ", " + (node.r-1));
+    }
+  }
+  if (node.c > 0 && !gridArray[node.c-1][node.r].searched) {
+    if (gridArray[node.c-1][node.r].type == 2) {
+      toSearch[toSearch.length] = gridArray[node.r][node.c-1];
+      gridArray[node.c-1][node.r].gridFrom = node;
+      gridArray[node.c-1][node.r].farbe = (0, 200 + tempColorAdj, 100); // for testing
+      tempColorAdj += 10;
+      print("ADDING: " + (node.c-1) + ", " + node.r);
+    }
+  }  
+  print("toSearchNowHas:");
+  for(let i = 0; i < toSearch.length; i++){
+    print("In toSearch: (" + toSearch[i].c + ", " + toSearch[i].r + ")");
+  }
 }
 
 function calcGHF(startNode, endNode) {
@@ -248,5 +253,5 @@ function removePrevSearched() {
       toSearch.push(tempArray[i]);
     }
   }
-  print("toSearchRefill? " + toSearch);
+  
 }
