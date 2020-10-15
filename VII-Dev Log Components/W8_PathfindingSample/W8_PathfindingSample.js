@@ -8,7 +8,9 @@ let gridArray = [];
 let cols = 10;
 let rows = 10;
 let finalPath = [];
-let tempColorAdj = 15;
+let tempColorAdj = 5;
+let startingGrid;
+let goalGrid;
 
 let toSearch = [];
 
@@ -17,17 +19,20 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(1000, 1000);
+  createCanvas(500, 500);
   createTileMap();
   loadGridArray();
+  startingGrid = gridArray[6][0];
+  goalGrid = gridArray[5][9];
+  pathFind(startingGrid, goalGrid);
   //drawGridArray();
-  //pathFind(gridArray[0][12], gridArray[5][20]); //inverted TEMP because gridArray
 }
 
 
 function draw() {
+  background (0);
+  //pathFind(startingGrid, goalGrid);
   drawGridArray();
-  jim.render();
 }
 
 function mousePressed(){
@@ -35,24 +40,19 @@ function mousePressed(){
   //If not within test button, change the grid space you're currently on. 
 }
 
-function createTileMap() { //temp until put this data in a json or elsewhere. //maybe make this a 2d array in future?
-  let b = 10; //closed
-  let e = 20; //open
-  //let p = 30; //Also closed - because I'm adapting this from my larger code & this fills a role unnecessary here.
-  gridTileMap = [b, b, b, b, b, b, b, b, b, b, b, b, b, e, e, b, b, b, b, b, b, b, b, b, b, b, b, b, 
-    b, b, b, b, b, b, b, b, b, b, b, b, b, e, e, b, b, b, b, b, b, b, b, b, b, b, b, b, 
-    b, b, b, p, p, p, p, p, p, p, p, p, p, e, e, p, p, p, p, p, p, p, p, p, p, b, b, b, 
-    b, b, b, p, p, p, p, p, p, p, p, p, p, e, e, p, p, p, p, p, p, p, p, p, p, b, b, b, 
-    b, b, b, p, p, e, e, e, e, e, e, e, e, e, e, p, e, e, e, e, e, e, e, e, e, b, b, b, 
-    b, b, b, p, p, e, e, e, e, e, e, e, e, e, e, p, e, e, e, e, e, e, e, e, e, b, b, b, 
-    b, b, b, p, p, e, e, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, e, e, b, b, b, 
-    b, b, b, p, p, e, e, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, e, e, b, b, b, 
-    b, b, b, p, p, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, b, b, b, 
-    b, b, b, p, p, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, b, b, b, 
-    b, b, b, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, e, e, p, p, b, b, b, 
-    b, b, b, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, e, e, p, p, b, b, b, 
-    b, b, b, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, p, p, b, b, b, 
-    b, b, b, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, p, p, b, b, b, ]; //Determines what type of tile belongs in each space. Will move to JSON or XML later to allow level loading later.
+function createTileMap() { 
+  let d = 10; //closed
+  let o = 20; //open
+  gridTileMap = [o,o,o,o,o,o,o,o,o,o,
+                 o,o,o,o,o,o,o,o,o,o,
+                 o,o,o,o,o,d,o,o,o,o,
+                 o,o,o,o,o,d,o,o,o,o,
+                 o,o,o,o,o,d,o,o,o,o,
+                 o,o,o,o,o,d,o,o,o,o,
+                 o,o,o,o,o,d,o,o,o,o,
+                 o,o,o,o,o,o,o,o,o,o,
+                 o,o,o,o,o,o,o,o,o,o,
+                 o,o,o,o,o,o,o,o,o,o,];
 }
 
 function loadGridArray() { //Once you change the gridTileMap to a JSON, use typeNames instead of these arbitrary numbers? Or still avoid strings?
@@ -67,11 +67,8 @@ function loadGridArray() { //Once you change the gridTileMap to a JSON, use type
         farbe = color(143,0,255); //sets barrier tiles to violet. 
       } else if (gridTileMap[i] == 20) {
         type = 2;
-        farbe = color(0, 255, 0);
-      }  //else if (gridTileMap[i] == 30) {
-        //type = 3;
-       // farbe = color(245);
-      //}
+        farbe = color(255);
+      } 
       gridArray[r][c] = new GridSpace(c, r, c*(width/10), r*(height/10), type, farbe); //if you make the grid only half the screen & need to shift it over, do this here via addition. 
       i++;
     }
@@ -113,28 +110,30 @@ function pathFind(startNode, endNode) {
     //Step 6: repeat until end reached.
   }
   print("We found the end! " + currentBest.c + ", " + currentBest.r);
-  currentBest.farbe = (25, 25, 25);
+  currentBest.farbe = (63,224,208);
+  //startNode.farbe = (63,224,208);
 
   //part b: Once end found, loop through the nodes backwards checking where they came from and putting them into a global "path" array.  - all above this goes in a while loop. - make this a sep func.
   storePath(currentBest, startNode);
+  toSearch.length = 0;
 }
 
 function findAdjacent(node) { //lator factor this out into a func that does the adding and accepts any r/c grid, and the overarching thing here that checks if it can add smthg and calls the first func only if so.
   print("NODE BEST: " + node.c + ", " + node.r);
-  if (node.r < 13 && !gridArray[node.r+1][node.c].searched) { //if it is within the bounds of the grid && has not already been searched, add the tile below node to toSearch[].
+  if (node.r < 9 && !gridArray[node.r+1][node.c].searched) { //if it is within the bounds of the grid && has not already been searched, add the tile below node to toSearch[].
     if (gridArray[node.r+1][node.c].type == 2) { //type 2 = enemy terrain.
       toSearch[toSearch.length] = gridArray[node.r+1][node.c];
       gridArray[node.r+1][node.c].gridFrom = node;
-      gridArray[node.r+1][node.c].farbe = color(0, 200 + tempColorAdj, 100); // for testing
+      gridArray[node.r+1][node.c].farbe = color(245 + tempColorAdj); // for testing
       tempColorAdj -= 5;
       print("ADDING: " + node.c + ", " + (node.r+1));
     }
   }
-  if (node.c < 27 && !gridArray[node.r][node.c+1].searched) {
+  if (node.c < 9 && !gridArray[node.r][node.c+1].searched) {
     if (gridArray[node.r][node.c+1].type == 2) { 
       toSearch[toSearch.length] = gridArray[node.r][node.c+1];
       gridArray[node.r][node.c+1].gridFrom = node;
-      gridArray[node.r][node.c+1].farbe = color(0, 200 + tempColorAdj, 100); // for testing
+      gridArray[node.r][node.c+1].farbe = color(245 + tempColorAdj); // for testing
       tempColorAdj -= 5;
       print("ADDING: " + (node.c+1) + ", " + node.r);
     }
@@ -143,7 +142,7 @@ function findAdjacent(node) { //lator factor this out into a func that does the 
     if (gridArray[node.r-1][node.c].type == 2) { 
       toSearch[toSearch.length] = gridArray[node.r-1][node.c];
       gridArray[node.r-1][node.c].gridFrom = node;
-      gridArray[node.r-1][node.c].farbe = color(0, 200 + tempColorAdj, 100); // for testing
+      gridArray[node.r-1][node.c].farbe = color(245 + tempColorAdj); // for testing
       tempColorAdj -= 5;
       print("ADDING: " + node.c + ", " + (node.r-1));
     }
@@ -152,7 +151,7 @@ function findAdjacent(node) { //lator factor this out into a func that does the 
     if (gridArray[node.r][node.c-1].type == 2) {
       toSearch[toSearch.length] = gridArray[node.r][node.c-1];
       gridArray[node.r][node.c-1].gridFrom = node;
-      gridArray[node.r][node.c-1].farbe = (0, 200 + tempColorAdj, 100); // for testing
+      gridArray[node.r][node.c-1].farbe = (245 + tempColorAdj); // for testing
       tempColorAdj -= 5;
       print("ADDING: " + (node.c-1) + ", " + node.r);
     }

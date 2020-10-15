@@ -25,6 +25,6 @@ class GridSpace {
     } //else if (this.type == 3) { //Player Terrain
      // fill(this.farbe);
     // }
-    rect(this.x, this.y, width/28, height/14);
+    rect(this.x, this.y, width/10, height/10);
  }
 }
