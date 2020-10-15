@@ -154,15 +154,28 @@ function findAdjacent(node) {
 
 function pathFind(startNode, endNode) {
   let endFound = false;
+  let currentBest = startNode;
 
-  //Step 0: find all the tiles/nodes adjacent to the starting node. 
+ 
+  //Step 0: find all the tiles/nodes adjacent to the starting node, then calculate their GHF values. 
   findAdjacent(startNode);
-
-  //while (!endFound) {
-  //Step a: loop through the elems in toSearch, calcing g & h in separate funcs, and f afterwards. 
   calcGHF(startNode, endNode);
 
-  //Steb b: search through toSearch to see which tile/node has the lowest F value. Then find all nodes adjacent to that tile.
+  //while (!endFound) {
+              //Step a: loop through the elems in toSearch, calcing g & h in separate funcs, and f afterwards.
+  currentBest = findBestTile(); //get the best tile of all those in the toSearch array.
+    //check if at the end(h=0) if yes, set it's foundFrom val, and breakLoop. - do in findBest? No. 
+    //                         if no, clean the search array
+  
+  
+    //
+    //clean search array, then repeat
+  
+  
+  
+  //calcGHF(startNode, endNode);
+
+  //Steb b: search through toSearch[] to see which tile/node has the lowest F value. Then find all nodes adjacent to that tile.
   cleanSearchArray();
   findAdjacent(findBestTile());
   cleanSearchArray();
@@ -192,7 +205,7 @@ function calcGHF(startNode, endNode) {
   for (let i = 0; i < toSearch.length; i++) { //learn how to remove stuff from toSearch between sweeps later.
     toSearch[i].g = calcG(toSearch[i], startNode);
     toSearch[i].h = calcH(toSearch[i], endNode);
-    print(i + "'s h is: " + toSearch[i].h);
+    //print(i + "'s h is: " + toSearch[i].h);
     //print(tempColorAdj);
     toSearch[i].f = toSearch[i].g + toSearch[i].h;
     //toSearch[i].searched = true; //Change this in FindBest, not here?
@@ -218,7 +231,7 @@ function cleanSearchArray() { //Splice doesn't seem to be working (still leaves 
     tempArray[i] = toSearch[i];
   }
   
-  toSearch.length = 0; //1000 is functionally infinity, as more than the num o' spaces. But find a more concrete solution later.
+  toSearch.length = 0; 
   
   for(let i = 0; i < tempArray.length; i++){
     if(!tempArray[i].searched){
@@ -251,20 +264,22 @@ function cleanSearchArray() { //Splice doesn't seem to be working (still leaves 
 }
 */
 function findBestTile() {  //loop to find lowest F from the list, then check it's adj nodes/tiles. 
-  let lowestF = 10000;
+  let lowestF = 10000; //placeholder for infinitely large
   let bestTile;
   for (let i = 0; i < toSearch.length; i++) {
-    print("grid " + toSearch[i].c + "," + toSearch[i].r + " has " + toSearch[i].f);
+    print("grid " + toSearch[i].c + "," + toSearch[i].r + " has " + toSearch[i].f); //column, row, f-val
     //if(toSearch[i] != null){
     if (toSearch[i].f < lowestF) {
       //print("F " + toSearch[i].f);
       lowestF = toSearch[i].f;
       bestTile = toSearch[i];
-      print("Lowest F: " + lowestF);
-      print("best tile: " + bestTile);
+      print("Lowest F now is: " + lowestF);
     }
 //}
   }
+  
+  
+  print("best tile found: " + bestTile.c + ", " + bestTile.r);
   bestTile.searched = true;//set tile as searched?
   return bestTile;
 }
