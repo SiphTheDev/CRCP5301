@@ -38,23 +38,43 @@ function draw() {
   drawGridArray();
 }
 
-function mousePressed(){
+function mouseClicked(){
+  print("clicked!");
   //If within bounds of "test" button, then run it.
   //If not within test button, change the grid space you're currently on. 
+  for(let i = 0; i< gridArray.length; i++){
+    for(let j = 0; j < gridArray[i].length; j++){
+      if(mouseX > gridArray[j][i].x && mouseX < (gridArray[j][i].x+(width/20)) && mouseY > gridArray[j][i].y && mouseY < (gridArray[j][i].y+(height/20))){
+        if(gridArray[j][i].type == 2){
+          gridArray[j][i].type = 1;
+          gridArray[j][i].farbe = color(143,0,255);
+          print(i + ", " + j + "closed");
+        }
+        else if(gridArray[j][i].type == 1){
+          gridArray[j][i] = 2;
+          print("open");
+        }
+        else{
+          print("whereAmI?");
+        }
+      }
+    }
+  }
+  
 }
 
 function createTileMap() { 
   let d = 10; //closed
   let o = 20; //open
-  gridTileMap = [o,o,o,o,o,o,o,o,o,o,
-                 o,o,o,o,o,o,o,o,o,o,
+  gridTileMap = [o,o,o,o,d,o,o,o,o,o,
                  o,o,o,o,o,d,o,o,o,o,
                  o,o,o,o,o,d,o,o,o,o,
-                 o,o,o,o,o,d,o,d,o,o,
-                 o,o,o,o,o,d,o,d,o,o,
-                 o,o,o,o,o,d,o,d,o,o,
-                 o,o,o,o,o,o,o,d,o,o,
-                 o,o,o,o,o,o,o,d,o,o,
+                 o,o,o,o,o,d,o,o,o,o,
+                 o,o,d,o,o,d,o,d,o,o,
+                 o,o,d,o,o,d,o,d,o,o,
+                 o,o,d,o,d,d,o,d,o,o,
+                 o,o,d,o,o,o,o,d,o,o,
+                 o,o,d,d,d,d,d,d,o,o,
                  o,o,o,o,o,o,o,o,o,o,];
 }
 
