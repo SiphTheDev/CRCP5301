@@ -9,6 +9,7 @@ let cols = 10;
 let rows = 10;
 let finalPath = [];
 let tempColorAdj = 5;
+let valText = 0;
 let startingGrid;
 let goalGrid;
 
@@ -32,6 +33,8 @@ function setup() {
 function draw() {
   background (0);
   //pathFind(startingGrid, goalGrid);
+  goalGrid.farbe = color(63,224,208);
+  startingGrid.farbe = color(63,224,208);
   drawGridArray();
 }
 
@@ -47,11 +50,11 @@ function createTileMap() {
                  o,o,o,o,o,o,o,o,o,o,
                  o,o,o,o,o,d,o,o,o,o,
                  o,o,o,o,o,d,o,o,o,o,
-                 o,o,o,o,o,d,o,o,o,o,
-                 o,o,o,o,o,d,o,o,o,o,
-                 o,o,o,o,o,d,o,o,o,o,
-                 o,o,o,o,o,o,o,o,o,o,
-                 o,o,o,o,o,o,o,o,o,o,
+                 o,o,o,o,o,d,o,d,o,o,
+                 o,o,o,o,o,d,o,d,o,o,
+                 o,o,o,o,o,d,o,d,o,o,
+                 o,o,o,o,o,o,o,d,o,o,
+                 o,o,o,o,o,o,o,d,o,o,
                  o,o,o,o,o,o,o,o,o,o,];
 }
 
@@ -109,13 +112,12 @@ function pathFind(startNode, endNode) {
     print("Step 5: removeSearchedFromArray");
     //Step 6: repeat until end reached.
   }
-  print("We found the end! " + currentBest.c + ", " + currentBest.r);
-  currentBest.farbe = (63,224,208);
-  //startNode.farbe = (63,224,208);
+  print("We found the end! " + currentBest.c + ", " + currentBest.r);  
+  toSearch.length = 0;
 
   //part b: Once end found, loop through the nodes backwards checking where they came from and putting them into a global "path" array.  - all above this goes in a while loop. - make this a sep func.
   storePath(currentBest, startNode);
-  toSearch.length = 0;
+  
 }
 
 function findAdjacent(node) { //lator factor this out into a func that does the adding and accepts any r/c grid, and the overarching thing here that checks if it can add smthg and calls the first func only if so.
@@ -125,7 +127,9 @@ function findAdjacent(node) { //lator factor this out into a func that does the 
       toSearch[toSearch.length] = gridArray[node.r+1][node.c];
       gridArray[node.r+1][node.c].gridFrom = node;
       gridArray[node.r+1][node.c].farbe = color(245 + tempColorAdj); // for testing
-      tempColorAdj -= 5;
+      tempColorAdj -= 3;
+      gridArray[node.r+1][node.c].myText = valText.toString();
+      valText++;
       print("ADDING: " + node.c + ", " + (node.r+1));
     }
   }
@@ -134,7 +138,9 @@ function findAdjacent(node) { //lator factor this out into a func that does the 
       toSearch[toSearch.length] = gridArray[node.r][node.c+1];
       gridArray[node.r][node.c+1].gridFrom = node;
       gridArray[node.r][node.c+1].farbe = color(245 + tempColorAdj); // for testing
-      tempColorAdj -= 5;
+      tempColorAdj -= 3;
+      gridArray[node.r][node.c+1].myText = valText.toString();
+      valText++;
       print("ADDING: " + (node.c+1) + ", " + node.r);
     }
   }
@@ -143,7 +149,9 @@ function findAdjacent(node) { //lator factor this out into a func that does the 
       toSearch[toSearch.length] = gridArray[node.r-1][node.c];
       gridArray[node.r-1][node.c].gridFrom = node;
       gridArray[node.r-1][node.c].farbe = color(245 + tempColorAdj); // for testing
-      tempColorAdj -= 5;
+      tempColorAdj -= 3;
+      gridArray[node.r-1][node.c].myText = valText.toString();
+      valText++;
       print("ADDING: " + node.c + ", " + (node.r-1));
     }
   }
@@ -152,7 +160,9 @@ function findAdjacent(node) { //lator factor this out into a func that does the 
       toSearch[toSearch.length] = gridArray[node.r][node.c-1];
       gridArray[node.r][node.c-1].gridFrom = node;
       gridArray[node.r][node.c-1].farbe = (245 + tempColorAdj); // for testing
-      tempColorAdj -= 5;
+      tempColorAdj -= 3;
+      gridArray[node.r][node.c-1].myText = valText.toString();
+      valText++;
       print("ADDING: " + (node.c-1) + ", " + node.r);
     }
   }  
