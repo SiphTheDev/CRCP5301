@@ -33,7 +33,13 @@ function setup() {
   loadGridArray();
   //drawGridArray();
   //findAdjacent(gridArray[5][5]); //c,r //A test for findAdjacent
-  pathFind(gridArray[5][7], gridArray[8][4]);
+  pathFind(gridArray[8][5], gridArray[8][10]); //inverted TEMP because gridArray
+  /*gridArray[5][7].farbe = 0;
+  gridArray[6][7].farbe = 50;
+  gridArray[7][7].farbe = 100;
+  gridArray[8][7].farbe = 150;
+  gridArray[8][3].farbe = 200;
+  gridArray[8][4].farbe = 250;*/
   //print(toSearch);
 }
 
@@ -90,7 +96,7 @@ function loadGridArray() { //Once you change the gridTileMap to a JSON, use type
   let i = 0;
   let type;
   let farbe;
-  for (let r = 0; r < rows; r++) { //TODO FIX THIS! R & C appear to be swapped, but load as if they are not. Nevertheless, bound to cause issues later.
+  for (let r = 0; r < rows; r++) { //TODO FIX THIS! R & C appear to be swapped, but load as if they are not. Nevertheless, bound to cause issues later. - can confirm, it's later & it's causing issues.
     gridArray[r] = [];
     for (let c = 0; c < cols; c++) {
       if (gridTileMap[i] == 10) {
@@ -142,6 +148,7 @@ function pathFind(startNode, endNode) {
     //Step 6: repeat until end reached. 
   }
   print("We found the end! " + currentBest.c + ", " + currentBest.r);
+  currentBest.farbe = (25,25,25);
 
   //part b: Once end found, loop through the nodes backwards checking where they came from and putting them into a global "path" array.  - all above this goes in a while loop.
   //while (current node.searched != startNode){add this spot to an array.}
@@ -149,42 +156,38 @@ function pathFind(startNode, endNode) {
 
 function findAdjacent(node) { //lator factor this out into a func that does the adding and accepts any r/c grid, and the overarching thing here that checks if it can add smthg and calls the first func only if so.
   print("NODE BEST: " + node.c + ", " + node.r);
-  //let tempC = node.r;
-  //let tempR = node.c;
-  //node.r = tempR;
-  //node.c = tempC;
-  if (node.r < 13 && !gridArray[node.c][node.r+1].searched) { //if it is within the bounds of the grid && has not already been searched, add the tile below node to toSearch[].
-    if (gridArray[node.c][node.r+1].type == 2) { //type 2 = enemy terrain.
-      toSearch[toSearch.length] = gridArray[node.r+1][node.c+1];
-      gridArray[node.c][node.r+1].gridFrom = node;
-      gridArray[node.c][node.r+1].farbe = color(0, 200 + tempColorAdj, 100); // for testing
+  if (node.r < 13 && !gridArray[node.r+1][node.c].searched) { //if it is within the bounds of the grid && has not already been searched, add the tile below node to toSearch[].
+    if (gridArray[node.r+1][node.c].type == 2) { //type 2 = enemy terrain.
+      toSearch[toSearch.length] = gridArray[node.r+1][node.c];
+      gridArray[node.r+1][node.c].gridFrom = node;
+      gridArray[node.r+1][node.c].farbe = color(0, 200 + tempColorAdj, 100); // for testing
       tempColorAdj += 10;
       print("ADDING: " + node.c + ", " + (node.r+1));
     }
   }
-  if (node.c < 27 && !gridArray[node.c+1][node.r].searched) {
-    if (gridArray[node.c+1][node.r].type == 2) { 
-      toSearch[toSearch.length] = gridArray[node.r+1][node.c+1];
-      gridArray[node.c+1][node.r].gridFrom = node;
-      gridArray[node.c+1][node.r].farbe = color(0, 200 + tempColorAdj, 100); // for testing
+  if (node.c < 27 && !gridArray[node.r][node.c+1].searched) {
+    if (gridArray[node.r][node.c+1].type == 2) { 
+      toSearch[toSearch.length] = gridArray[node.r][node.c+1];
+      gridArray[node.r][node.c+1].gridFrom = node;
+      gridArray[node.r][node.c+1].farbe = color(0, 200 + tempColorAdj, 100); // for testing
       tempColorAdj += 10;
       print("ADDING: " + (node.c+1) + ", " + node.r);
     }
   }
-  if (node.r > 0 && !gridArray[node.c][node.r-1].searched) {
-    if (gridArray[node.c][node.r-1].type == 2) { 
+  if (node.r > 0 && !gridArray[node.r-1][node.c].searched) {
+    if (gridArray[node.r-1][node.c].type == 2) { 
       toSearch[toSearch.length] = gridArray[node.r-1][node.c];
-      gridArray[node.c][node.r-1].gridFrom = node;
-      gridArray[node.c][node.r-1].farbe = color(0, 200 + tempColorAdj, 100); // for testing
+      gridArray[node.r-1][node.c].gridFrom = node;
+      gridArray[node.r-1][node.c].farbe = color(0, 200 + tempColorAdj, 100); // for testing
       tempColorAdj += 10;
       print("ADDING: " + node.c + ", " + (node.r-1));
     }
   }
-  if (node.c > 0 && !gridArray[node.c-1][node.r].searched) {
-    if (gridArray[node.c-1][node.r].type == 2) {
+  if (node.c > 0 && !gridArray[node.r][node.c-1].searched) {
+    if (gridArray[node.r][node.c-1].type == 2) {
       toSearch[toSearch.length] = gridArray[node.r][node.c-1];
-      gridArray[node.c-1][node.r].gridFrom = node;
-      gridArray[node.c-1][node.r].farbe = (0, 200 + tempColorAdj, 100); // for testing
+      gridArray[node.r][node.c-1].gridFrom = node;
+      gridArray[node.r][node.c-1].farbe = (0, 200 + tempColorAdj, 100); // for testing
       tempColorAdj += 10;
       print("ADDING: " + (node.c-1) + ", " + node.r);
     }
