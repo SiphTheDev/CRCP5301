@@ -2,11 +2,12 @@
 //Thomas Park
 
 /*TODO: 
- now: Either get tower placement & drawing working or comment it out & go back to pathfinding.
- next: Work on enemy motion - pathfinding 
+ now: URGENT: Fix the error in gridArray that inverts c & r
+ next: Either get tower placement & drawing working or comment it out & go back to pathfinding.
+ then: Work on enemy motion along the path - with pauses( in sync with music in future)
  later: create a player class & a projectile class similarly. 
  much later: projectile tracking. 
- far beyond: put all this into a new class (lv 1 or gamePlay or the like) & make this doc fundamentally just a scene manager. - maybe leave the preload stuff. Can you have diff draw loops in diff files for proc?
+ far beyond: put all this into a new class (lv 1 or gamePlay or the like) & make this doc fundament ally just a scene manager. - maybe leave the preload stuff. Can you have diff draw loops in diff files for proc?
  */
 
 
@@ -32,15 +33,7 @@ function setup() {
   createTileMap();
   loadGridArray();
   //drawGridArray();
-  //findAdjacent(gridArray[5][5]); //c,r //A test for findAdjacent
   pathFind(gridArray[0][12], gridArray[5][20]); //inverted TEMP because gridArray
-  //gridArray[1][13].farbe = 0;
-  //gridArray[12][13].farbe = 50;
-  /*gridArray[7][7].farbe = 100;
-  gridArray[8][7].farbe = 150;
-  gridArray[8][3].farbe = 200;
-  gridArray[8][4].farbe = 250;*/
-  //print(toSearch);
 }
 
 
@@ -140,26 +133,20 @@ function pathFind(startNode, endNode) {
     currentBest = findBestTile();
     print("Step 3: findBest");
     //Step 4: Check if currentBest is the endNode (ie currentBest.h = 0); Break if it does.
-    if(atEnd(currentBest)){endFound = true;}
+    if (atEnd(currentBest)) {
+      endFound = true;
+    }
     print("Step 4: atEnd?");
     //Step 5: remove all searched tiles from toSearch    
     removePrevSearched();//Clean Search Array
     print("Step 5: removeSearchedFromArray");
-    //Step 6: repeat until end reached. 
+    //Step 6: repeat until end reached.
   }
   print("We found the end! " + currentBest.c + ", " + currentBest.r);
-  currentBest.farbe = (25,25,25);
+  currentBest.farbe = (25, 25, 25);
 
   //part b: Once end found, loop through the nodes backwards checking where they came from and putting them into a global "path" array.  - all above this goes in a while loop. - make this a sep func.
-  let backtrackNode = currentBest; 
-  let index = 0;
-  
-  while (backtrackNode.gridFrom != startNode){
-    finalPath[index] = backtrackNode;
-    backtrackNode = backtrackNode.gridFrom;
-    print("FinalPath: " + finalPath[index].r + ", " + finalPath[index].c);
-  }
-  
+  storePath(currentBest, startNode);
 }
 
 function findAdjacent(node) { //lator factor this out into a func that does the adding and accepts any r/c grid, and the overarching thing here that checks if it can add smthg and calls the first func only if so.
@@ -168,7 +155,7 @@ function findAdjacent(node) { //lator factor this out into a func that does the 
     if (gridArray[node.r+1][node.c].type == 2) { //type 2 = enemy terrain.
       toSearch[toSearch.length] = gridArray[node.r+1][node.c];
       gridArray[node.r+1][node.c].gridFrom = node;
-      //gridArray[node.r+1][node.c].farbe = color(0, 200 + tempColorAdj, 100); // for testing
+      gridArray[node.r+1][node.c].farbe = color(0, 200 + tempColorAdj, 100); // for testing
       tempColorAdj -= 5;
       print("ADDING: " + node.c + ", " + (node.r+1));
     }
@@ -177,7 +164,7 @@ function findAdjacent(node) { //lator factor this out into a func that does the 
     if (gridArray[node.r][node.c+1].type == 2) { 
       toSearch[toSearch.length] = gridArray[node.r][node.c+1];
       gridArray[node.r][node.c+1].gridFrom = node;
-      //gridArray[node.r][node.c+1].farbe = color(0, 200 + tempColorAdj, 100); // for testing
+      gridArray[node.r][node.c+1].farbe = color(0, 200 + tempColorAdj, 100); // for testing
       tempColorAdj -= 5;
       print("ADDING: " + (node.c+1) + ", " + node.r);
     }
@@ -186,7 +173,7 @@ function findAdjacent(node) { //lator factor this out into a func that does the 
     if (gridArray[node.r-1][node.c].type == 2) { 
       toSearch[toSearch.length] = gridArray[node.r-1][node.c];
       gridArray[node.r-1][node.c].gridFrom = node;
-      //gridArray[node.r-1][node.c].farbe = color(0, 200 + tempColorAdj, 100); // for testing
+      gridArray[node.r-1][node.c].farbe = color(0, 200 + tempColorAdj, 100); // for testing
       tempColorAdj -= 5;
       print("ADDING: " + node.c + ", " + (node.r-1));
     }
@@ -201,7 +188,7 @@ function findAdjacent(node) { //lator factor this out into a func that does the 
     }
   }  
   print("toSearchNowHas:");
-  for(let i = 0; i < toSearch.length; i++){
+  for (let i = 0; i < toSearch.length; i++) {
     print("In toSearch: (" + toSearch[i].c + ", " + toSearch[i].r + ")");
   }
 }
@@ -239,11 +226,10 @@ function findBestTile() {  //loop to find lowest F from the list, then check it'
   return bestTile;
 }
 
-function atEnd(bestNode){
-  if(bestNode.h == 0){
+function atEnd(bestNode) {
+  if (bestNode.h == 0) {
     return true;
-  }
-  else{
+  } else {
     return false;
   }
 }
@@ -264,5 +250,15 @@ function removePrevSearched() {
       toSearch.push(tempArray[i]);
     }
   }
-  
+}
+
+function storePath(currentBest, startNode) {
+  let backtrackNode = currentBest; 
+  let index = 0;
+
+  while (backtrackNode.gridFrom != startNode) {
+    finalPath[index] = backtrackNode;
+    backtrackNode = backtrackNode.gridFrom;
+    print("FinalPath: " + finalPath[index].r + ", " + finalPath[index].c);
+  }
 }
