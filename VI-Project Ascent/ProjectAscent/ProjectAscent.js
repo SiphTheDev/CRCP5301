@@ -33,7 +33,7 @@ function setup() {
   loadGridArray();
   //drawGridArray();
   //findAdjacent(gridArray[5][5]); //c,r //A test for findAdjacent
-  pathFind(gridArray[5][7], gridArray[5][10]);
+  pathFind(gridArray[5][7], gridArray[8][4]);
   //print(toSearch);
 }
 
@@ -90,7 +90,7 @@ function loadGridArray() { //Once you change the gridTileMap to a JSON, use type
   let i = 0;
   let type;
   let farbe;
-  for (let r = 0; r < rows; r++) {
+  for (let r = 0; r < rows; r++) { //TODO FIX THIS! R & C appear to be swapped, but load as if they are not. Nevertheless, bound to cause issues later.
     gridArray[r] = [];
     for (let c = 0; c < cols; c++) {
       if (gridTileMap[i] == 10) {
@@ -117,13 +117,19 @@ function drawGridArray() {
   }
 }
 
-function findAdjacent(node) {
-  if (node.r < 13 && !gridArray[node.c][node.r+1].searched) {
+function findAdjacent(node) { //lator factor this out into a func that does the adding and accepts any r/c grid, and the overarching thing here that checks if it can add smthg and calls the first func only if so.
+  print("NODE BEST: " + node.c + ", " + node.r);
+ // let tempC = node.r;
+ // let tempR = node.c;
+ // node.r = tempR;
+ // node.c = tempC;
+  if (node.r < 13 && !gridArray[node.c][node.r+1].searched) { //if it is within the bounds of the grid && has not already been searched, add the tile below node to toSearch[].
     if (gridArray[node.c][node.r+1].type == 2) { //type 2 = enemy terrain.
       toSearch[toSearch.length] = gridArray[node.c][node.r+1];
       gridArray[node.c][node.r+1].gridFrom = node;
       gridArray[node.c][node.r+1].farbe = color(0, 200 + tempColorAdj, 100); // for testing
       tempColorAdj += 10;
+      print("ADDING: " + node.c + ", " + node.r+1);
     }
   }
   if (node.c < 6 && !gridArray[node.c+1][node.r].searched) {
@@ -132,6 +138,7 @@ function findAdjacent(node) {
       gridArray[node.c+1][node.r].gridFrom = node;
       gridArray[node.c+1][node.r].farbe = color(0, 200 + tempColorAdj, 100); // for testing
       tempColorAdj += 10;
+      print("ADDING: " + node.c+1 + ", " + node.r);
     }
   }
   if (node.r > 0 && !gridArray[node.c][node.r-1].searched) {
@@ -140,6 +147,7 @@ function findAdjacent(node) {
       gridArray[node.c][node.r-1].gridFrom = node;
       gridArray[node.c][node.r-1].farbe = color(0, 200 + tempColorAdj, 100); // for testing
       tempColorAdj += 10;
+      print("ADDING: " + node.c + ", " + node.r-1);
     }
   }
   if (node.c > 0 && !gridArray[node.c-1][node.r].searched) {
@@ -148,6 +156,7 @@ function findAdjacent(node) {
       gridArray[node.c-1][node.r].gridFrom = node;
       gridArray[node.c-1][node.r].farbe = (0, 200 + tempColorAdj, 100); // for testing
       tempColorAdj += 10;
+      print("ADDING: " + node.c-1 + ", " + node.r);
     }
   }
 }
@@ -159,6 +168,7 @@ function pathFind(startNode, endNode) {
   //part a:
   while (!endFound) {
     //Step 1: find all tiles adjacent to the currentBest node, and add them to toSearch[].
+    print("CURRENT BEST: " + currentBest.c + ", " + currentBest.r);
     findAdjacent(currentBest); 
     print("Step 1: find adj");
     //Step 2: calculate the G,H, & F values of all tiles in toSearch[].
@@ -176,51 +186,6 @@ function pathFind(startNode, endNode) {
     //Step 6: repeat until end reached. 
   }
   print("We found the end! " + currentBest.c + ", " + currentBest.r);
-
-
-  //Step 0: find all the tiles/nodes adjacent to the starting node, then calculate their GHF values. 
-  //findAdjacent(startNode);
-  //calcGHF(startNode, endNode);
-
-
-  //while (!endFound) {
-  //Step a: loop through the elems in toSearch, calcing g & h in separate funcs, and f afterwards.
-  //currentBest = findBestTile(); //get the best tile of all those in the toSearch array.
-  //check if at the end(h=0) if yes, set it's foundFrom val, and breakLoop. - do in findBest? No. 
-  //                         if no, clean the search array
-
-
-  //
-  //clean search array, then repeat
-
-
-
-  //calcGHF(startNode, endNode);
-
-  //Step b: search through toSearch[] to see which tile/node has the lowest F value. Then find all nodes adjacent to that tile.
-  /*
-  cleanSearchArray();
-  findAdjacent(findBestTile());
-  cleanSearchArray();
-  findAdjacent(findBestTile());
-  cleanSearchArray();
-  findAdjacent(findBestTile());
-  */
-  //clear toSearch of the searched tiles between each iteration.
-
-  //calcGHF(startNode, endNode);
-  //findAdjacent(findBestTile());
-
-  //calcGHF(startNode, endNode);
-  //findAdjacent(findBestTile());  
-
-
-
-  //if (toSearch[i].h == 0) { //checks if we've reached our destination. 
-  //  endFound = true;
-  //  print("endFound");
-  //}
-  //}
 
   //part b: Once end found, loop through the nodes backwards checking where they came from and putting them into a global "path" array.  - all above this goes in a while loop.
 }
@@ -267,7 +232,7 @@ function atEnd(bestNode){
   }
 }
 
-function removePrevSearched() { //Splice doesn't seem to be working (still leaves and array of undefs. Can you change array.length? Try new approach - needs research: array.slice or just set array.length.)
+function removePrevSearched() { 
   let tempArray = [];
 
   for (let i= 0; i < toSearch.length; i++) {
@@ -275,7 +240,7 @@ function removePrevSearched() { //Splice doesn't seem to be working (still leave
   }
   print("tempArr: " + tempArray);
 
-  toSearch.length = 0; 
+  toSearch.length = 0; //empties the array.
   print("toSearchEmpty?: " + toSearch);
 
   for (let i = 0; i < tempArray.length; i++) {
@@ -285,27 +250,3 @@ function removePrevSearched() { //Splice doesn't seem to be working (still leave
   }
   print("toSearchRefill? " + toSearch);
 }
-/*
-  
- let j = 0;
- for(let i = 0; i<toSearch.length; i++){
- //if(toSearch[i] != null){
- if(toSearch[i].searched){
- toSearch[i] = null;
- }
- else{
- tempArray.push(toSearch[i]);
- toSearch[i] = null;
- print("Temp Array: " + tempArray[i].c);
- }
- //}
- 
- 
- for(let i = 0; i < tempArray.length; i++){
- toSearch[i] = tempArray[i];
- print("toSearch: " + toSearch[i].c);
- }
- 
- }
- }
- */
