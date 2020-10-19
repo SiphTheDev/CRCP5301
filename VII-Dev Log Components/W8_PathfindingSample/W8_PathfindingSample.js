@@ -5,6 +5,7 @@
 //Next: find out why pathfind (on repeat runs) is leaving bestTile blank at some points. 
 //Then: prevent the path from being fully blocked. 
 //Later: in other code, fix the dang grid array inversion issue (has to do with the nested array structure, swap the nesting (c then r vs r then c), then figure out how to make the assignments still good.
+//Afterwards: transfer changes to pathfind and the new mouseClicked function to the main program.
 
 //let gridSpriteSheet;
 let gridTileMap = []; //placeholder
@@ -51,9 +52,20 @@ function mouseClicked(){
     for(let j = 0; j < gridArray[i].length; j++){
       if(mouseX > gridArray[j][i].x && mouseX < (gridArray[j][i].x+(width/10)) && mouseY > gridArray[j][i].y && mouseY < (gridArray[j][i].y+(height/10))){
         if(gridArray[j][i] == startingGrid){
+          //Make this a resetSearch function later.
           tempColorAdj = 5;
           toSearch.length = 0;
           finalPath.length = 0;
+          valText = 0;
+          for(let i = 0; i < gridArray.length; i++){
+            for(let j = 0; j < gridArray[i].length; j++){
+              gridArray[i][j].searched = false;
+              if(gridArray[i][j].type == 2){
+                gridArray[i][j].farbe = color(255);
+                gridArray[i][j].myText = ".";
+              }
+            }
+          }
           pathFind(startingGrid, goalGrid);
         }
         else if(gridArray[j][i].type == 2){
@@ -78,11 +90,11 @@ function mouseClicked(){
 function createTileMap() { 
   let d = 10; //closed
   let o = 20; //open
-  gridTileMap = [o,o,o,o,d,o,o,o,o,o,
+  gridTileMap = [o,o,o,o,o,d,o,o,o,o,
                  o,o,o,o,o,d,o,o,o,o,
                  o,o,o,o,o,d,o,o,o,o,
                  o,o,o,o,o,d,o,o,o,o,
-                 o,o,d,o,o,d,o,d,o,o,
+                 o,o,d,o,o,d,o,d,d,d,
                  o,o,d,o,o,d,o,d,o,o,
                  o,o,d,o,d,d,o,d,o,o,
                  o,o,d,o,o,o,o,d,o,o,
@@ -125,17 +137,23 @@ function pathFind(startNode, endNode) {
   //part a:
   while (!endFound) {
     //Step 1: find all tiles adjacent to the currentBest node, and add them to toSearch[].
+    print("CURRENT BEST: " + currentBest.c + ", " + currentBest.r);
     findAdjacent(currentBest); 
     //Step 2: calculate the G,H, & F values of all tiles in toSearch[].
+    print("Step 1: find adj");
     calcGHF(startNode, endNode);
     //Step 3: set currentBest to be the tile with the lowest F value in toSerach[].
+    print("Step 2: calcGHF");
     currentBest = findBestTile();
+    print("Step 3: findBest");
     //Step 4: Check if currentBest is the endNode (ie currentBest.h = 0); Break if it does.
     if (atEnd(currentBest)) {
       endFound = true;
     }
+      print("Step 4: atEnd?");
     //Step 5: remove all searched tiles from toSearch    
     removePrevSearched();//Clean Search Array
+     print("Step 5: removeSearchedFromArray");
     //Step 6: repeat until end reached.
   }
   toSearch.length = 0;
@@ -154,6 +172,7 @@ function findAdjacent(node) { //lator factor this out into a func that does the 
       tempColorAdj -= 3;
       gridArray[node.r+1][node.c].myText = valText.toString();
       valText++;
+      print("below");
     }
   }
   if (node.c < 9 && !gridArray[node.r][node.c+1].searched && !inArray(gridArray[node.r][node.c+1])) {
@@ -164,6 +183,7 @@ function findAdjacent(node) { //lator factor this out into a func that does the 
       tempColorAdj -= 3;
       gridArray[node.r][node.c+1].myText = valText.toString();
       valText++;
+      print("right");
     }
   }
   if (node.r > 0 && !gridArray[node.r-1][node.c].searched && !inArray(gridArray[node.r-1][node.c])) {
@@ -174,6 +194,7 @@ function findAdjacent(node) { //lator factor this out into a func that does the 
       tempColorAdj -= 3;
       gridArray[node.r-1][node.c].myText = valText.toString();
       valText++;
+      print("above");
     }
   }
   if (node.c > 0 && !gridArray[node.r][node.c-1].searched && !inArray(gridArray[node.r][node.c-1])) {
@@ -184,6 +205,7 @@ function findAdjacent(node) { //lator factor this out into a func that does the 
       tempColorAdj -= 3;
       gridArray[node.r][node.c-1].myText = valText.toString();
       valText++;
+      print("left");
     }
   }  
 }
@@ -260,6 +282,6 @@ function storePath(currentBest, startNode) {
   }
   
   for (let i = 0; i > finalPath.length; i++){
-    finalPath[i].farbe = color(150,150,0);
+    finalPath[i].myText = "X";
   }
 }
