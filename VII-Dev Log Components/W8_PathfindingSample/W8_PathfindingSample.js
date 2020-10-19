@@ -2,8 +2,9 @@
 //Thomas Park
 //October 15, 2020
 
-//Next: identify issues with mouse-clicked (ie, what on earth is it actually recording, since it doesn't seem to be the proper coordinates.) Also, maybe lose the numbers.
+//Next: find out why pathfind (on repeat runs) is leaving bestTile blank at some points. 
 //Then: prevent the path from being fully blocked. 
+//Later: in other code, fix the dang grid array inversion issue (has to do with the nested array structure, swap the nesting (c then r vs r then c), then figure out how to make the assignments still good.
 
 //let gridSpriteSheet;
 let gridTileMap = []; //placeholder
@@ -26,8 +27,8 @@ function setup() {
   createCanvas(500, 500);
   createTileMap();
   loadGridArray();
-  startingGrid = gridArray[6][0];
-  goalGrid = gridArray[5][9];
+  startingGrid = gridArray[9][0];
+  goalGrid = gridArray[0][9];
   pathFind(startingGrid, goalGrid);
   //drawGridArray();
 }
@@ -49,7 +50,13 @@ function mouseClicked(){
   for(let i = 0; i< gridArray.length; i++){
     for(let j = 0; j < gridArray[i].length; j++){
       if(mouseX > gridArray[j][i].x && mouseX < (gridArray[j][i].x+(width/10)) && mouseY > gridArray[j][i].y && mouseY < (gridArray[j][i].y+(height/10))){
-        if(gridArray[j][i].type == 2){
+        if(gridArray[j][i] == startingGrid){
+          tempColorAdj = 5;
+          toSearch.length = 0;
+          finalPath.length = 0;
+          pathFind(startingGrid, goalGrid);
+        }
+        else if(gridArray[j][i].type == 2){
           gridArray[j][i].type = 1;
           gridArray[j][i].farbe = color(143,0,255);
           print(i + ", " + j + "closed");
@@ -58,7 +65,7 @@ function mouseClicked(){
           gridArray[j][i].type = 2;
           gridArray[j][i].farbe = color(255);
           print(i + ", " + j + "opened");
-        }
+        }        
         else{
           print("whereAmI?");
         }
@@ -139,7 +146,7 @@ function pathFind(startNode, endNode) {
 }
 
 function findAdjacent(node) { //lator factor this out into a func that does the adding and accepts any r/c grid, and the overarching thing here that checks if it can add smthg and calls the first func only if so.
-  if (node.r < 9 && !gridArray[node.r+1][node.c].searched) { //if it is within the bounds of the grid && has not already been searched, add the tile below node to toSearch[].
+  if (node.r < 9 && !gridArray[node.r+1][node.c].searched && !inArray(gridArray[node.r+1][node.c])) { //if it is within the bounds of the grid && has not already been searched && it's not already in toSearch, add the tile below node to toSearch[].
     if (gridArray[node.r+1][node.c].type == 2) { //type 2 = enemy terrain.
       toSearch[toSearch.length] = gridArray[node.r+1][node.c];
       gridArray[node.r+1][node.c].gridFrom = node;
@@ -149,7 +156,7 @@ function findAdjacent(node) { //lator factor this out into a func that does the 
       valText++;
     }
   }
-  if (node.c < 9 && !gridArray[node.r][node.c+1].searched) {
+  if (node.c < 9 && !gridArray[node.r][node.c+1].searched && !inArray(gridArray[node.r][node.c+1])) {
     if (gridArray[node.r][node.c+1].type == 2) { 
       toSearch[toSearch.length] = gridArray[node.r][node.c+1];
       gridArray[node.r][node.c+1].gridFrom = node;
@@ -159,7 +166,7 @@ function findAdjacent(node) { //lator factor this out into a func that does the 
       valText++;
     }
   }
-  if (node.r > 0 && !gridArray[node.r-1][node.c].searched) {
+  if (node.r > 0 && !gridArray[node.r-1][node.c].searched && !inArray(gridArray[node.r-1][node.c])) {
     if (gridArray[node.r-1][node.c].type == 2) { 
       toSearch[toSearch.length] = gridArray[node.r-1][node.c];
       gridArray[node.r-1][node.c].gridFrom = node;
@@ -169,7 +176,7 @@ function findAdjacent(node) { //lator factor this out into a func that does the 
       valText++;
     }
   }
-  if (node.c > 0 && !gridArray[node.r][node.c-1].searched) {
+  if (node.c > 0 && !gridArray[node.r][node.c-1].searched && !inArray(gridArray[node.r][node.c-1])) {
     if (gridArray[node.r][node.c-1].type == 2) {
       toSearch[toSearch.length] = gridArray[node.r][node.c-1];
       gridArray[node.r][node.c-1].gridFrom = node;
@@ -179,6 +186,14 @@ function findAdjacent(node) { //lator factor this out into a func that does the 
       valText++;
     }
   }  
+}
+
+function inArray(node){
+  for(let i = 0; i < toSearch.length; i++){
+    if(toSearch[i] == node){return true;}
+  }
+  return false;
+  
 }
 
 function calcGHF(startNode, endNode) {
@@ -207,7 +222,7 @@ function findBestTile() {  //loop to find lowest F from the list, then check it'
     }
   }
   
-  bestTile.searched = true;//set tile as searched?
+  bestTile.searched = true;//set tile as searched? // Why is best tile turning up empty on repreat runs?
   return bestTile;
 }
 
@@ -242,5 +257,9 @@ function storePath(currentBest, startNode) {
   while (backtrackNode.gridFrom != startNode) {
     finalPath[index] = backtrackNode;
     backtrackNode = backtrackNode.gridFrom;
+  }
+  
+  for (let i = 0; i > finalPath.length; i++){
+    finalPath[i].farbe = color(150,150,0);
   }
 }

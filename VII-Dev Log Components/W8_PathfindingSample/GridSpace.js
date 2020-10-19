@@ -25,7 +25,7 @@ class GridSpace {
     }
     rect(this.x, this.y, width/10, height/10);
     fill(63,224,208);
-    text(this.type.toString(), this.x + (width/20), this.y + (height/20));
-    //text(this.myText, this.x + (width/20), this.y + (height/20));
+    //text(this.type.toString(), this.x + (width/20), this.y + (height/20));
+    text(this.myText, this.x + (width/20), this.y + (height/20));
  }
 }
