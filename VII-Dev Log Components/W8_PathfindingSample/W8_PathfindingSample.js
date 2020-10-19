@@ -2,6 +2,9 @@
 //Thomas Park
 //October 15, 2020
 
+//Next: identify issues with mouse-clicked (ie, what on earth is it actually recording, since it doesn't seem to be the proper coordinates.) Also, maybe lose the numbers.
+//Then: prevent the path from being fully blocked. 
+
 //let gridSpriteSheet;
 let gridTileMap = []; //placeholder
 let gridArray = [];
@@ -39,7 +42,8 @@ function draw() {
 }
 
 function mouseClicked(){
-  print("clicked!");
+  print("clicked at: " + mouseX + ", " + mouseY);
+  
   //If within bounds of "test" button, then run it.
   //If not within test button, change the grid space you're currently on. 
   for(let i = 0; i< gridArray.length; i++){
@@ -51,7 +55,7 @@ function mouseClicked(){
           print(i + ", " + j + "closed");
         }
         else if(gridArray[j][i].type == 1){
-          gridArray[j][i] = 2;
+          gridArray[j][i].type = 2;
           print("open");
         }
         else{
@@ -113,26 +117,19 @@ function pathFind(startNode, endNode) {
   //part a:
   while (!endFound) {
     //Step 1: find all tiles adjacent to the currentBest node, and add them to toSearch[].
-    print("CURRENT BEST: " + currentBest.c + ", " + currentBest.r);
     findAdjacent(currentBest); 
-    print("Step 1: find adj");
     //Step 2: calculate the G,H, & F values of all tiles in toSearch[].
     calcGHF(startNode, endNode);
-    print("Step 2: calcGHF");
     //Step 3: set currentBest to be the tile with the lowest F value in toSerach[].
     currentBest = findBestTile();
-    print("Step 3: findBest");
     //Step 4: Check if currentBest is the endNode (ie currentBest.h = 0); Break if it does.
     if (atEnd(currentBest)) {
       endFound = true;
     }
-    print("Step 4: atEnd?");
     //Step 5: remove all searched tiles from toSearch    
     removePrevSearched();//Clean Search Array
-    print("Step 5: removeSearchedFromArray");
     //Step 6: repeat until end reached.
   }
-  print("We found the end! " + currentBest.c + ", " + currentBest.r);  
   toSearch.length = 0;
 
   //part b: Once end found, loop through the nodes backwards checking where they came from and putting them into a global "path" array.  - all above this goes in a while loop. - make this a sep func.
@@ -141,7 +138,6 @@ function pathFind(startNode, endNode) {
 }
 
 function findAdjacent(node) { //lator factor this out into a func that does the adding and accepts any r/c grid, and the overarching thing here that checks if it can add smthg and calls the first func only if so.
-  print("NODE BEST: " + node.c + ", " + node.r);
   if (node.r < 9 && !gridArray[node.r+1][node.c].searched) { //if it is within the bounds of the grid && has not already been searched, add the tile below node to toSearch[].
     if (gridArray[node.r+1][node.c].type == 2) { //type 2 = enemy terrain.
       toSearch[toSearch.length] = gridArray[node.r+1][node.c];
@@ -150,7 +146,6 @@ function findAdjacent(node) { //lator factor this out into a func that does the 
       tempColorAdj -= 3;
       gridArray[node.r+1][node.c].myText = valText.toString();
       valText++;
-      print("ADDING: " + node.c + ", " + (node.r+1));
     }
   }
   if (node.c < 9 && !gridArray[node.r][node.c+1].searched) {
@@ -161,7 +156,6 @@ function findAdjacent(node) { //lator factor this out into a func that does the 
       tempColorAdj -= 3;
       gridArray[node.r][node.c+1].myText = valText.toString();
       valText++;
-      print("ADDING: " + (node.c+1) + ", " + node.r);
     }
   }
   if (node.r > 0 && !gridArray[node.r-1][node.c].searched) {
@@ -172,7 +166,6 @@ function findAdjacent(node) { //lator factor this out into a func that does the 
       tempColorAdj -= 3;
       gridArray[node.r-1][node.c].myText = valText.toString();
       valText++;
-      print("ADDING: " + node.c + ", " + (node.r-1));
     }
   }
   if (node.c > 0 && !gridArray[node.r][node.c-1].searched) {
@@ -183,13 +176,8 @@ function findAdjacent(node) { //lator factor this out into a func that does the 
       tempColorAdj -= 3;
       gridArray[node.r][node.c-1].myText = valText.toString();
       valText++;
-      print("ADDING: " + (node.c-1) + ", " + node.r);
     }
   }  
-  print("toSearchNowHas:");
-  for (let i = 0; i < toSearch.length; i++) {
-    print("In toSearch: (" + toSearch[i].c + ", " + toSearch[i].r + ")");
-  }
 }
 
 function calcGHF(startNode, endNode) {
@@ -212,15 +200,12 @@ function findBestTile() {  //loop to find lowest F from the list, then check it'
   let lowestF = 10000; //placeholder for infinitely large
   let bestTile;
   for (let i = 0; i < toSearch.length; i++) {
-    print("grid " + toSearch[i].c + "," + toSearch[i].r + " has F: " + toSearch[i].f); //column, row, f-val
     if (toSearch[i].f < lowestF) {
       lowestF = toSearch[i].f;
       bestTile = toSearch[i];
-      print("Lowest F now is: " + lowestF);
     }
   }
-
-  print("best tile found: " + bestTile.c + ", " + bestTile.r);
+  
   bestTile.searched = true;//set tile as searched?
   return bestTile;
 }
@@ -239,10 +224,8 @@ function removePrevSearched() {
   for (let i= 0; i < toSearch.length; i++) {
     tempArray[i] = toSearch[i];
   }
-  print("tempArr: " + tempArray);
 
   toSearch.length = 0; //empties the array.
-  print("toSearchEmpty?: " + toSearch);
 
   for (let i = 0; i < tempArray.length; i++) {
     if (!tempArray[i].searched) {
@@ -258,6 +241,5 @@ function storePath(currentBest, startNode) {
   while (backtrackNode.gridFrom != startNode) {
     finalPath[index] = backtrackNode;
     backtrackNode = backtrackNode.gridFrom;
-    print("FinalPath: " + finalPath[index].r + ", " + finalPath[index].c);
   }
 }
