@@ -48,7 +48,7 @@ function mouseClicked(){
   //If not within test button, change the grid space you're currently on. 
   for(let i = 0; i< gridArray.length; i++){
     for(let j = 0; j < gridArray[i].length; j++){
-      if(mouseX > gridArray[j][i].x && mouseX < (gridArray[j][i].x+(width/20)) && mouseY > gridArray[j][i].y && mouseY < (gridArray[j][i].y+(height/20))){
+      if(mouseX > gridArray[j][i].x && mouseX < (gridArray[j][i].x+(width/10)) && mouseY > gridArray[j][i].y && mouseY < (gridArray[j][i].y+(height/10))){
         if(gridArray[j][i].type == 2){
           gridArray[j][i].type = 1;
           gridArray[j][i].farbe = color(143,0,255);
@@ -56,7 +56,8 @@ function mouseClicked(){
         }
         else if(gridArray[j][i].type == 1){
           gridArray[j][i].type = 2;
-          print("open");
+          gridArray[j][i].farbe = color(255);
+          print(i + ", " + j + "opened");
         }
         else{
           print("whereAmI?");
