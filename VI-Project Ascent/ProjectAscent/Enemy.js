@@ -4,6 +4,7 @@ class Enemy {
     this.x = x;
     this.y = y;
     this.r = r;
+    //Add a path[] attribute which stores the current path this enemy is following.
   }
 
   render() {
