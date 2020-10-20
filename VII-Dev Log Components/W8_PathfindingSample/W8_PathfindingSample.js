@@ -31,7 +31,6 @@ function setup() {
   startingGrid = gridArray[9][0];
   goalGrid = gridArray[0][9];
   pathFind(startingGrid, goalGrid);
-  //drawGridArray();
 }
 
 
@@ -62,6 +61,9 @@ function mouseClicked(){
               gridArray[i][j].searched = false;
               if(gridArray[i][j].type == 2){
                 gridArray[i][j].farbe = color(255);
+                gridArray[i][j].myText = ".";
+              }
+              else if (gridArray[i][j].type == 1){
                 gridArray[i][j].myText = ".";
               }
             }
