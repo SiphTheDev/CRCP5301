@@ -161,6 +161,7 @@ function pathFind(startNode, endNode) {
   toSearch.length = 0;
 
   //part b: Once end found, loop through the nodes backwards checking where they came from and putting them into a global "path" array.  - all above this goes in a while loop. - make this a sep func.
+  print("Storing Path");
   storePath(currentBest, startNode);
   
 }
@@ -280,10 +281,14 @@ function storePath(currentBest, startNode) {
 
   while (backtrackNode.gridFrom != startNode) {
     finalPath[index] = backtrackNode;
-    backtrackNode = backtrackNode.gridFrom;
+    backtrackNode.farbe = color(31,112,104);
+    backtrackNode = backtrackNode.gridFrom;   
+    index ++;
   }
   
-  for (let i = 0; i > finalPath.length; i++){
+  /*for (let i = 0; i > finalPath.length; i++){
     finalPath[i].myText = "X";
+    print("Changed Text???");
   }
+  */
 }
