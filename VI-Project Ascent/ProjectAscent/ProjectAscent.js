@@ -35,7 +35,7 @@ function setup() {
   //drawGridArray();
   print(gridArray[5][10].c);
   print(gridArray[5][10].r);
-  pathFind(gridArray[13][0], gridArray[13][5]);
+  pathFind(gridArray[13][0], gridArray[13][13]);
 }
 
 
@@ -164,7 +164,7 @@ function pathFind(startNode, endNode) {
 
 function findAdjacent(node) { //lator factor this out into a func that does the adding and accepts any r/c grid, and the overarching thing here that checks if it can add smthg and calls the first func only if so.
   print("NODE BEST: " + node.c + ", " + node.r);
-  if (node.c < 13 && !gridArray[node.c+1][node.r].searched  && !inArray(gridArray[node.c+1][node.r])) { //if it is within the bounds of the grid && has not already been searched, add the tile below node to toSearch[].
+  if (node.c < 27 && !gridArray[node.c+1][node.r].searched  && !inArray(gridArray[node.c+1][node.r])) { //if it is within the bounds of the grid && has not already been searched, add the tile below node to toSearch[].
     if (gridArray[node.c+1][node.r].type == 2) { //type 2 = enemy terrain.
       toSearch[toSearch.length] = gridArray[node.c+1][node.r];
       gridArray[node.c+1][node.r].gridFrom = node;
@@ -173,7 +173,7 @@ function findAdjacent(node) { //lator factor this out into a func that does the 
       print("ADDING R: " + node.c+1 + ", " + (node.r));
     }
   }
-  if (node.r < 27 && !gridArray[node.c][node.r+1].searched && !inArray(gridArray[node.c][node.r+1])) {
+  if (node.r < 13 && !gridArray[node.c][node.r+1].searched && !inArray(gridArray[node.c][node.r+1])) {
     if (gridArray[node.c][node.r+1].type == 2) { 
       toSearch[toSearch.length] = gridArray[node.c][node.r+1];
       gridArray[node.c][node.r+1].gridFrom = node;
