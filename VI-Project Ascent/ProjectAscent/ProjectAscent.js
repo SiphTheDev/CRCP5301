@@ -33,7 +33,9 @@ function setup() {
   createTileMap();
   loadGridArray();
   //drawGridArray();
-  pathFind(gridArray[0][12], gridArray[5][20]); //inverted TEMP because gridArray
+  print(gridArray[5][10].c);
+  print(gridArray[5][10].r);
+  pathFind(gridArray[13][0], gridArray[13][5]);
 }
 
 
@@ -49,27 +51,58 @@ function createTileMap() { //temp until put this data in a json or elsewhere. //
   let b = 10; //borders
   let e = 20; //enemies
   let p = 30; //players
-  gridTileMap = [b, b, b, b, b, b, b, b, b, b, b, b, b, e, e, b, b, b, b, b, b, b, b, b, b, b, b, b, 
-    b, b, b, b, b, b, b, b, b, b, b, b, b, e, e, b, b, b, b, b, b, b, b, b, b, b, b, b, 
-    b, b, b, p, p, p, p, p, p, p, p, p, p, e, e, p, p, p, p, p, p, p, p, p, p, b, b, b, 
-    b, b, b, p, p, p, p, p, p, p, p, p, p, e, e, p, p, p, p, p, p, p, p, p, p, b, b, b, 
-    b, b, b, p, p, e, e, e, e, e, e, e, e, e, e, p, e, e, e, e, e, e, e, e, e, b, b, b, 
-    b, b, b, p, p, e, e, e, e, e, e, e, e, e, e, p, e, e, e, e, e, e, e, e, e, b, b, b, 
-    b, b, b, p, p, e, e, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, e, e, b, b, b, 
-    b, b, b, p, p, e, e, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, e, e, b, b, b, 
-    b, b, b, p, p, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, b, b, b, 
-    b, b, b, p, p, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, b, b, b, 
-    b, b, b, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, e, e, p, p, b, b, b, 
-    b, b, b, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, e, e, p, p, b, b, b, 
-    b, b, b, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, p, p, b, b, b, 
-    b, b, b, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, p, p, b, b, b, ]; //Determines what type of tile belongs in each space. Will move to JSON or XML later to allow level loading later.
-}
+ gridTileMap = [b, b, b, b, b, b, b, b, b, b, b, b, b, b, 
+                b, b, b, b, b, b, b, b, b, b, b, b, b, b, 
+                b, b, b, b, b, b, b, b, b, b, b, b, b, b, 
+                b, b, p, p, p, p, p, p, p, p, p, p, e, e, 
+                b, b, p, p, p, p, p, p, p, p, p, p, e, e,
+                b, b, p, p, e, e, e, e, e, e, p, p, e, e,
+                b, b, p, p, e, e, e, e, e, e, p, p, e, e, 
+                b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
+                b, b, p, p, e, e, p, p, e, e, p, p, e, e,
+                b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
+                b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
+                b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
+                b, b, p, p, e, e, p, p, e, e, p, p, e, e,
+                e, e, e, e, e, e, p, p, e, e, p, p, e, e,
+                e, e, e, e, e, e, p, p, e, e, p, p, e, e,
+                b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
+                b, b, p, p, e, e, p, p, e, e, p, p, e, e,
+                b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
+                b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
+                b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
+                b, b, p, p, e, e, p, p, e, e, p, p, e, e,
+                b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
+                b, b, p, p, e, e, p, p, e, e, e, e, e, e,
+                b, b, p, p, e, e, e, e, e, e, e, e, e, e,
+                b, b, p, p, e, e, e, e, e, e, p, p, e, e,
+                b, b, b, b, b, b, b, b, b, b, b, b, b, b, 
+                b, b, b, b, b, b, b, b, b, b, b, b, b, b, 
+                b, b, b, b, b, b, b, b, b, b, b, b, b, b];
+                
+ 
+ 
+  /*gridTileMap = [b, b, b, b, b, b, b, b, b, b, b, b, b, e, e, b, b, b, b, b, b, b, b, b, b, b, b, b, 
+                 b, b, b, b, b, b, b, b, b, b, b, b, b, e, e, b, b, b, b, b, b, b, b, b, b, b, b, b, 
+                 b, b, b, p, p, p, p, p, p, p, p, p, p, e, e, p, p, p, p, p, p, p, p, p, p, b, b, b, 
+                 b, b, b, p, p, p, p, p, p, p, p, p, p, e, e, p, p, p, p, p, p, p, p, p, p, b, b, b, 
+                 b, b, b, p, p, e, e, e, e, e, e, e, e, e, e, p, e, e, e, e, e, e, e, e, e, b, b, b, 
+                 b, b, b, p, p, e, e, e, e, e, e, e, e, e, e, p, e, e, e, e, e, e, e, e, e, b, b, b, 
+                 b, b, b, p, p, e, e, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, e, e, b, b, b, 
+                 b, b, b, p, p, e, e, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, e, e, b, b, b, 
+                 b, b, b, p, p, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, b, b, b, 
+                 b, b, b, p, p, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, b, b, b, 
+                 b, b, b, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, e, e, p, p, b, b, b, 
+                 b, b, b, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, e, e, p, p, b, b, b, 
+                 b, b, b, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, p, p, b, b, b, 
+                 b, b, b, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, p, p, b, b, b, ]; //Determines what type of tile belongs in each space. Will move to JSON or XML later to allow level loading later.
+*/}
 
-function loadGridArray() { //Once you change the gridTileMap to a JSON, use typeNames instead of these arbitrary numbers? Or still avoid strings?
+function loadGridArray() { //Once you change the gridTileMap to a JSON, use typeNames instead of these arbitrary numbers? Or still avoid strings? WARNING: Make sure JSON presents it in column chunks, not row chunks.
   let i = 0;
   let type;
   let farbe;
-  for (let c = 0; c < cols; c++) { //TODO FIX THIS! R & C appear to be swapped, but load as if they are not. Nevertheless, bound to cause issues later. - can confirm, it's later & it's causing issues.
+  for (let c = 0; c < cols; c++) {
     gridArray[c] = [];
     for (let r = 0; r < rows; r++) {
       if (gridTileMap[i] == 10) {
@@ -131,46 +164,53 @@ function pathFind(startNode, endNode) {
 
 function findAdjacent(node) { //lator factor this out into a func that does the adding and accepts any r/c grid, and the overarching thing here that checks if it can add smthg and calls the first func only if so.
   print("NODE BEST: " + node.c + ", " + node.r);
-  if (node.r < 13 && !gridArray[node.c+1][node.r].searched) { //if it is within the bounds of the grid && has not already been searched, add the tile below node to toSearch[].
+  if (node.c < 13 && !gridArray[node.c+1][node.r].searched  && !inArray(gridArray[node.c+1][node.r])) { //if it is within the bounds of the grid && has not already been searched, add the tile below node to toSearch[].
     if (gridArray[node.c+1][node.r].type == 2) { //type 2 = enemy terrain.
       toSearch[toSearch.length] = gridArray[node.c+1][node.r];
       gridArray[node.c+1][node.r].gridFrom = node;
       gridArray[node.c+1][node.r].farbe = color(0, 200 + tempColorAdj, 100); // for testing
       tempColorAdj -= 5;
-      print("ADDING: " + node.c + ", " + (node.r+1));
+      print("ADDING R: " + node.c+1 + ", " + (node.r));
     }
   }
-  if (node.c < 27 && !gridArray[node.c][node.r+1].searched) {
+  if (node.r < 27 && !gridArray[node.c][node.r+1].searched && !inArray(gridArray[node.c][node.r+1])) {
     if (gridArray[node.c][node.r+1].type == 2) { 
       toSearch[toSearch.length] = gridArray[node.c][node.r+1];
       gridArray[node.c][node.r+1].gridFrom = node;
       gridArray[node.c][node.r+1].farbe = color(0, 200 + tempColorAdj, 100); // for testing
       tempColorAdj -= 5;
-      print("ADDING: " + (node.c+1) + ", " + node.r);
+      print("ADDING D: " + (node.c) + ", " + node.r+1);
     }
   }
-  if (node.r > 0 && !gridArray[node.c-1][node.r].searched) {
+  if (node.c > 1 && !gridArray[node.c-1][node.r].searched && !inArray(gridArray[node.c-1][node.r])) {
     if (gridArray[node.c-1][node.r].type == 2) { 
       toSearch[toSearch.length] = gridArray[node.c-1][node.r];
       gridArray[node.c-1][node.r].gridFrom = node;
       gridArray[node.c-1][node.r].farbe = color(0, 200 + tempColorAdj, 100); // for testing
       tempColorAdj -= 5;
-      print("ADDING: " + node.c + ", " + (node.r-1));
+      print("ADDING L: " + node.c-1 + ", " + (node.r));
     }
   }
-  if (node.c > 0 && !gridArray[node.c][node.r-1].searched) {
+  if (node.r > 1 && !gridArray[node.c][node.r-1].searched && !inArray(gridArray[node.c][node.r-1])) {
     if (gridArray[node.c][node.r-1].type == 2) {
       toSearch[toSearch.length] = gridArray[node.c][node.r-1];
       gridArray[node.c][node.c-1].gridFrom = node;
       gridArray[node.c][node.c-1].farbe = (0, 200 + tempColorAdj, 100); // for testing
       tempColorAdj -= 5;
-      print("ADDING: " + (node.c-1) + ", " + node.r);
+      print("ADDING U: " + (node.c) + ", " + node.r-1);
     }
   }  
   print("toSearchNowHas:");
   for (let i = 0; i < toSearch.length; i++) {
     print("In toSearch: (" + toSearch[i].c + ", " + toSearch[i].r + ")");
   }
+}
+
+function inArray(node){
+  for(let i = 0; i < toSearch.length; i++){
+    if(toSearch[i] == node){return true;}
+  }
+  return false; 
 }
 
 function calcGHF(startNode, endNode) {
@@ -239,6 +279,8 @@ function storePath(currentBest, startNode) {
   while (backtrackNode.gridFrom != startNode) {
     finalPath[index] = backtrackNode;
     backtrackNode = backtrackNode.gridFrom;
+    
     print("FinalPath: " + finalPath[index].r + ", " + finalPath[index].c);
+    index ++;
   }
 }
