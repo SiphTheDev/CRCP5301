@@ -278,7 +278,7 @@ function storePath(currentBest, startNode) {
   let backtrackNode = currentBest; 
   let index = 0;
 
-  while (backtrackNode.gridFrom != startNode) {
+  while (backtrackNode != startNode) {
     finalPath[index] = backtrackNode;
     backtrackNode.farbe = color(31,112,104);
     backtrackNode = backtrackNode.gridFrom;   
