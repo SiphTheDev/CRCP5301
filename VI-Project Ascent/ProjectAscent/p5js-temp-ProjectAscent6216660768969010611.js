@@ -175,8 +175,8 @@ function inArray(node){
 function addNode(newNode, fromNode){
   toSearch[toSearch.length] = newNode;
   newNode.gridFrom = fromNode;
-      //newNode.farbe = color(0, 200 + tempColorAdj, 100); // for testing
-      //tempColorAdj -= 2;
+      newNode.farbe = color(0, 200 + tempColorAdj, 100); // for testing
+      tempColorAdj -= 2;
       //print("ADDING R: " + newNode.c + ", " + newNode.r);
 }
 
