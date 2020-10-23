@@ -2,11 +2,10 @@
 //Thomas Park
 
 /*TODO: 
- next: Either get tower placement & drawing working or comment it out & go back to pathfinding.
- then: Work on enemy motion along the path - with pauses( in sync with music in future)
- later: create a player class & a projectile class similarly. 
- much later: projectile tracking. 
- far beyond: put all this into a new class (lv 1 or gamePlay or the like) & make this doc fundament ally just a scene manager. - maybe leave the preload stuff. Can you have diff draw loops in diff files for proc?
+ next: Make pathfind it's own file
+ then: set it up to be called & stored in each enemy, rather than globally
+ after: check the enemy class for what remain to complete it's next phase. There are more notes there. Move them here at some point. 
+ far beyond: put all this into a new class (lv 1 or gamePlay or the like) & make this doc fundamentaly just a scene manager. Treat it as main. 
  */
 
 
@@ -21,7 +20,7 @@ let tempColorAdj = 5;
 
 let toSearch = [];
 
-//let jim = new Enemy(700, 25, 25); //when spawning enemies properly, do it from a grid space, not a set coord. 
+let testJim;
 
 function preload() {
   //gridSpriteSheet = loadImage('assets/dungeonTiles.png');
@@ -31,16 +30,16 @@ function setup() {
   createCanvas(1400, 700);
   createTileMap();
   loadGridArray();
-  //drawGridArray();
+  testJim = new Enemy(gridArray[5][5], gridArray[5][12], 25); 
 
-  pathFind(gridArray[13][0], gridArray[13][13]);
+  //pathFind(gridArray[13][0], gridArray[13][13]);
 }
 
 
 function draw() {
   drawGridArray();
-  //jim.move();
-  //jim.render();
+  //testJim.move();
+  testJim.render();
   //drawTowerArray();
 }
 
