@@ -30,19 +30,27 @@ function setup() {
   createCanvas(1400, 700);
   createTileMap();
   loadGridArray();
-  testJim = new Enemy(gridArray[5][5], gridArray[7][8], 25, gridArray); 
+  testJim = new Enemy(gridArray[5][3], gridArray[5][9], 25, gridArray); 
   drawGridArray();
   testJim.loadPath();
+  print(testJim.path);
+  frameRate(30);
 
   //pathFind(gridArray[13][0], gridArray[13][13]);
 }
 
 
 function draw() {
+  if(frameCount%30 == 1){
+      testJim.move(); 
+  }
+  
   //drawGridArray();
-  //testJim.move(); 
-  //testJim.render();
+
+  testJim.render();
   //drawTowerArray();
+  
+  //To keep score later, have a global(ish) variable score, and a method that checks the node of each enemy & tics score if the enemy node = the goal node.
 }
 
 

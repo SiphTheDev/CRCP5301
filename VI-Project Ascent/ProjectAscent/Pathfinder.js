@@ -15,27 +15,27 @@ class Pathfinder {
   while (!endFound) {
     //Step 1: find all tiles adjacent to the currentBest node, and add them to toSearch[].
     this.findAdjacent(currentBest); 
-    print("found adj");
+    //print("found adj");
     //Step 2: calculate the G,H, & F values of all tiles in toSearch[].
     this.calcGHF(startNode, endNode);
-    print("calc'd GHF");
+    //print("calc'd GHF");
     //Step 3: set currentBest to be the tile with the lowest F value in toSerach[].
     currentBest = this.findBestTile();
-    print("set currentBest as: " + currentBest);
+    //print("set currentBest as: " + currentBest);
     //Step 4: Check if currentBest is the endNode (ie currentBest.h = 0); Break if it does.
     if (this.atEnd(currentBest)) {
       endFound = true;
-      print("We think we're at the end");
+      //print("We think we're at the end");
     }    
     //Step 5: remove all searched tiles from toSearch    
     this.removePrevSearched();
-    print("cleaning out toSerach[]");
+    //print("cleaning out toSerach[]");
     //Step 6: repeat until end reached.
   }
 
   //part b: Storing the Path
   this.storePath(currentBest, startNode);
-  print("storing Path");
+  //print("storing Path");
   return this.finalPath;
 }
 
@@ -81,7 +81,7 @@ class Pathfinder {
       newNode.text = "Heyo!";
       //newNode.farbe = color(0, 200 + tempColorAdj, 100); // for testing
       //tempColorAdj -= 2;
-      print("ADDING R: " + newNode.c + ", " + newNode.r);
+      //print("ADDING R: " + newNode.c + ", " + newNode.r);
 }
 
  calcGHF(startNode, endNode) {
@@ -104,11 +104,11 @@ class Pathfinder {
   let lowestF = 10000; //placeholder for infinitely large. Sufficient for current max grid sizes.
   let bestTile;
   for (let i = 0; i < this.toSearch.length; i++) {
-    print("grid " + this.toSearch[i].c + "," + this.toSearch[i].r + " has F: " + this.toSearch[i].f); //column, row, f-val
+    //print("grid " + this.toSearch[i].c + "," + this.toSearch[i].r + " has F: " + this.toSearch[i].f); //column, row, f-val
     if (this.toSearch[i].f < lowestF) {
       lowestF = this.toSearch[i].f;
       bestTile = this.toSearch[i];
-      print("Lowest F now is: " + lowestF);
+      //print("Lowest F now is: " + lowestF);
     }
   }
 
@@ -118,7 +118,7 @@ class Pathfinder {
 }
 
  atEnd(bestNode) { //Determines if the end of the path has been found. 
- print("endCheck.h = " + bestNode.h);
+ //print("endCheck.h = " + bestNode.h);
   if (bestNode.h == 0) {
     return true;
   } else {
@@ -132,10 +132,10 @@ class Pathfinder {
   for (let i = 0; i < this.toSearch.length; i++) {
     tempArray[i] = this.toSearch[i];
   }
-  print("tempArr: " + tempArray);
+  //print("tempArr: " + tempArray);
 
   this.toSearch.length = 0; //empties the array.
-  print("toSearchEmpty?: " + this.toSearch);
+  //print("toSearchEmpty?: " + this.toSearch);
 
   for (let i = 0; i < tempArray.length; i++) {
     if (!tempArray[i].searched) {

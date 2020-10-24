@@ -1,25 +1,32 @@
 class Enemy {
 
-  constructor(node, goal, r, gridArray, path = null, pathFinder = new Pathfinder(gridArray)) {
+  constructor(node, goal, r, gridArray){//, pathFinder = new Pathfinder(gridArray)) {
     this.node = node;
     this.goal = goal;
     this.r = r;
-    this.path = path; //stores the current path this enemy is following.
-    this.pathFinder = pathFinder;
+    this.path = []; //stores the current path this enemy is following.
+    this.pathFinder = new Pathfinder(gridArray);
   }
 
   render() {
     fill(0, 0, 0);
     ellipse(this.node.x + 25, this.node.y + 25, this.r);
+    print("rendered foe");
   }
   
   loadPath(){
     this.path = this.pathFinder.pathFind(this.node,this.goal);
+    print(this.path);
+    print("loaded foe path");
   }
 
   move() { //put pathfind here later.
-    //this.node.x ++;
-    //this.node.y ++;
+  let tempLength = this.path.length;
+    if(this.path.length > 1){
+      this.path.length = tempLength -1;
+      this.node = this.path[this.path.length-1]; //so this, when set to path.length, hit an empty spot one past the end. 
+    }
+     print("moved foe");
   }
 }
 
