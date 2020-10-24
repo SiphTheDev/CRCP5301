@@ -1,10 +1,11 @@
 class Enemy {
 
-  constructor(node, goal, r, path = null) {
+  constructor(node, goal, r, gridArray, path = null) {
     this.node = node;
     this.goal = goal;
     this.r = r;
     this.path = path; //stores the current path this enemy is following.
+    pathFinder = new pathFinder(gridArray);
   }
 
   render() {
@@ -13,7 +14,7 @@ class Enemy {
   }
   
   loadPath(){
-    Pathfinder.pathFind(node,goal);
+    this.path = Pathfinder.pathFind(node,goal);
   }
 
   move() { //put pathfind here later.
@@ -34,7 +35,8 @@ A)
  
 B)
  i) Only then, once all that is in place, begin to add player towers. 
-   - I don't think any of this is too bad with messy solutions, but a smidge o' research may be necessary to do it nicely. 
+   - I don't think any of this is too bad with messy solutions, but a smidge o' research may be necessary to do it nicely.
+   - Use @8 pathfinding sample for mousePressed options.
 C)  
  i) After player towers, projectiles (based on enemies actual xy, so that may have to be an attribute of these. 
      Maybe have a getter, which calcs the univ x/y coords based on the node vals and sends that result.) //could also have getter & x/y calc be diff funcs for cleanliness' sake.     
