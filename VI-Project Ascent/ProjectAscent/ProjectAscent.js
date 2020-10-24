@@ -14,11 +14,11 @@ let gridTileMap = []; //placeholder
 let gridArray = [];
 let cols = 28;
 let rows = 14;
-let finalPath = [];
-let tempColorAdj = 5;
+//let finalPath = [];
+//let tempColorAdj = 5;
 //let tempFriendAr = [];
 
-let toSearch = [];
+//let toSearch = [];
 
 let testJim;
 
@@ -30,8 +30,9 @@ function setup() {
   createCanvas(1400, 700);
   createTileMap();
   loadGridArray();
-  testJim = new Enemy(gridArray[5][5], gridArray[5][12], 25, gridArray); 
+  testJim = new Enemy(gridArray[5][5], gridArray[7][8], 25, gridArray); 
   drawGridArray();
+  testJim.loadPath();
 
   //pathFind(gridArray[13][0], gridArray[13][13]);
 }
@@ -39,8 +40,7 @@ function setup() {
 
 function draw() {
   //drawGridArray();
-  //testJim.move();
-  testJim.loadPath();
+  //testJim.move(); 
   //testJim.render();
   //drawTowerArray();
 }
