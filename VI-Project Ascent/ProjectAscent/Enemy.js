@@ -1,11 +1,11 @@
 class Enemy {
 
-  constructor(node, goal, r, gridArray, path = null) {
+  constructor(node, goal, r, gridArray, path = null, pathFinder = new Pathfinder(gridArray)) {
     this.node = node;
     this.goal = goal;
     this.r = r;
     this.path = path; //stores the current path this enemy is following.
-    pathFinder = new pathFinder(gridArray);
+    this.pathFinder = pathFinder;
   }
 
   render() {
@@ -14,7 +14,7 @@ class Enemy {
   }
   
   loadPath(){
-    this.path = Pathfinder.pathFind(node,goal);
+    this.path = this.pathFinder.pathFind(this.node,this.goal);
   }
 
   move() { //put pathfind here later.

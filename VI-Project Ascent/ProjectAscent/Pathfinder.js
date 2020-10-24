@@ -1,11 +1,12 @@
 class Pathfinder {
 
-  constructor( gridArray) {
+  constructor(gridArray, toSearch = null) {
     this.gridArray = gridArray;
+    this.toSearch = [];
    }
 
 
- pathFind(startNode, endNode) { //Finds a path between two given grid nodes.
+  pathFind(startNode, endNode) { //Finds a path between two given grid nodes.
   let endFound = false;
   let currentBest = startNode;
   let finalPath = [];
@@ -13,11 +14,11 @@ class Pathfinder {
   //part a: Finding the Path
   while (!endFound) {
     //Step 1: find all tiles adjacent to the currentBest node, and add them to toSearch[].
-    findAdjacent(currentBest); 
+    this.findAdjacent(currentBest); 
     //Step 2: calculate the G,H, & F values of all tiles in toSearch[].
-    calcGHF(startNode, endNode);
+    this.calcGHF(startNode, endNode);
     //Step 3: set currentBest to be the tile with the lowest F value in toSerach[].
-    currentBest = findBestTile();
+    currentBest = this.findBestTile();
     //Step 4: Check if currentBest is the endNode (ie currentBest.h = 0); Break if it does.
     if (atEnd(currentBest)) {
       endFound = true;
@@ -35,24 +36,24 @@ class Pathfinder {
 
  findAdjacent(node) { //Checks all nodes adjacent to a given node, and if they are viable, adds them to toSearch[].
   //print("NODE BEST: " + node.c + ", " + node.r);
-  if (node.c < 27 && !gridArray[node.c+1][node.r].searched  && !inArray(gridArray[node.c+1][node.r])) { //if it is within the bounds of the grid && has not already been searched, && it's not already in the array, add the tile below node to toSearch[].
-    if (gridArray[node.c+1][node.r].type == 2) { //type 2 = enemy terrain.
-      addNode(gridArray[node.c+1][node.r], node);      
+  if (node.c < 27 && !this.gridArray[node.c+1][node.r].searched  && !this.inArray(this.gridArray[node.c+1][node.r])) { //if it is within the bounds of the grid && has not already been searched, && it's not already in the array, add the tile below node to toSearch[].
+    if (this.gridArray[node.c+1][node.r].type == 2) { //type 2 = enemy terrain.
+      this.addNode(this.gridArray[node.c+1][node.r], node);      
     }
   }
-  if (node.r < 13 && !gridArray[node.c][node.r+1].searched && !inArray(gridArray[node.c][node.r+1])) {
-    if (gridArray[node.c][node.r+1].type == 2) { 
-      addNode(gridArray[node.c][node.r+1], node);
+  if (node.r < 13 && !this.gridArray[node.c][node.r+1].searched && !this.inArray(this.gridArray[node.c][node.r+1])) {
+    if (this.gridArray[node.c][node.r+1].type == 2) { 
+      this.addNode(this.gridArray[node.c][node.r+1], node);
     }
   }
-  if (node.c > 1 && !gridArray[node.c-1][node.r].searched && !inArray(gridArray[node.c-1][node.r])) {
-    if (gridArray[node.c-1][node.r].type == 2) { 
-      addNode(gridArray[node.c-1][node.r], node);
+  if (node.c > 1 && !this.gridArray[node.c-1][node.r].searched && !this.inArray(this.gridArray[node.c-1][node.r])) {
+    if (this.gridArray[node.c-1][node.r].type == 2) { 
+      this.addNode(this.gridArray[node.c-1][node.r], node);
     }
   }
-  if (node.r > 1 && !gridArray[node.c][node.r-1].searched && !inArray(gridArray[node.c][node.r-1])) {
-    if (gridArray[node.c][node.r-1].type == 2) {
-      addNode(gridArray[node.c][node.r-1], node);
+  if (node.r > 1 && !this.gridArray[node.c][node.r-1].searched && !this.inArray(this.gridArray[node.c][node.r-1])) {
+    if (this.gridArray[node.c][node.r-1].type == 2) {
+      this.addNode(this.gridArray[node.c][node.r-1], node);
     }
   }  
   //print("toSearchNowHas:");
@@ -70,7 +71,7 @@ class Pathfinder {
 }
 
  addNode(newNode, fromNode){
-  toSearch[toSearch.length] = newNode;
+  this.toSearch[toSearch.length] = newNode;
   newNode.gridFrom = fromNode;
       //newNode.farbe = color(0, 200 + tempColorAdj, 100); // for testing
       //tempColorAdj -= 2;
@@ -79,9 +80,9 @@ class Pathfinder {
 
  calcGHF(startNode, endNode) {
   for (let i = 0; i < toSearch.length; i++) { 
-    toSearch[i].g = calcG(toSearch[i], startNode); //distance from startNode
-    toSearch[i].h = calcH(toSearch[i], endNode); //distance from endNode
-    toSearch[i].f = toSearch[i].g + toSearch[i].h; //total of the two distances
+    this.toSearch[i].g = this.calcG(this.toSearch[i], startNode); //distance from startNode
+    this.toSearch[i].h = this.calcH(this.toSearch[i], endNode); //distance from endNode
+    this.toSearch[i].f = this.toSearch[i].g + this.toSearch[i].h; //total of the two distances
   }
 }
 
@@ -98,9 +99,9 @@ class Pathfinder {
   let bestTile;
   for (let i = 0; i < toSearch.length; i++) {
     //print("grid " + toSearch[i].c + "," + toSearch[i].r + " has F: " + toSearch[i].f); //column, row, f-val
-    if (toSearch[i].f < lowestF) {
-      lowestF = toSearch[i].f;
-      bestTile = toSearch[i];
+    if (this.toSearch[i].f < lowestF) {
+      lowestF = this.toSearch[i].f;
+      bestTile = this.toSearch[i];
       //print("Lowest F now is: " + lowestF);
     }
   }
@@ -122,16 +123,16 @@ class Pathfinder {
   let tempArray = [];
 
   for (let i = 0; i < toSearch.length; i++) {
-    tempArray[i] = toSearch[i];
+    tempArray[i] = this.toSearch[i];
   }
   //print("tempArr: " + tempArray);
 
-  toSearch.length = 0; //empties the array.
+  this.toSearch.length = 0; //empties the array.
   //print("toSearchEmpty?: " + toSearch);
 
   for (let i = 0; i < tempArray.length; i++) {
     if (!tempArray[i].searched) {
-      toSearch.push(tempArray[i]);
+      this.toSearch.push(tempArray[i]);
     }
   }
 }

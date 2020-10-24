@@ -40,7 +40,8 @@ function setup() {
 function draw() {
   //drawGridArray();
   //testJim.move();
-  testJim.render();
+  testJim.loadPath();
+  //testJim.render();
   //drawTowerArray();
 }
 
