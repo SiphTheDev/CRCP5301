@@ -11,6 +11,7 @@ class Enemy {
   render() {
     fill(0, 0, 0);
     ellipse(this.node.x + 25, this.node.y + 25, this.r);
+    print("X: " + this.node.c + " Y: " + this.node.r);
     print("rendered foe");
   }
   
@@ -22,9 +23,10 @@ class Enemy {
 
   move() { //put pathfind here later.
   let tempLength = this.path.length;
-    if(this.path.length > 1){
-      this.path.length = tempLength -1;
+    if(this.path.length > 0){
       this.node = this.path[this.path.length-1]; //so this, when set to path.length, hit an empty spot one past the end. 
+      this.path.length = tempLength -1;
+
     }
      print("moved foe");
   }
