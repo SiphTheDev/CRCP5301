@@ -133,22 +133,23 @@ function drawGridArray() { //Calls the render method within each gridSpace insta
 }
 
 function mouseClicked() {
-  print("clicked at: " + mouseX + ", " + mouseY);
+  //print("clicked at: " + mouseX + ", " + mouseY);
 
   for (let i = 0; i< gridArray.length; i++) {
     for (let j = 0; j < gridArray[i].length; j++) {
       if (mouseX > gridArray[i][j].x && mouseX < (gridArray[i][j].x+(width/28)) && mouseY > gridArray[i][j].y && mouseY < (gridArray[i][j].y+(height/14))) {
-        print("You clicked " + i + ", " + j + " !"); 
+        //print("You clicked " + i + ", " + j + " !"); 
         if (gridArray[i][j].type == 3) {
           if (!gridArray[i][j].hasTower) {
-            print("Placing Tower!");
+            //print("Placing Tower!");
             towerArray[towerArray.length] = new Tower(gridArray[i][j]);
             gridArray[i][j].hasTower = true;
-            print("new tower is at: " + i + ", " + j);
+            //print("new tower is at: " + i + ", " + j);
           } else if (gridArray[i][j].hasTower) {
-            print("Removing Tower!");
+            //print("Removing Tower!");
             removeTower(gridArray[i][j]);//A loop to search tower array, and remove only the tower at said coords - maybe make that its own func.
             gridArray[i][j].hasTower = false;
+            print(towerArray);
           }
         }
       }
@@ -156,18 +157,19 @@ function mouseClicked() {
   }
 }
 
-function removeTower(towerToDrop) { //This can NOT be the best way to do this. Ask prof?
-    let tempArray = [];
+function removeTower(towerToDrop) { //This can NOT be the best way to do this. Ask prof? //USE SPLICE!
+  print("trying to remove: " + towerToDrop.c + ", " + towerToDrop.r);
+  let startLength = towerArray.length;
+  
+
     
-    for (let i = 0; i < towerArray.length; i++) { //copies towerArray into tempArray;
-      tempArray[i] = towerArray[i];
-    }
-    
-    towerArray.length = 0; //empties towerArray;
-    
-    for(let i = 0; i < tempArray.length; i++){ //places only the desired towers back into towerArray.
-      if(tempArray[i] != towerToDrop){
-        towerArray.push(tempArray[i]);
-      }
+    for (let i = 0; i < startLength; i++) { 
+      print("TA.c: " + towerArray[i].c + "TTD.c: " + towerToDrop.c);
+      //if(towerArray[i].c == towerToDrop.c)
+        print("dropping!");
+         //towerArray.splice(i, 1);
+        //i--;
+      //}
+      print("current length: " + towerArray.length);
     }
 }
