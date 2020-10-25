@@ -1,10 +1,9 @@
 //Project Ascent
 //Thomas Park
+//Fall 2020
 
 /*TODO:  
- next:B) Only then, once all that is in place, begin to add player towers. 
- - I don't think any of this is too bad with messy solutions, but a smidge o' research may be necessary to do it nicely.
- - Use @8 pathfinding sample for mousePressed options.
+ next:
  then: C) projectiles (based on enemies actual xy, so that may have to be an attribute of the enemies. 
  -  Maybe have a getter, which calcs the univ x/y coords of the foe based on the node vals and sends that result.) //could also have getter & x/y calc be diff funcs for cleanliness' sake. 
  after: D) Add music & graphics, and sync the wait/timer schedule to the music (manually or otherwise. Will require research. 
@@ -20,8 +19,6 @@ let rows = 14;
 let score = 0;
 let currency = 120;
 
-//let testJim; //obviously temp.
-
 let towerArray = [];
 let enemyArray = [];
 
@@ -33,10 +30,7 @@ function setup() {
   createCanvas(1400, 700);
   createTileMap();
   loadGridArray();
-
-
-  //testJim.loadPath();
-  //print(testJim.path);
+  
   frameRate(30);
 }
 
@@ -47,10 +41,11 @@ function draw() {
   renderEnemies();
 
   if (frameCount%30 == 1) { //occurs once/sec)
+    checkEnemyAtGoal(); //done first to catch foes from prev loop. Gives players one more second to catch stragglers.
     moveEnemies();
   }
   if (frameCount%90 == 1){ //occurs once/3 sec
-      enemyArray[enemyArray.length] = new Enemy(gridArray[13][0], gridArray[13][13], 25, gridArray); 
+      enemyArray[enemyArray.length] = new Enemy(gridArray[13][0], gridArray[13][5], 25, gridArray); 
       enemyArray[enemyArray.length-1].loadPath(); //to do this dynamically, put elsewhere & load all enemy paths simultaneously.
   }
   //drawGridArray(); - for the future.
@@ -74,15 +69,25 @@ function moveEnemies(){
   }
 }
 
-
-
 function checkEnemyAtGoal(){
     for (let i = 0; i < enemyArray.length; i++) {
-      if (enemyArray[i].node == gridArray[13][13]) {//should consider making the goal a global (or at least level-wide) in scope.
-      print("An enemy has reached the end.");
+      if (enemyArray[i].node == gridArray[13][5]) {//should consider making the goal a global (or at least level-wide) in scope.
+      //print("An enemy has reached the end.");
+      //print("About to toss: " + enemyArray[i].node.c + ", " + enemyArray[i].node.r);
+      removeEnemy(enemyArray[i]);
       score -= 10;
     }
   }
+}
+
+function removeEnemy(enemyToDrop) { //uses splice to take one space and replace it with nothing as a means of removing a specified item from the array.  
+    //print("tossing: " + enemyToDrop.node.c + ", " + enemyToDrop.node.r);
+    for (let i = 0; i < enemyArray.length; i++) { 
+      if(enemyArray[i].node.c == enemyToDrop.node.c && enemyArray[i].node.r == enemyToDrop.node.r){
+        enemyArray.splice(i, 1);
+        i--;      
+      }
+    }
 }
 
 
