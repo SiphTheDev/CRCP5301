@@ -2,9 +2,13 @@
 //Thomas Park
 
 /*TODO: 
- next: Make pathfind it's own file
- then: set it up to be called & stored in each enemy, rather than globally
- after: check the enemy class for what remain to complete it's next phase. There are more notes there. Move them here at some point. 
+ now: A)create a score val in main, and have it tic if an enemy reaches the end space. 
+ next:B) Only then, once all that is in place, begin to add player towers. 
+   - I don't think any of this is too bad with messy solutions, but a smidge o' research may be necessary to do it nicely.
+   - Use @8 pathfinding sample for mousePressed options.
+ then: C) projectiles (based on enemies actual xy, so that may have to be an attribute of the enemies. 
+         -  Maybe have a getter, which calcs the univ x/y coords of the foe based on the node vals and sends that result.) //could also have getter & x/y calc be diff funcs for cleanliness' sake. 
+ after: D) Add music & graphics, and sync the wait/timer schedule to the music (manually or otherwise. Will require research. 
  far beyond: put all this into a new class (lv 1 or gamePlay or the like) & make this doc fundamentaly just a scene manager. Treat it as main. 
  */
 
@@ -14,13 +18,10 @@ let gridTileMap = []; //placeholder
 let gridArray = [];
 let cols = 28;
 let rows = 14;
-//let finalPath = [];
-//let tempColorAdj = 5;
-//let tempFriendAr = [];
+let score = 0;
+let currency = 120;
 
-//let toSearch = [];
-
-let testJim;
+let testJim; //obviously temp.
 
 function preload() {
   //gridSpriteSheet = loadImage('assets/dungeonTiles.png');
@@ -33,10 +34,9 @@ function setup() {
   testJim = new Enemy(gridArray[13][0], gridArray[13][13], 25, gridArray); 
   drawGridArray();
   testJim.loadPath();
-  print(testJim.path);
+  //print(testJim.path);
   frameRate(30);
 
-  //pathFind(gridArray[13][0], gridArray[13][13]);
 }
 
 
@@ -44,8 +44,13 @@ function draw() {
    testJim.render();
   if(frameCount%30 == 1){
       testJim.move(); 
+      if(testJim.node == gridArray[13][13]){//should consider making the goal a global (or at least level-wide) in scope.
+       print("same.");
+       score -= 10;
+       //later on, you can remove the enemy from the array here.
+      
+      } 
   }
-  
   //drawGridArray();
 
  
