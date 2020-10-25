@@ -60,6 +60,7 @@ function draw() {
 function renderTowers() {
   for (let i = 0; i < towerArray.length; i++) {
     towerArray[i].render();
+    //print("towerArray[i].c: " + towerArray[i].c);
     //print("towers rendered!");
   }
 }
@@ -149,7 +150,7 @@ function mouseClicked() {
             //print("Removing Tower!");
             removeTower(gridArray[i][j]);//A loop to search tower array, and remove only the tower at said coords - maybe make that its own func.
             gridArray[i][j].hasTower = false;
-            print(towerArray);
+            //print(towerArray);
           }
         }
       }
@@ -157,19 +158,11 @@ function mouseClicked() {
   }
 }
 
-function removeTower(towerToDrop) { //This can NOT be the best way to do this. Ask prof? //USE SPLICE!
-  print("trying to remove: " + towerToDrop.c + ", " + towerToDrop.r);
-  let startLength = towerArray.length;
-  
-
-    
-    for (let i = 0; i < startLength; i++) { 
-      print("TA.c: " + towerArray[i].c + "TTD.c: " + towerToDrop.c);
-      //if(towerArray[i].c == towerToDrop.c)
-        print("dropping!");
-         //towerArray.splice(i, 1);
-        //i--;
-      //}
-      print("current length: " + towerArray.length);
+function removeTower(towerToDrop) { //uses splice to take one space and replace it with nothing as a means of removing a specified item from the array.  
+    for (let i = 0; i < towerArray.length; i++) { 
+      if(towerArray[i].node.c == towerToDrop.c && towerArray[i].node.r == towerToDrop.r){
+        towerArray.splice(i, 1);
+        i--;      
+      }
     }
 }
