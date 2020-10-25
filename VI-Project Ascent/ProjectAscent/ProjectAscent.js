@@ -20,9 +20,10 @@ let rows = 14;
 let score = 0;
 let currency = 120;
 
-let testJim; //obviously temp.
+//let testJim; //obviously temp.
 
 let towerArray = [];
+let enemyArray = [];
 
 function preload() {
   //gridSpriteSheet = loadImage('assets/dungeonTiles.png');
@@ -32,9 +33,9 @@ function setup() {
   createCanvas(1400, 700);
   createTileMap();
   loadGridArray();
-  testJim = new Enemy(gridArray[13][0], gridArray[13][13], 25, gridArray); 
 
-  testJim.loadPath();
+
+  //testJim.loadPath();
   //print(testJim.path);
   frameRate(30);
 }
@@ -42,29 +43,47 @@ function setup() {
 
 function draw() {
   drawGridArray();
-  testJim.render();
   renderTowers();
+  renderEnemies();
 
-
-  if (frameCount%30 == 1) {
-    testJim.move(); 
-    if (testJim.node == gridArray[13][13]) {//should consider making the goal a global (or at least level-wide) in scope.
-      print("same.");
-      score -= 10;
-      //later on, you can remove the enemy from the array here.
-    }
+  if (frameCount%30 == 1) { //occurs once/sec)
+    moveEnemies();
   }
-  //drawGridArray();
+  if (frameCount%90 == 1){ //occurs once/3 sec
+      enemyArray[enemyArray.length] = new Enemy(gridArray[13][0], gridArray[13][13], 25, gridArray); 
+      enemyArray[enemyArray.length-1].loadPath(); //to do this dynamically, put elsewhere & load all enemy paths simultaneously.
+  }
+  //drawGridArray(); - for the future.
 }
 
 function renderTowers() {
   for (let i = 0; i < towerArray.length; i++) {
     towerArray[i].render();
-    //print("towerArray[i].c: " + towerArray[i].c);
-    //print("towers rendered!");
   }
 }
 
+function renderEnemies(){
+    for (let i = 0; i < enemyArray.length; i++) {
+    enemyArray[i].render();
+  }
+}
+
+function moveEnemies(){
+  for(let i = 0; i < enemyArray.length; i++){
+    enemyArray[i].move();
+  }
+}
+
+
+
+function checkEnemyAtGoal(){
+    for (let i = 0; i < enemyArray.length; i++) {
+      if (enemyArray[i].node == gridArray[13][13]) {//should consider making the goal a global (or at least level-wide) in scope.
+      print("An enemy has reached the end.");
+      score -= 10;
+    }
+  }
+}
 
 
 
