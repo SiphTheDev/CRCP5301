@@ -124,3 +124,18 @@ function drawGridArray() { //Calls the render method within each gridSpace insta
     }
   }
 }
+
+function mouseClicked(){
+  print("clicked at: " + mouseX + ", " + mouseY);
+
+  for(let i = 0; i< gridArray.length; i++){
+    for(let j = 0; j < gridArray[i].length; j++){
+      if(mouseX > gridArray[i][j].x && mouseX < (gridArray[i][j].x+(width/28)) && mouseY > gridArray[i][j].y && mouseY < (gridArray[i][j].y+(height/14))){
+             print("You clicked " + i + ", " + j + " !"); 
+             if(gridArray[i][j].type == 3){
+               print("Placing Tower!");
+             }
+      }
+    }
+  }  
+}
