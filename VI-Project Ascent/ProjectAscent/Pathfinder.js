@@ -61,10 +61,6 @@ class Pathfinder {
       this.addNode(this.gridArray[node.c][node.r-1], node);
     }
   }  
-  //print("toSearchNowHas:");
-  //for (let i = 0; i < toSearch.length; i++) {
-  //  print("In toSearch: (" + toSearch[i].c + ", " + toSearch[i].r + ")");
-  //}
 }
 
 

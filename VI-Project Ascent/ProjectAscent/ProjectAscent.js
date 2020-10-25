@@ -3,10 +3,10 @@
 
 /*TODO:  
  next:B) Only then, once all that is in place, begin to add player towers. 
-   - I don't think any of this is too bad with messy solutions, but a smidge o' research may be necessary to do it nicely.
-   - Use @8 pathfinding sample for mousePressed options.
+ - I don't think any of this is too bad with messy solutions, but a smidge o' research may be necessary to do it nicely.
+ - Use @8 pathfinding sample for mousePressed options.
  then: C) projectiles (based on enemies actual xy, so that may have to be an attribute of the enemies. 
-         -  Maybe have a getter, which calcs the univ x/y coords of the foe based on the node vals and sends that result.) //could also have getter & x/y calc be diff funcs for cleanliness' sake. 
+ -  Maybe have a getter, which calcs the univ x/y coords of the foe based on the node vals and sends that result.) //could also have getter & x/y calc be diff funcs for cleanliness' sake. 
  after: D) Add music & graphics, and sync the wait/timer schedule to the music (manually or otherwise. Will require research. 
  far beyond: put all this into a new class (lv 1 or gamePlay or the like) & make this doc fundamentaly just a scene manager. Treat it as main. 
  */
@@ -33,43 +33,37 @@ function setup() {
   createTileMap();
   loadGridArray();
   testJim = new Enemy(gridArray[13][0], gridArray[13][13], 25, gridArray); 
-  drawGridArray();
+
   testJim.loadPath();
   //print(testJim.path);
   frameRate(30);
-  towerArray[towerArray.length] = new Tower(gridArray[4][3]);
-  print("new tower is: " + towerArray[0]);
-
 }
 
 
 function draw() {
-   testJim.render();
-   renderTowers();
-   
-  if(frameCount%30 == 1){
-      testJim.move(); 
-      if(testJim.node == gridArray[13][13]){//should consider making the goal a global (or at least level-wide) in scope.
-       print("same.");
-       score -= 10;
-       //later on, you can remove the enemy from the array here.
-      
-      } 
+  drawGridArray();
+  testJim.render();
+  renderTowers();
+
+
+  if (frameCount%30 == 1) {
+    testJim.move(); 
+    if (testJim.node == gridArray[13][13]) {//should consider making the goal a global (or at least level-wide) in scope.
+      print("same.");
+      score -= 10;
+      //later on, you can remove the enemy from the array here.
+    }
   }
   //drawGridArray();
-
- 
-
-  
 }
 
-function renderTowers(){
-  for(let i = 0; i < towerArray.length; i++){
+function renderTowers() {
+  for (let i = 0; i < towerArray.length; i++) {
     towerArray[i].render();
     //print("towers rendered!");
   }
 }
-  
+
 
 
 
@@ -77,34 +71,34 @@ function createTileMap() { //temp until put this data in a json or elsewhere. //
   let b = 10; //borders
   let e = 20; //enemies
   let p = 30; //players
- gridTileMap = [b, b, b, b, b, b, b, b, b, b, b, b, b, b, 
-                b, b, b, b, b, b, b, b, b, b, b, b, b, b, 
-                b, b, b, b, b, b, b, b, b, b, b, b, b, b, 
-                b, b, p, p, p, p, p, p, p, p, p, p, e, e, 
-                b, b, p, p, p, p, p, p, p, p, p, p, e, e,
-                b, b, p, p, e, e, e, e, e, e, p, p, e, e,
-                b, b, p, p, e, e, e, e, e, e, p, p, e, e, 
-                b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
-                b, b, p, p, e, e, p, p, e, e, p, p, e, e,
-                b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
-                b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
-                b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
-                b, b, p, p, e, e, p, p, e, e, p, p, e, e,
-                e, e, e, e, e, e, p, p, e, e, p, p, e, e,
-                e, e, e, e, e, e, p, p, e, e, p, p, e, e,
-                b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
-                b, b, p, p, e, e, p, p, e, e, p, p, e, e,
-                b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
-                b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
-                b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
-                b, b, p, p, e, e, p, p, e, e, p, p, e, e,
-                b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
-                b, b, p, p, e, e, p, p, e, e, e, e, e, e,
-                b, b, p, p, e, e, e, e, e, e, e, e, e, e,
-                b, b, p, p, e, e, e, e, e, e, p, p, e, e,
-                b, b, b, b, b, b, b, b, b, b, b, b, b, b, 
-                b, b, b, b, b, b, b, b, b, b, b, b, b, b, 
-                b, b, b, b, b, b, b, b, b, b, b, b, b, b];//Determines what type of tile belongs in each space. Will move to JSON or XML later to allow level loading later.
+  gridTileMap = [b, b, b, b, b, b, b, b, b, b, b, b, b, b, 
+    b, b, b, b, b, b, b, b, b, b, b, b, b, b, 
+    b, b, b, b, b, b, b, b, b, b, b, b, b, b, 
+    b, b, p, p, p, p, p, p, p, p, p, p, e, e, 
+    b, b, p, p, p, p, p, p, p, p, p, p, e, e, 
+    b, b, p, p, e, e, e, e, e, e, p, p, e, e, 
+    b, b, p, p, e, e, e, e, e, e, p, p, e, e, 
+    b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
+    b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
+    b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
+    b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
+    b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
+    b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
+    e, e, e, e, e, e, p, p, e, e, p, p, e, e, 
+    e, e, e, e, e, e, p, p, e, e, p, p, e, e, 
+    b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
+    b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
+    b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
+    b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
+    b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
+    b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
+    b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
+    b, b, p, p, e, e, p, p, e, e, e, e, e, e, 
+    b, b, p, p, e, e, e, e, e, e, e, e, e, e, 
+    b, b, p, p, e, e, e, e, e, e, p, p, e, e, 
+    b, b, b, b, b, b, b, b, b, b, b, b, b, b, 
+    b, b, b, b, b, b, b, b, b, b, b, b, b, b, 
+    b, b, b, b, b, b, b, b, b, b, b, b, b, b];//Determines what type of tile belongs in each space. Will move to JSON or XML later to allow level loading later.
 }
 
 function loadGridArray() { //Once you change the gridTileMap to a JSON, use typeNames instead of these arbitrary numbers? Or still avoid strings? WARNING: Make sure JSON presents it in column chunks, not row chunks.
@@ -125,7 +119,7 @@ function loadGridArray() { //Once you change the gridTileMap to a JSON, use type
         farbe = color(0, 0, 255);
       }
       gridArray[c][r] = new GridSpace(c, r, c*(width/28), r*(height/14), type, farbe); //if you make the grid only half the screen & need to shift it over, do this here via addition. 
-      i++; 
+      i++;
     }
   }
 }
@@ -138,17 +132,42 @@ function drawGridArray() { //Calls the render method within each gridSpace insta
   }
 }
 
-function mouseClicked(){
+function mouseClicked() {
   print("clicked at: " + mouseX + ", " + mouseY);
 
-  for(let i = 0; i< gridArray.length; i++){
-    for(let j = 0; j < gridArray[i].length; j++){
-      if(mouseX > gridArray[i][j].x && mouseX < (gridArray[i][j].x+(width/28)) && mouseY > gridArray[i][j].y && mouseY < (gridArray[i][j].y+(height/14))){
-             print("You clicked " + i + ", " + j + " !"); 
-             if(gridArray[i][j].type == 3){
-               print("Placing Tower!");
-             }
+  for (let i = 0; i< gridArray.length; i++) {
+    for (let j = 0; j < gridArray[i].length; j++) {
+      if (mouseX > gridArray[i][j].x && mouseX < (gridArray[i][j].x+(width/28)) && mouseY > gridArray[i][j].y && mouseY < (gridArray[i][j].y+(height/14))) {
+        print("You clicked " + i + ", " + j + " !"); 
+        if (gridArray[i][j].type == 3) {
+          if (!gridArray[i][j].hasTower) {
+            print("Placing Tower!");
+            towerArray[towerArray.length] = new Tower(gridArray[i][j]);
+            gridArray[i][j].hasTower = true;
+            print("new tower is at: " + i + ", " + j);
+          } else if (gridArray[i][j].hasTower) {
+            print("Removing Tower!");
+            removeTower(gridArray[i][j]);//A loop to search tower array, and remove only the tower at said coords - maybe make that its own func.
+            gridArray[i][j].hasTower = false;
+          }
+        }
       }
     }
-  }  
+  }
+}
+
+function removeTower(towerToDrop) { //This can NOT be the best way to do this. Ask prof?
+    let tempArray = [];
+    
+    for (let i = 0; i < towerArray.length; i++) { //copies towerArray into tempArray;
+      tempArray[i] = towerArray[i];
+    }
+    
+    towerArray.length = 0; //empties towerArray;
+    
+    for(let i = 0; i < tempArray.length; i++){ //places only the desired towers back into towerArray.
+      if(tempArray[i] != towerToDrop){
+        towerArray.push(tempArray[i]);
+      }
+    }
 }
