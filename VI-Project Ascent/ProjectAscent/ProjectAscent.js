@@ -1,8 +1,7 @@
 //Project Ascent
 //Thomas Park
 
-/*TODO: 
- now: A)create a score val in main, and have it tic if an enemy reaches the end space. 
+/*TODO:  
  next:B) Only then, once all that is in place, begin to add player towers. 
    - I don't think any of this is too bad with messy solutions, but a smidge o' research may be necessary to do it nicely.
    - Use @8 pathfinding sample for mousePressed options.
@@ -23,6 +22,8 @@ let currency = 120;
 
 let testJim; //obviously temp.
 
+let towerArray = [];
+
 function preload() {
   //gridSpriteSheet = loadImage('assets/dungeonTiles.png');
 }
@@ -36,12 +37,16 @@ function setup() {
   testJim.loadPath();
   //print(testJim.path);
   frameRate(30);
+  towerArray[towerArray.length] = new Tower(gridArray[4][3]);
+  print("new tower is: " + towerArray[0]);
 
 }
 
 
 function draw() {
    testJim.render();
+   renderTowers();
+   
   if(frameCount%30 == 1){
       testJim.move(); 
       if(testJim.node == gridArray[13][13]){//should consider making the goal a global (or at least level-wide) in scope.
@@ -54,10 +59,18 @@ function draw() {
   //drawGridArray();
 
  
-  //drawTowerArray();
+
   
-  //To keep score later, have a global(ish) variable score, and a method that checks the node of each enemy & tics score if the enemy node = the goal node.
 }
+
+function renderTowers(){
+  for(let i = 0; i < towerArray.length; i++){
+    towerArray[i].render();
+    //print("towers rendered!");
+  }
+}
+  
+
 
 
 function createTileMap() { //temp until put this data in a json or elsewhere. //maybe make this a 2d array in future?
