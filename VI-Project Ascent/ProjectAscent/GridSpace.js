@@ -29,6 +29,6 @@ class GridSpace {
     rectMode(CORNER);
     rect(this.x, this.y, width/28, height/14);
 
-    //For the future: image(gridSpriteSheet, c*50, r*50, 50, 50, 0, 0, 64, 64); Use r & c to adjust first two vals, leave the 100s alone, the next two 0s will hard code for each 0,1,2,3, then leave the 64s alone
+    //In future: image(gridSpriteSheet, c*50, r*50, 50, 50, 0, 0, 64, 64); Use r & c to adjust first two vals, leave the 100s alone, the next two 0s will hard code for each 0,1,2,3, then leave the 64s alone
   }
 }

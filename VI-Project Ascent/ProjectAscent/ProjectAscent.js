@@ -23,7 +23,7 @@ let towerArray = [];
 let enemyArray = [];
 
 function preload() {
-  //gridSpriteSheet = loadImage('assets/dungeonTiles.png');
+  //In future: gridSpriteSheet = loadImage('assets/dungeonTiles.png');
 }
 
 function setup() {
@@ -39,7 +39,7 @@ function draw() {
   drawGridArray();
   renderTowers();
   renderEnemies();
-
+  //In future: these will be synced with the music. 
   if (frameCount%30 == 1) { //occurs once/sec)
     checkEnemyAtGoal(); //done first to catch foes from prev loop. Gives players one more second to catch stragglers.
     moveEnemies();
@@ -174,11 +174,26 @@ function mouseClicked() {
             gridArray[i][j].hasTower = false;
             //print(towerArray);
           }
-        }
+        } /*In future: else if(type == 1){
+          if(mouse is on correct node){
+            Go to Pause Screen
+            }
+        
+        }*/
       }
     }
   }
 }
+
+/* In future: function pauseScreen(){
+  -hanges game state, so mousePressed will detected buttons on this screen rather than the game grid.
+  - renders said buttons:
+      - exit to main menu
+      - return to game
+      - mute sound effects (if they are later implemented). Not sure why you'd do this in a music based game, but who knows. 
+}
+
+*/
 
 function removeTower(towerToDrop) { //uses splice to take one space and replace it with nothing as a means of removing a specified item from the array.  
   for (let i = 0; i < towerArray.length; i++) { 
