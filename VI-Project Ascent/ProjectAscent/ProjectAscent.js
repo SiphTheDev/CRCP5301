@@ -30,7 +30,7 @@ function setup() {
   createCanvas(1400, 700);
   createTileMap();
   loadGridArray();
-  
+
   frameRate(30);
 }
 
@@ -44,9 +44,9 @@ function draw() {
     checkEnemyAtGoal(); //done first to catch foes from prev loop. Gives players one more second to catch stragglers.
     moveEnemies();
   }
-  if (frameCount%90 == 1){ //occurs once/3 sec
-      enemyArray[enemyArray.length] = new Enemy(gridArray[13][0], gridArray[13][5], 25, gridArray); 
-      enemyArray[enemyArray.length-1].loadPath(); //to do this dynamically, put elsewhere & load all enemy paths simultaneously.
+  if (frameCount%90 == 1) { //occurs once/3 sec
+    enemyArray[enemyArray.length] = new Enemy(gridArray[13][0], gridArray[13][5], 25, gridArray); 
+    enemyArray[enemyArray.length-1].loadPath(); //to do this dynamically, put elsewhere & load all enemy paths simultaneously.
   }
   //drawGridArray(); - for the future.
 }
@@ -57,21 +57,21 @@ function renderTowers() {
   }
 }
 
-function renderEnemies(){
-    for (let i = 0; i < enemyArray.length; i++) {
+function renderEnemies() {
+  for (let i = 0; i < enemyArray.length; i++) {
     enemyArray[i].render();
   }
 }
 
-function moveEnemies(){
-  for(let i = 0; i < enemyArray.length; i++){
+function moveEnemies() {
+  for (let i = 0; i < enemyArray.length; i++) {
     enemyArray[i].move();
   }
 }
 
-function checkEnemyAtGoal(){
-    for (let i = 0; i < enemyArray.length; i++) {
-      if (enemyArray[i].node == gridArray[13][5]) {//should consider making the goal a global (or at least level-wide) in scope.
+function checkEnemyAtGoal() {
+  for (let i = 0; i < enemyArray.length; i++) {
+    if (enemyArray[i].node == gridArray[13][5]) {//should consider making the goal a global (or at least level-wide) in scope.
       //print("An enemy has reached the end.");
       //print("About to toss: " + enemyArray[i].node.c + ", " + enemyArray[i].node.r);
       removeEnemy(enemyArray[i]);
@@ -81,16 +81,14 @@ function checkEnemyAtGoal(){
 }
 
 function removeEnemy(enemyToDrop) { //uses splice to take one space and replace it with nothing as a means of removing a specified item from the array.  
-    //print("tossing: " + enemyToDrop.node.c + ", " + enemyToDrop.node.r);
-    for (let i = 0; i < enemyArray.length; i++) { 
-      if(enemyArray[i].node.c == enemyToDrop.node.c && enemyArray[i].node.r == enemyToDrop.node.r){
-        enemyArray.splice(i, 1);
-        i--;      
-      }
+  //print("tossing: " + enemyToDrop.node.c + ", " + enemyToDrop.node.r);
+  for (let i = 0; i < enemyArray.length; i++) { 
+    if (enemyArray[i].node.c == enemyToDrop.node.c && enemyArray[i].node.r == enemyToDrop.node.r) {
+      enemyArray.splice(i, 1);
+      i--;
     }
+  }
 }
-
-
 
 function createTileMap() { //temp until put this data in a json or elsewhere. //maybe make this a 2d array in future?
   let b = 10; //borders
@@ -183,10 +181,10 @@ function mouseClicked() {
 }
 
 function removeTower(towerToDrop) { //uses splice to take one space and replace it with nothing as a means of removing a specified item from the array.  
-    for (let i = 0; i < towerArray.length; i++) { 
-      if(towerArray[i].node.c == towerToDrop.c && towerArray[i].node.r == towerToDrop.r){
-        towerArray.splice(i, 1);
-        i--;      
-      }
+  for (let i = 0; i < towerArray.length; i++) { 
+    if (towerArray[i].node.c == towerToDrop.c && towerArray[i].node.r == towerToDrop.r) {
+      towerArray.splice(i, 1);
+      i--;
     }
+  }
 }

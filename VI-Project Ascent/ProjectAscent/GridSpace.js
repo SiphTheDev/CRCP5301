@@ -1,6 +1,6 @@
 class GridSpace {
 
-  constructor(c, r, x, y, type, farbe, gridFrom = null, Gcost = null, Hcost = null, Fcost = null, searched = false) {
+  constructor(c, r, x, y, type, farbe, gridFrom = null, Gcost = null, Hcost = null, Fcost = null, searched = false, hasTower = false) {
     this.c = c;
     this.r = r;  
     this.x = x;
@@ -12,6 +12,7 @@ class GridSpace {
     this.Hcost = Hcost;
     this.Fcost = Fcost;
     this.searched = searched;
+    this.hasTower = hasTower;
   } 
 
   render() {
@@ -25,8 +26,9 @@ class GridSpace {
     } else if (this.type == 3) { //Player Terrain
       fill(this.farbe);
     }
+    rectMode(CORNER);
     rect(this.x, this.y, width/28, height/14);
 
-    //For the future: image(gridSpriteSheet, c*100, r*100, 100, 100, 0, 0, 64, 64); //Use r & c to adjust first two vals, leave the 100s alone, the next two 0s will hard code for each 0,1,2,3, then leave the 64s alone
+    //For the future: image(gridSpriteSheet, c*50, r*50, 50, 50, 0, 0, 64, 64); Use r & c to adjust first two vals, leave the 100s alone, the next two 0s will hard code for each 0,1,2,3, then leave the 64s alone
   }
 }

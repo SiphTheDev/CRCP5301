@@ -1,6 +1,6 @@
 class Pathfinder {
 
-  constructor(gridArray) {//, toSearch = null, finalPath = null) {
+  constructor(gridArray) {
     this.gridArray = gridArray;
     this.toSearch = [];
     this.finalPath = [];
@@ -155,10 +155,10 @@ class Pathfinder {
       index ++;
     }
   }
-  
-  resetGrid(){
-    for(let i = 0; i < gridArray.length; i++){
-      for(let j = 0; j < gridArray[i].length; j++){
+
+  resetGrid() {
+    for (let i = 0; i < gridArray.length; i++) {
+      for (let j = 0; j < gridArray[i].length; j++) {
         gridArray[i][j].searched = false;
       }
     }
