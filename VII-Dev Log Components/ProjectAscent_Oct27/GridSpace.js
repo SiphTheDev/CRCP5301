@@ -20,15 +20,26 @@ class GridSpace {
     if (this.type == 0) { //Empty spaces
       noFill();
     } else if (this.type == 1) { //Borders & Walls
-      fill(this.farbe);
+      if (this.c == 2 && this.r > 1) {
+        image(gridSpriteSheet, this.c*50, this.r*50, 50, 50, 0, 256, 128, 128);
+      } else if (this.c == 25 && this.r > 1) {
+        image(gridSpriteSheet, this.c*50, this.r*50, 50, 50, 320, 256, 128, 128);
+      } else if(this.c > 2 && this.c < 25 && this.r > 0){
+        image(gridSpriteSheet, this.c*50, this.r*50, 50, 50, 128, 64, 128, 128);
+      } else if(this.c == 2 && this.r == 1){
+        image(gridSpriteSheet, this.c*50, this.r*50, 50, 50, 0, 64, 128, 128);
+      } else if(this.c == 25 && this.r == 1){
+        image(gridSpriteSheet, this.c*50, this.r*50, 50, 50, 320, 64, 128, 128);
+      }
+      //fill(this.farbe);
     } else if (this.type == 2) { //Enemy Terrain
-      fill(this.farbe);
+      image(gridSpriteSheet, this.c*50, this.r*50, 50, 50, 128, 0, 64, 64);
+      //fill(this.farbe);
     } else if (this.type == 3) { //Player Terrain
-      fill(this.farbe);
+      //fill(this.farbe);
+      image(gridSpriteSheet, this.c*50, this.r*50, 50, 50, 0, 0, 64, 64); //Use r & c to adjust first two vals, leave the 50s alone, the next two 0s will hard code for each 0,1,2,3, then leave the 64s alone
     }
-    rectMode(CORNER);
-    rect(this.x, this.y, width/28, height/14);
-
-    image(gridSpriteSheet, this.c*50, this.r*50, 50, 50, 0, 0, 64, 64); //Use r & c to adjust first two vals, leave the 100s alone, the next two 0s will hard code for each 0,1,2,3, then leave the 64s alone
+    //rectMode(CORNER);
+    //rect(this.x, this.y, width/28, height/14);
   }
 }
