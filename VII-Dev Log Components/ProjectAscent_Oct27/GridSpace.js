@@ -30,8 +30,11 @@ class GridSpace {
         image(gridSpriteSheet, this.c*50, this.r*50, 50, 50, 0, 64, 128, 128);
       } else if(this.c == 25 && this.r == 1){
         image(gridSpriteSheet, this.c*50, this.r*50, 50, 50, 320, 64, 128, 128);
+      }else{
+        fill(this.farbe);
+        rectMode(CORNER);
+        rect(this.x, this.y, width/28, height/14);
       }
-      //fill(this.farbe);
     } else if (this.type == 2) { //Enemy Terrain
       image(gridSpriteSheet, this.c*50, this.r*50, 50, 50, 128, 0, 64, 64);
       //fill(this.farbe);
@@ -39,7 +42,6 @@ class GridSpace {
       //fill(this.farbe);
       image(gridSpriteSheet, this.c*50, this.r*50, 50, 50, 0, 0, 64, 64); //Use r & c to adjust first two vals, leave the 50s alone, the next two 0s will hard code for each 0,1,2,3, then leave the 64s alone
     }
-    //rectMode(CORNER);
-    //rect(this.x, this.y, width/28, height/14);
+ 
   }
 }

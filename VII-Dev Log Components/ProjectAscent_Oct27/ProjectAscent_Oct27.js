@@ -23,6 +23,8 @@ let currency = 120;
 let towerArray = [];
 let enemyArray = [];
 
+let gold = 120;
+
 function preload() {
   gridSpriteSheet = loadImage('assets/dungeonTiles.png');
 }
@@ -49,7 +51,9 @@ function draw() {
     enemyArray[enemyArray.length] = new Enemy(gridArray[13][0], gridArray[13][13], 25, gridArray); 
     enemyArray[enemyArray.length-1].loadPath(); //to do this dynamically, put elsewhere & load all enemy paths simultaneously.
   }
-  //drawGridArray(); - for the future.
+  textSize(32);
+  text("gold:", 25, 75);
+  text(gold, 25,125);
 }
 
 function renderTowers() {
@@ -134,7 +138,7 @@ function loadGridArray() { //Once you change the gridTileMap to a JSON, use type
     for (let r = 0; r < rows; r++) {
       if (gridTileMap[i] == 10) {
         type = 1;
-        farbe = color(255, 0, 0);
+        farbe = color(123,202,137);
       } else if (gridTileMap[i] == 20) {
         type = 2;
         farbe = color(0, 255, 0);
@@ -164,15 +168,17 @@ function mouseClicked() {
       if (mouseX > gridArray[i][j].x && mouseX < (gridArray[i][j].x+(width/28)) && mouseY > gridArray[i][j].y && mouseY < (gridArray[i][j].y+(height/14))) {
         //print("You clicked " + i + ", " + j + " !"); 
         if (gridArray[i][j].type == 3) {
-          if (!gridArray[i][j].hasTower) {
+          if (!gridArray[i][j].hasTower && gold >= 20) {
             //print("Placing Tower!");
             towerArray[towerArray.length] = new Tower(gridArray[i][j]);
             gridArray[i][j].hasTower = true;
+            gold -= 20;
             //print("new tower is at: " + i + ", " + j);
           } else if (gridArray[i][j].hasTower) {
             //print("Removing Tower!");
             removeTower(gridArray[i][j]);//A loop to search tower array, and remove only the tower at said coords - maybe make that its own func.
             gridArray[i][j].hasTower = false;
+            gold += 10;
             //print(towerArray);
           }
         } /*In future: else if(type == 1){
