@@ -12,6 +12,7 @@
 
 
 //let gridSpriteSheet;
+let gameState = 0;
 let gridTileMap = []; //placeholder
 let gridArray = [];
 let cols = 28;
@@ -36,6 +37,10 @@ function setup() {
 
 
 function draw() {
+  if(gameState == 0){
+    drawMenu();
+  }
+  else if(gameState == 1){
   drawGridArray();
   renderTowers();
   renderEnemies();
@@ -45,10 +50,21 @@ function draw() {
     moveEnemies();
   }
   if (frameCount%90 == 1) { //occurs once/3 sec
-    enemyArray[enemyArray.length] = new Enemy(gridArray[13][0], gridArray[13][5], 25, gridArray); 
+    enemyArray[enemyArray.length] = new Enemy(gridArray[13][0], gridArray[13][13], 25, gridArray); 
     enemyArray[enemyArray.length-1].loadPath(); //to do this dynamically, put elsewhere & load all enemy paths simultaneously.
   }
+  }
   //drawGridArray(); - for the future.
+}
+function drawMenu(){
+  background(255);
+  fill(63,224,208);
+  rectMode(CENTER);
+  rect(width/2, height/2, 200,100);
+  fill(255);
+  textAlign(CENTER);
+  textSize(45);
+  text("Play!", width/2 , height/2);
 }
 
 function renderTowers() {
@@ -71,7 +87,7 @@ function moveEnemies() {
 
 function checkEnemyAtGoal() {
   for (let i = 0; i < enemyArray.length; i++) {
-    if (enemyArray[i].node == gridArray[13][5]) {//should consider making the goal a global (or at least level-wide) in scope.
+    if (enemyArray[i].node == gridArray[13][13]) {//should consider making the goal a global (or at least level-wide) in scope.
       //print("An enemy has reached the end.");
       //print("About to toss: " + enemyArray[i].node.c + ", " + enemyArray[i].node.r);
       removeEnemy(enemyArray[i]);
@@ -157,6 +173,11 @@ function drawGridArray() { //Calls the render method within each gridSpace insta
 
 function mouseClicked() {
   //print("clicked at: " + mouseX + ", " + mouseY);
+if(gameState == 0){
+    if(mouseX < (width/2 + 100) && mouseX > (width/2 - 100) && mouseY < (height/2 + 50) && mouseY > (height/2 - 50)){
+      gameState = 1; 
+    }
+}else if (gameState == 1){
 
   for (let i = 0; i< gridArray.length; i++) {
     for (let j = 0; j < gridArray[i].length; j++) {
@@ -183,6 +204,7 @@ function mouseClicked() {
       }
     }
   }
+}
 }
 
 /* In future: function pauseScreen(){
