@@ -13,19 +13,21 @@
 
 //let gridSpriteSheet;
 let gameState = 0;
+let stageSong1;
 let gridTileMap = []; //placeholder
 let gridArray = [];
 let cols = 28;
 let rows = 14;
 let score = 0;
+let gold = 120;
 
 let towerArray = [];
 let enemyArray = [];
 
-let gold = 120;
 
 function preload() {
   gridSpriteSheet = loadImage('assets/dungeonTiles.png');
+  stageSong1 = loadSound('assets/Abstraction/PixelWar1.wav');
 }
 
 function setup() {
@@ -127,6 +129,7 @@ function drawPauseMenu(){
 }
 //The bulk of the gameplay begins here: 
 function runStage(){
+  //stageSong1.play();
   drawGridArray();
   renderTowers();
   renderEnemies();
@@ -191,6 +194,7 @@ if(gameState == 0){ //  gs 0 is main  menu
     }
 }else if (gameState == 1){ //  gs 1 is level 1
   //Checks each tile to see if the mouse has been clicked within its bounds.
+    if(!stageSong1.isPlaying()){stageSong1.play();}
   for (let i = 0; i< gridArray.length; i++) { 
     for (let j = 0; j < gridArray[i].length; j++) {
       if (mouseX > gridArray[i][j].x && mouseX < (gridArray[i][j].x+(width/28)) && mouseY > gridArray[i][j].y && mouseY < (gridArray[i][j].y+(height/14))) {
