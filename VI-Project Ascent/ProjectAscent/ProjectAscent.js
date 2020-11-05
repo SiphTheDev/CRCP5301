@@ -18,13 +18,14 @@ let gridArray = [];
 let cols = 28;
 let rows = 14;
 let score = 0;
-let currency = 120;
 
 let towerArray = [];
 let enemyArray = [];
 
+let gold = 120;
+
 function preload() {
-  //In future: gridSpriteSheet = loadImage('assets/dungeonTiles.png');
+  gridSpriteSheet = loadImage('assets/dungeonTiles.png');
 }
 
 function setup() {
@@ -35,78 +36,7 @@ function setup() {
   frameRate(30);
 }
 
-
-function draw() {
-  if(gameState == 0){
-    drawMenu();
-  }
-  else if(gameState == 1){
-  drawGridArray();
-  renderTowers();
-  renderEnemies();
-  //In future: these will be synced with the music. 
-  if (frameCount%30 == 1) { //occurs once/sec)
-    checkEnemyAtGoal(); //done first to catch foes from prev loop. Gives players one more second to catch stragglers.
-    moveEnemies();
-  }
-  if (frameCount%90 == 1) { //occurs once/3 sec
-    enemyArray[enemyArray.length] = new Enemy(gridArray[13][0], gridArray[13][13], 25, gridArray); 
-    enemyArray[enemyArray.length-1].loadPath(); //to do this dynamically, put elsewhere & load all enemy paths simultaneously.
-  }
-  }
-  //drawGridArray(); - for the future.
-}
-function drawMenu(){
-  background(255);
-  fill(63,224,208);
-  rectMode(CENTER);
-  rect(width/2, height/2, 200,100);
-  fill(255);
-  textAlign(CENTER);
-  textSize(45);
-  text("Play!", width/2 , height/2);
-}
-
-function renderTowers() {
-  for (let i = 0; i < towerArray.length; i++) {
-    towerArray[i].render();
-  }
-}
-
-function renderEnemies() {
-  for (let i = 0; i < enemyArray.length; i++) {
-    enemyArray[i].render();
-  }
-}
-
-function moveEnemies() {
-  for (let i = 0; i < enemyArray.length; i++) {
-    enemyArray[i].move();
-  }
-}
-
-function checkEnemyAtGoal() {
-  for (let i = 0; i < enemyArray.length; i++) {
-    if (enemyArray[i].node == gridArray[13][13]) {//should consider making the goal a global (or at least level-wide) in scope.
-      //print("An enemy has reached the end.");
-      //print("About to toss: " + enemyArray[i].node.c + ", " + enemyArray[i].node.r);
-      removeEnemy(enemyArray[i]);
-      score -= 10;
-    }
-  }
-}
-
-function removeEnemy(enemyToDrop) { //uses splice to take one space and replace it with nothing as a means of removing a specified item from the array.  
-  //print("tossing: " + enemyToDrop.node.c + ", " + enemyToDrop.node.r);
-  for (let i = 0; i < enemyArray.length; i++) { 
-    if (enemyArray[i].node.c == enemyToDrop.node.c && enemyArray[i].node.r == enemyToDrop.node.r) {
-      enemyArray.splice(i, 1);
-      i--;
-    }
-  }
-}
-
-function createTileMap() { //temp until put this data in a json or elsewhere. //maybe make this a 2d array in future?
+function createTileMap() { //temp until put this data in a json or elsewhere. 
   let b = 10; //borders
   let e = 20; //enemies
   let p = 30; //players
@@ -171,36 +101,112 @@ function drawGridArray() { //Calls the render method within each gridSpace insta
   }
 }
 
+function draw() {
+  if(gameState == 0){ //gs 0 is Main Menu
+    drawMainMenu();
+  } 
+  else if(gameState == 1){ //gs 1 is Stage 1 //TODO: Make a runStage function, with all this stuff in it. We need to clean up Draw a bit.
+  drawGridArray();
+  renderTowers();
+  renderEnemies();
+  //In future: these will be synced with the music. 
+  if (frameCount%30 == 1) { //occurs once/sec)
+    checkEnemyAtGoal(); //done first to catch foes from prev loop. Gives players one more second to catch stragglers.
+    moveEnemies();
+  }
+  if (frameCount%90 == 1) { //occurs once/3 sec
+    enemyArray[enemyArray.length] = new Enemy(gridArray[13][0], gridArray[13][13], 25, gridArray); 
+    enemyArray[enemyArray.length-1].loadPath(); //to do this dynamically, put elsewhere & load all enemy paths simultaneously.
+  }
+  fill(0);
+  textSize(32);
+  text("gold:", 25, 75);
+  text(gold, 25,125);
+  } else if (gameState == 2){ //gs 2 is Pause Menu
+    drawPauseMenu();
+  }
+}
+
+function drawMainMenu(){
+  background(255);
+  fill(63,224,208);
+  rectMode(CENTER);
+  rect(width/2, height/2, 200,100);
+  fill(255);
+  textAlign(CENTER);
+  textSize(45);
+  text("Play!", width/2 , height/2);
+}
+
+function drawPauseMenu(){
+  //background(25,25,25,75);
+}
+
+function renderTowers() {
+  for (let i = 0; i < towerArray.length; i++) {
+    towerArray[i].render();
+  }
+}
+
+function renderEnemies() {
+  for (let i = 0; i < enemyArray.length; i++) {
+    enemyArray[i].render();
+  }
+}
+
+function moveEnemies() {
+  for (let i = 0; i < enemyArray.length; i++) {
+    enemyArray[i].move();
+  }
+}
+
+function checkEnemyAtGoal() {
+  for (let i = 0; i < enemyArray.length; i++) {
+    if (enemyArray[i].node == gridArray[13][13]) {//should consider making the goal a global (or at least level-wide) in scope.
+      removeEnemy(enemyArray[i]);
+      score -= 10;
+    }
+  }
+}
+
+function removeEnemy(enemyToDrop) { //uses splice to take one space and replace it with nothing as a means of removing a specified item from the array.  
+  //print("tossing: " + enemyToDrop.node.c + ", " + enemyToDrop.node.r);
+  for (let i = 0; i < enemyArray.length; i++) { 
+    if (enemyArray[i].node.c == enemyToDrop.node.c && enemyArray[i].node.r == enemyToDrop.node.r) {
+      enemyArray.splice(i, 1);
+      i--;
+    }
+  }
+}
+
+
+
 function mouseClicked() {
-  //print("clicked at: " + mouseX + ", " + mouseY);
-if(gameState == 0){
+if(gameState == 0){ //  gs 0 is main  menu
     if(mouseX < (width/2 + 100) && mouseX > (width/2 - 100) && mouseY < (height/2 + 50) && mouseY > (height/2 - 50)){
       gameState = 1; 
     }
-}else if (gameState == 1){
-
-  for (let i = 0; i< gridArray.length; i++) {
+}else if (gameState == 1){ //  gs 1 is level 1
+  //Checks each tile to see if the mouse has been clicked within its bounds.
+  for (let i = 0; i< gridArray.length; i++) { 
     for (let j = 0; j < gridArray[i].length; j++) {
       if (mouseX > gridArray[i][j].x && mouseX < (gridArray[i][j].x+(width/28)) && mouseY > gridArray[i][j].y && mouseY < (gridArray[i][j].y+(height/14))) {
-        //print("You clicked " + i + ", " + j + " !"); 
+        //If the tile is type 3 (open to towers), places a tower if space is open and player has enough money.
         if (gridArray[i][j].type == 3) {
-          if (!gridArray[i][j].hasTower) {
-            //print("Placing Tower!");
+          if (!gridArray[i][j].hasTower) { //Adds a new tower if there isn't one there.
             towerArray[towerArray.length] = new Tower(gridArray[i][j]);
             gridArray[i][j].hasTower = true;
-            //print("new tower is at: " + i + ", " + j);
-          } else if (gridArray[i][j].hasTower) {
+          } else if (gridArray[i][j].hasTower) { //removes a tower if there is one there
             //print("Removing Tower!");
             removeTower(gridArray[i][j]);//A loop to search tower array, and remove only the tower at said coords - maybe make that its own func.
             gridArray[i][j].hasTower = false;
-            //print(towerArray);
           }
-        } /*In future: else if(type == 1){
-          if(mouse is on correct node){
-            Go to Pause Screen
-            }
-        
-        }*/
+        }  else if(gridArray[i][j].c == 0  && gridArray[i][j].r == 0){ //If top left clicked, pauses the game. 
+            //put elsewhere in future, doesn't really belong in this else-if nest.       
+            //fill(35,35,35, 45);
+            //rect(0,0,width, height);
+            gameState = 2; //ie paused.                    
+        }
       }
     }
   }
