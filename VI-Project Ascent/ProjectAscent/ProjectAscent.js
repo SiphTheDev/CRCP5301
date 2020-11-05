@@ -79,7 +79,7 @@ function loadGridArray() { //Once you change the gridTileMap to a JSON, use type
     for (let r = 0; r < rows; r++) {
       if (gridTileMap[i] == 10) {
         type = 1;
-        farbe = color(255, 0, 0);
+        farbe = color(123,202,137);
       } else if (gridTileMap[i] == 20) {
         type = 2;
         farbe = color(0, 255, 0);
@@ -104,24 +104,8 @@ function drawGridArray() { //Calls the render method within each gridSpace insta
 function draw() {
   if(gameState == 0){ //gs 0 is Main Menu
     drawMainMenu();
-  } 
-  else if(gameState == 1){ //gs 1 is Stage 1 //TODO: Make a runStage function, with all this stuff in it. We need to clean up Draw a bit.
-  drawGridArray();
-  renderTowers();
-  renderEnemies();
-  //In future: these will be synced with the music. 
-  if (frameCount%30 == 1) { //occurs once/sec)
-    checkEnemyAtGoal(); //done first to catch foes from prev loop. Gives players one more second to catch stragglers.
-    moveEnemies();
-  }
-  if (frameCount%90 == 1) { //occurs once/3 sec
-    enemyArray[enemyArray.length] = new Enemy(gridArray[13][0], gridArray[13][13], 25, gridArray); 
-    enemyArray[enemyArray.length-1].loadPath(); //to do this dynamically, put elsewhere & load all enemy paths simultaneously.
-  }
-  fill(0);
-  textSize(32);
-  text("gold:", 25, 75);
-  text(gold, 25,125);
+  } else if(gameState == 1){ //gs 1 is Stage 1 //TODO: Make a runStage function, with all this stuff in it. We need to clean up Draw a bit.
+    runStage();
   } else if (gameState == 2){ //gs 2 is Pause Menu
     drawPauseMenu();
   }
@@ -140,6 +124,25 @@ function drawMainMenu(){
 
 function drawPauseMenu(){
   //background(25,25,25,75);
+}
+//The bulk of the gameplay begins here: 
+function runStage(){
+  drawGridArray();
+  renderTowers();
+  renderEnemies();
+  //In future: these will be synced with the music. 
+  if (frameCount%30 == 1) { //occurs once/sec)
+    checkEnemyAtGoal(); //done first to catch foes from prev loop. Gives players one more second to catch stragglers.
+    moveEnemies();
+  }
+  if (frameCount%90 == 1) { //occurs once/3 sec
+    enemyArray[enemyArray.length] = new Enemy(gridArray[13][0], gridArray[13][13], 25, gridArray); 
+    enemyArray[enemyArray.length-1].loadPath(); //to do this dynamically, put elsewhere & load all enemy paths simultaneously.
+  }
+  fill(255);
+  textSize(32);
+  text("gold:", 25, 75);
+  text(gold, 25,125);
 }
 
 function renderTowers() {
@@ -193,13 +196,15 @@ if(gameState == 0){ //  gs 0 is main  menu
       if (mouseX > gridArray[i][j].x && mouseX < (gridArray[i][j].x+(width/28)) && mouseY > gridArray[i][j].y && mouseY < (gridArray[i][j].y+(height/14))) {
         //If the tile is type 3 (open to towers), places a tower if space is open and player has enough money.
         if (gridArray[i][j].type == 3) {
-          if (!gridArray[i][j].hasTower) { //Adds a new tower if there isn't one there.
+          if (!gridArray[i][j].hasTower && gold >= 20) { //Adds a new tower if there isn't one there.
             towerArray[towerArray.length] = new Tower(gridArray[i][j]);
             gridArray[i][j].hasTower = true;
+            gold -= 20;
           } else if (gridArray[i][j].hasTower) { //removes a tower if there is one there
             //print("Removing Tower!");
             removeTower(gridArray[i][j]);//A loop to search tower array, and remove only the tower at said coords - maybe make that its own func.
             gridArray[i][j].hasTower = false;
+            gold += 10;
           }
         }  else if(gridArray[i][j].c == 0  && gridArray[i][j].r == 0){ //If top left clicked, pauses the game. 
             //put elsewhere in future, doesn't really belong in this else-if nest.       
