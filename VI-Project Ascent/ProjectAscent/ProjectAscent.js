@@ -133,12 +133,12 @@ function runStage(){
   drawGridArray();
   renderTowers();
   renderEnemies();
-  //In future: these will be synced with the music. 
-  if (frameCount%30 == 1) { //occurs once/sec)
+  //In future: these will be synced with the music.  //reset counter at 1600 for this song? Unsure. Also, can I reset frame count?
+  if (frameCount%40 == 1) { //occurs once/sec)
     checkEnemyAtGoal(); //done first to catch foes from prev loop. Gives players one more second to catch stragglers.
     moveEnemies();
   }
-  if (frameCount%90 == 1) { //occurs once/3 sec
+  if (frameCount%120 == 1) { //occurs once/3 sec
     enemyArray[enemyArray.length] = new Enemy(gridArray[13][0], gridArray[13][13], 25, gridArray); 
     enemyArray[enemyArray.length-1].loadPath(); //to do this dynamically, put elsewhere & load all enemy paths simultaneously.
   }
@@ -191,10 +191,12 @@ function mouseClicked() {
 if(gameState == 0){ //  gs 0 is main  menu
     if(mouseX < (width/2 + 100) && mouseX > (width/2 - 100) && mouseY < (height/2 + 50) && mouseY > (height/2 - 50)){
       gameState = 1; 
+      stageSong1.loop();
+      //if(!stageSong1.isPlaying()){}
     }
 }else if (gameState == 1){ //  gs 1 is level 1
   //Checks each tile to see if the mouse has been clicked within its bounds.
-    if(!stageSong1.isPlaying()){stageSong1.play();}
+    
   for (let i = 0; i< gridArray.length; i++) { 
     for (let j = 0; j < gridArray[i].length; j++) {
       if (mouseX > gridArray[i][j].x && mouseX < (gridArray[i][j].x+(width/28)) && mouseY > gridArray[i][j].y && mouseY < (gridArray[i][j].y+(height/14))) {
