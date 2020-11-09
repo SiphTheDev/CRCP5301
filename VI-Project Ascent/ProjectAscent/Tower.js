@@ -17,16 +17,17 @@ class Tower {
     //in future: image(vals to get image from sprite sheet, scale it, and place it here.).
   }
   
-  /*attack{ //will be called from main draw loop (or indirectly. Draw may call a fireTowers() method that loops through all these and checks). If frame is correct, will fire.
-    if(checkForEnemyNearby){
-      projectileArray.add new Projectile(yadda yadda);
-    }
+  attack(enemyArray){ //will be called from main draw loop (or indirectly. Draw may call a fireTowers() method that loops through all these and checks). If frame is correct, will fire.
+    let target = null;        //note: bias the check towards greatest Y. //long term could make this player controlled.
+    for(let i = enemyArray.length-1; i > -1; i--){
+      if(dist(this.x, this.y, enemyArray[i].node.x + 25, enemyArray[i].node.y + 25)<=150){
+        target = enemyArray[i]; //this *should* target the first enemy in the array, which will generally be in the lead untill paths can be blocked & rerouted. 
+      }
+    }    
+    return target;
+    //{
+    //  nearbyFoe = c//projectileArray.add new Projectile(yadda yadda); //do this in level main. 
+    //}
+  }
   
-  }*/
-  
-  /*
-    checkForEnemyNearby{
-      uses dist() to check own coords vs the coords of all enemy units. 
-    }
-  */
 }
