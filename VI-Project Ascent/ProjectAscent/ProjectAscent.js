@@ -134,6 +134,7 @@ function runStage(){
   renderTowers();
   renderEnemies();
   //In future: these will be synced with the music.  //reset counter at 1600 for this song? Unsure. Also, can I reset frame count?
+  //Will pause menu break this? - because still rendering on menu, even as game doesn't move...
   if(frameCount%20 == 1){
     fireTowers();
   }
@@ -200,7 +201,7 @@ function fireTowers(){//Call all tower's Attacks. If != null, create a new arrow
     //print("target: " + findTarget);
     if(findTarget != null){
       //print("FoundATarget");
-      projectileArray[projectileArray.length] = new Arrow(towerArray[i].node.x, towerArray[i].node.y,  findTarget);
+      projectileArray[projectileArray.length] = new Arrow(towerArray[i].node.x + 25, towerArray[i].node.y + 25,  findTarget);
     }
   }  
 }
@@ -209,28 +210,31 @@ function updateProjectiles(){
   if(projectileArray.length != 0){
     //print("Updating Projectiles!");
     for(let i = 0; i < projectileArray.length; i++){
+      // 0) Render all projectiles.
+      projectileArray[i].render();
       // 1) Move all projectiles. - Be wary of array being empty - don't check if first elem is null. 
       projectileArray[i].move();
       // 2) Check if a projectile has collided with an enemy 
       if(dist(projectileArray[i].x, projectileArray[i].y, projectileArray[i].target.node.x+25, projectileArray[i].target.node.y+25) <= 25){
         targetHit(projectileArray[i].target, projectileArray[i]);
-      }
-      projectileArray[i].render();
-      print("renderMe");
+      }      
     }
-  }
-   
+  }   
 }
 
-function targetHit(target, arrow){//This func will remove the enemy & the arrow, and adjust gold & score. Maybe also play a sound effect later.
-  removeEnemy(target);
+function targetHit(target, arrow){//This func will remove the enemy & the arrow, and adjust gold & score. Maybe also play a sound effect later.  
   print("SoonRemovingArrow");
-    //See pathfind for a great arrayClear method.
+    //Make this a separate function:
+    for (let i = 0; i < projectileArray.length; i++) { 
+    if (projectileArray.target == target.x) { //if an arrow's target is gone, the arrow also vanishess.
+      projectileArray.splice(i, 1);
+      i--;
+    }
+  }
+  removeEnemy(target);
   gold += 7;
   score += 25;
 }
-
-
 
 function mouseClicked() {
 if(gameState == 0){ //  gs 0 is main  menu

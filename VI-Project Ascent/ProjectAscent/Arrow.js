@@ -6,16 +6,18 @@ class Arrow{
  }
  
  move(){
-   if(this.target.node.x+25 > this.x){
+   if(this.target.node.x > this.x){
      this.x++;
-   }else if(this.target.node.x+25 < this.x){
+   }
+   if(this.target.node.x < this.x){
      this.x --;
    }
    
    
-   if(this.target.node.y+25 > this.x){
+   if(this.target.node.y > this.x){
      this.y++;
-   } else if(this.target.node.y+25 < this.y){
+   } 
+   if(this.target.node.y < this.y){
      this.y--;
    }
    print("moving");
@@ -23,6 +25,7 @@ class Arrow{
  
  render(){
    fill(255);
+   //ellipseMode(CENTER);
    ellipse(this.x, this.y, 15);
    //image();
    print("rendering!");
