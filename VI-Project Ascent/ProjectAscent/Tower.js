@@ -25,9 +25,7 @@ class Tower {
       }
     }    
     return target;
-    //{
-    //  nearbyFoe = c//projectileArray.add new Projectile(yadda yadda); //do this in level main. 
-    //}
+   
   }
   
 }

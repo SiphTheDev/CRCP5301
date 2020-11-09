@@ -3,10 +3,8 @@
 //Fall 2020
 
 /*TODO:  
- next:
- then: C) projectiles (based on enemies actual xy, so that may have to be an attribute of the enemies. 
- -  Maybe have a getter, which calcs the univ x/y coords of the foe based on the node vals and sends that result.) //could also have getter & x/y calc be diff funcs for cleanliness' sake. 
- after: D) Add music & graphics, and sync the wait/timer schedule to the music (manually or otherwise. Will require research. 
+ next: Add first tower fire type - creates an arrow object, which picks an enemy and chases it. If enemy removed, so is the arrow. 
+ then: menu with 
  far beyond: put all this into a new class (lv 1 or gamePlay or the like) & make this doc fundamentaly just a scene manager. Treat it as main. 
  */
 
@@ -23,6 +21,7 @@ let gold = 120;
 
 let towerArray = [];
 let enemyArray = [];
+let projectileArray = [];
 
 
 function preload() {
@@ -127,6 +126,7 @@ function drawMainMenu(){
 function drawPauseMenu(){
   //background(25,25,25,75);
 }
+
 //The bulk of the gameplay begins here: 
 function runStage(){
   //stageSong1.play();
@@ -142,6 +142,10 @@ function runStage(){
     enemyArray[enemyArray.length] = new Enemy(gridArray[13][0], gridArray[13][13], 25, gridArray); 
     enemyArray[enemyArray.length-1].loadPath(); //to do this dynamically, put elsewhere & load all enemy paths simultaneously.
   }
+  
+  updateProjectiles();
+  
+  
   fill(255);
   textSize(32);
   text("gold:", 25, 75);
@@ -183,6 +187,42 @@ function removeEnemy(enemyToDrop) { //uses splice to take one space and replace 
       i--;
     }
   }
+}
+
+function fireTowers(){
+  for(let i = 0; i < towerArray.length; i++){
+    let findTarget = towerArray[i].attack(enemyArray); //a) Check if an enemy is within range
+    if(findTarget != null){
+      projectileArray[projectileArray.length] = new Arrow(towerArray[i].x, towerArray[i].y,  findTarget);
+    }
+  }
+//  - See commented method in Towers for how this will work. 
+    //step 1) call all tower's Attacks. If != null, create a new arrow with the given enemy, and the x & y of the tower. 
+    
+     //{
+    //  nearbyFoe = c// //do this in level main. 
+    //}
+}
+function updateProjectiles(){
+  if(projectileArray[0] != null){
+    for(let i = 0; i < projectileArray.length; i++){
+      // 1) Move all projectiles. - Be wary of array being empty - don't check if first elem is null. 
+      projectileArray[i].move();
+      // 2) Check if a projectile has collided with an enemy 
+      if(dist(projectileArray[i].x, projectileArray[i].y, projectileArray[i].target.node.x+25, projectileArray[i].target.node.y+25) <= 25){
+        targetHit(projectileArray[i].target, projectileArray[i]);
+      }
+    }
+  }
+   
+}
+
+function targetHit(target, arrow){//This func will remove the enemy & the arrow, and adjust gold & score. Maybe also play a sound effect later.
+  removeEnemy(target);
+  print("SoonRemovingArrow");
+    //See pathfind for a great arrayClear method.
+  gold += 7;
+  score += 25;
 }
 
 
