@@ -199,7 +199,7 @@ function fireTowers(){//Call all tower's Attacks. If != null, create a new arrow
     //print(towerArray[i].attack(enemyArray));
     //print("target: " + findTarget);
     if(findTarget != null){
-      //print("FoundATarget");
+      print("FoundATarget");
       projectileArray[projectileArray.length] = new Arrow(towerArray[i].x, towerArray[i].y,  findTarget);
     }
   }  

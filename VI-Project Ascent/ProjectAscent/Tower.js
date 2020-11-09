@@ -1,6 +1,6 @@
 class Tower {
 
-  constructor(node, type = 0) { //defaults to type 0? Or ALWAYS type 0. Will need to see if it can be overwritten. 
+  constructor(node, type = 0) { //defaults to type 0? Or ALWAYS type 0? Will need to see if it can be overwritten. 
     this.node = node;
     this.type = type;
     //In future: this.type = type. Will determine what sort of tower will be placed: short range and fast, or long range but slow & strong, or a laser that doesn't aim, but goes long range. 
@@ -21,10 +21,11 @@ class Tower {
     let target = null;        //note: bias the check towards greatest Y. //long term could make this player controlled.
     if(enemyArray.length != 0){
     for(let i = enemyArray.length-1; i > -1; i--){
-      print("Checking enemy Array: " + dist(this.x, this.y, enemyArray[i].node.x + 25, enemyArray[i].node.y + 25));
-      if(dist(this.x, this.y, enemyArray[i].node.x + 25, enemyArray[i].node.y + 25)<=150){
+      //print("Checking enemy Array: " + int(dist(this.node.x, this.node.y, enemyArray[i].node.x + 25, enemyArray[i].node.y + 25)));
+      //print("x" + this.node.x + " y" + this.node.y + " foeX" + enemyArray[i].node.x + 25 + " foeY" + enemyArray[i].node.x + 25);
+      if(dist(this.node.x, this.node.y, enemyArray[i].node.x + 25, enemyArray[i].node.y + 25)<=150){
         target = enemyArray[i]; //this *should* target the first enemy in the array, which will generally be in the lead untill paths can be blocked & rerouted. 
-        print("target aquired");
+        //print("target aquired");
       }
     }
   }
