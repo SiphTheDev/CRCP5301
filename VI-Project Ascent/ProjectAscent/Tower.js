@@ -19,11 +19,15 @@ class Tower {
   
   attack(enemyArray){ //will be called from main draw loop (or indirectly. Draw may call a fireTowers() method that loops through all these and checks). If frame is correct, will fire.
     let target = null;        //note: bias the check towards greatest Y. //long term could make this player controlled.
+    if(enemyArray.length != 0){
     for(let i = enemyArray.length-1; i > -1; i--){
+      print("Checking enemy Array: " + dist(this.x, this.y, enemyArray[i].node.x + 25, enemyArray[i].node.y + 25));
       if(dist(this.x, this.y, enemyArray[i].node.x + 25, enemyArray[i].node.y + 25)<=150){
         target = enemyArray[i]; //this *should* target the first enemy in the array, which will generally be in the lead untill paths can be blocked & rerouted. 
+        print("target aquired");
       }
-    }    
+    }
+  }
     return target;
    
   }

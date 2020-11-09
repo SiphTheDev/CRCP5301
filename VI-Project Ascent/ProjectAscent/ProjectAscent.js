@@ -134,6 +134,9 @@ function runStage(){
   renderTowers();
   renderEnemies();
   //In future: these will be synced with the music.  //reset counter at 1600 for this song? Unsure. Also, can I reset frame count?
+  if(frameCount%20 == 1){
+    fireTowers();
+  }
   if (frameCount%40 == 1) { //occurs once/sec)
     checkEnemyAtGoal(); //done first to catch foes from prev loop. Gives players one more second to catch stragglers.
     moveEnemies();
@@ -189,22 +192,21 @@ function removeEnemy(enemyToDrop) { //uses splice to take one space and replace 
   }
 }
 
-function fireTowers(){
+function fireTowers(){//Call all tower's Attacks. If != null, create a new arrow with the given enemy, and the x & y of the tower. 
   for(let i = 0; i < towerArray.length; i++){
+    print("checkingForTargets");
     let findTarget = towerArray[i].attack(enemyArray); //a) Check if an enemy is within range
+    //print(towerArray[i].attack(enemyArray));
+    //print("target: " + findTarget);
     if(findTarget != null){
+      //print("FoundATarget");
       projectileArray[projectileArray.length] = new Arrow(towerArray[i].x, towerArray[i].y,  findTarget);
     }
-  }
-//  - See commented method in Towers for how this will work. 
-    //step 1) call all tower's Attacks. If != null, create a new arrow with the given enemy, and the x & y of the tower. 
-    
-     //{
-    //  nearbyFoe = c// //do this in level main. 
-    //}
+  }  
 }
+
 function updateProjectiles(){
-  if(projectileArray[0] != null){
+  if(projectileArray.length != 0){
     for(let i = 0; i < projectileArray.length; i++){
       // 1) Move all projectiles. - Be wary of array being empty - don't check if first elem is null. 
       projectileArray[i].move();
@@ -212,6 +214,7 @@ function updateProjectiles(){
       if(dist(projectileArray[i].x, projectileArray[i].y, projectileArray[i].target.node.x+25, projectileArray[i].target.node.y+25) <= 25){
         targetHit(projectileArray[i].target, projectileArray[i]);
       }
+      projectileArray[i].render();
     }
   }
    
