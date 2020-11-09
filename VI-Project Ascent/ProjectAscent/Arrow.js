@@ -12,15 +12,19 @@ class Arrow{
      this.x --;
    }
    
+   
    if(this.target.node.y+25 > this.x){
      this.y++;
    } else if(this.target.node.y+25 < this.y){
      this.y--;
    }
+   print("moving");
  }
  
  render(){
-   ellipse(this.x, this.y, 20);
+   fill(255);
+   ellipse(this.x, this.y, 15);
    //image();
+   print("rendering!");
  }
 }

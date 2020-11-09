@@ -194,19 +194,20 @@ function removeEnemy(enemyToDrop) { //uses splice to take one space and replace 
 
 function fireTowers(){//Call all tower's Attacks. If != null, create a new arrow with the given enemy, and the x & y of the tower. 
   for(let i = 0; i < towerArray.length; i++){
-    print("checkingForTargets");
+    //print("checkingForTargets");
     let findTarget = towerArray[i].attack(enemyArray); //a) Check if an enemy is within range
     //print(towerArray[i].attack(enemyArray));
     //print("target: " + findTarget);
     if(findTarget != null){
-      print("FoundATarget");
-      projectileArray[projectileArray.length] = new Arrow(towerArray[i].x, towerArray[i].y,  findTarget);
+      //print("FoundATarget");
+      projectileArray[projectileArray.length] = new Arrow(towerArray[i].node.x, towerArray[i].node.y,  findTarget);
     }
   }  
 }
 
 function updateProjectiles(){
   if(projectileArray.length != 0){
+    //print("Updating Projectiles!");
     for(let i = 0; i < projectileArray.length; i++){
       // 1) Move all projectiles. - Be wary of array being empty - don't check if first elem is null. 
       projectileArray[i].move();
@@ -215,6 +216,7 @@ function updateProjectiles(){
         targetHit(projectileArray[i].target, projectileArray[i]);
       }
       projectileArray[i].render();
+      print("renderMe");
     }
   }
    
