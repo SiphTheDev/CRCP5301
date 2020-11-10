@@ -3,8 +3,10 @@
 //Fall 2020
 
 /*TODO:  
- next: Add first tower fire type - creates an arrow object, which picks an enemy and chases it. If enemy removed, so is the arrow. 
- then: menu with 
+ next: Add new tower types per written doc.
+ then: menu with proper icons. - DON'T PUBLISH WITHOUT CITING MUSIC!!!
+ after: add enemy, tower, and projectile graphics. 
+ later: refactor some of this, needs help.
  far beyond: put all this into a new class (lv 1 or gamePlay or the like) & make this doc fundamentaly just a scene manager. Treat it as main. 
  */
 
@@ -144,8 +146,9 @@ function runStage(){
     moveEnemies();
   }
   if (frameCount%120 == 1) { //occurs once/3 sec
-    enemyArray[enemyArray.length] = new Enemy(gridArray[13][0], gridArray[13][13], 25, gridArray); 
-    enemyArray[enemyArray.length-1].loadPath(); //to do this dynamically, put elsewhere & load all enemy paths simultaneously.
+    enemyArray[enemyArray.length] = new Enemy(gridArray[13][0], gridArray[13][13], 25, 0, gridArray);  //(start node, goal node, size, type, gridArray);
+    enemyArray[enemyArray.length-1].enemySetUp(); //to do this dynamically, put elsewhere & load all enemy paths simultaneously.
+    print("new enemy type: " + enemyArray[enemyArray.length-1].type);
   }
   
   updateProjectiles();
