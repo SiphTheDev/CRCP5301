@@ -14,7 +14,7 @@ class Enemy {
   
   enemySetUp(){
     if(this.type == 0){ //Basic Unit
-      this.hp = 3;
+      this.hP = 3;
       this.speed = 2; //moves every 2 beats.
       this.loadPath();
     }

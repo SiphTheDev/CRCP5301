@@ -136,7 +136,7 @@ function runStage(){
   drawGridArray();
   renderTowers();
   renderEnemies();
-  //In future: these will be synced with the music.  //reset counter at 1600 for this song? Unsure. Also, can I reset frame count?
+  //In future: these will be synced with the music.  //reset counter at 1600 for this song? Unsure. Also, can I reset frame count? //Long term, consider separate timers to creaate & to move enemies. 
   //Will pause menu break this? - because still rendering on menu, even as game doesn't move...
   if(frameCount%20 == 1){
     fireTowers();
@@ -221,14 +221,14 @@ function updateProjectiles(){
       // 2) Check if a projectile has collided with an enemy 
       if(dist(projectileArray[i].x, projectileArray[i].y, projectileArray[i].target.node.x+25, projectileArray[i].target.node.y+25) <= 25){
         targetHit(projectileArray[i].target, projectileArray[i]);
-        print("TargetDown!");
+        //print("TargetDown!");
       }      
     }
   }   
 }
 
-function targetHit(target, arrow){//This func will remove the enemy & the arrow, and adjust gold & score. Maybe also play a sound effect later.  
-  print("SoonRemovingArrow");
+function targetHit(target, arrow){//This func will damage the enemy & remove the arrow, and adjust gold & score. Maybe also play a sound effect later.  
+  //print("SoonRemovingArrow");
     //Make this a separate function:
     for (let i = 0; i < projectileArray.length; i++) { 
     if (projectileArray.target == target.x) { //if an arrow's target is gone, the arrow also vanishess.
@@ -236,9 +236,14 @@ function targetHit(target, arrow){//This func will remove the enemy & the arrow,
       i--;
     }
   }
-  removeEnemy(target);
-  gold += 7;
-  score += 25;
+  target.hP --;
+  //print(target.hP);
+  if(target.hP <= 0){
+    print("hp: " + target.hp);
+    removeEnemy(target);
+    gold += 7;
+    score += 25;
+  }
 }
 
 function mouseClicked() {
