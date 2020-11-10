@@ -3,7 +3,12 @@
 //Fall 2020
 
 /*TODO:  
+
+
+
  next: Add new tower types per written doc.
+           - fix projectiles, so they don't all vanish when one hits target. 
+           - make sure to actually spawn in diff tower types (rand at first?) and enemy types. 
  then: menu with proper icons. - DON'T PUBLISH WITHOUT CITING MUSIC!!!
  after: add enemy, tower, and projectile graphics. 
  later: refactor some of this, needs help.
@@ -138,15 +143,16 @@ function runStage(){
   renderEnemies();
   //In future: these will be synced with the music.  //reset counter at 1600 for this song? Unsure. Also, can I reset frame count? //Long term, consider separate timers to creaate & to move enemies. 
   //Will pause menu break this? - because still rendering on menu, even as game doesn't move...
+     moveEnemies();
   if(frameCount%20 == 1){
     fireTowers();
   }
   if (frameCount%40 == 1) { //occurs once/sec)
     checkEnemyAtGoal(); //done first to catch foes from prev loop. Gives players one more second to catch stragglers.
-    moveEnemies();
+ 
   }
   if (frameCount%120 == 1) { //occurs once/3 sec
-    enemyArray[enemyArray.length] = new Enemy(gridArray[13][0], gridArray[13][13], 25, 0, gridArray);  //(start node, goal node, size, type, gridArray);
+    enemyArray[enemyArray.length] = new Enemy(gridArray[13][0], gridArray[13][13], int(random(0,3)), gridArray);  //(start node, goal node, size, type, gridArray);
     enemyArray[enemyArray.length-1].enemySetUp(); //to do this dynamically, put elsewhere & load all enemy paths simultaneously.
     print("new enemy type: " + enemyArray[enemyArray.length-1].type);
   }
@@ -172,9 +178,11 @@ function renderEnemies() {
   }
 }
 
-function moveEnemies() {
+function moveEnemies() { //moves each enemy based on its speed 
   for (let i = 0; i < enemyArray.length; i++) {
-    enemyArray[i].move();
+    if(frameCount%enemyArray[i].speed == 1){
+      enemyArray[i].move();
+    }
   }
 }
 
