@@ -6,26 +6,29 @@ class Arrow{
  }
  
  move(){
-   if(this.target.node.x > this.x){
+   for(let i = 0; i < 5; i++){
+   if(this.target.node.x+25 > this.x){
      this.x++;
    }
-   if(this.target.node.x < this.x){
+   if(this.target.node.x+25 < this.x){
      this.x --;
    }
    
    
-   if(this.target.node.y > this.x){
+   if(this.target.node.y+25 > this.y){
      this.y++;
    } 
-   if(this.target.node.y < this.y){
+   if(this.target.node.y +25 < this.y){
      this.y--;
+   }
+   print("step");
    }
    print("moving");
  }
  
  render(){
    fill(255);
-   //ellipseMode(CENTER);
+   ellipseMode(CENTER);
    ellipse(this.x, this.y, 15);
    //image();
    print("rendering!");

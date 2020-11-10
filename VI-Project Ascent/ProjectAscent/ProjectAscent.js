@@ -105,7 +105,7 @@ function drawGridArray() { //Calls the render method within each gridSpace insta
 function draw() {
   if(gameState == 0){ //gs 0 is Main Menu
     drawMainMenu();
-  } else if(gameState == 1){ //gs 1 is Stage 1 //TODO: Make a runStage function, with all this stuff in it. We need to clean up Draw a bit.
+  } else if(gameState == 1){ //gs 1 is Stage 1 
     runStage();
   } else if (gameState == 2){ //gs 2 is Pause Menu
     drawPauseMenu();
@@ -125,6 +125,7 @@ function drawMainMenu(){
 
 function drawPauseMenu(){
   //background(25,25,25,75);
+  //stageSong1.pause();
 }
 
 //The bulk of the gameplay begins here: 
@@ -217,6 +218,7 @@ function updateProjectiles(){
       // 2) Check if a projectile has collided with an enemy 
       if(dist(projectileArray[i].x, projectileArray[i].y, projectileArray[i].target.node.x+25, projectileArray[i].target.node.y+25) <= 25){
         targetHit(projectileArray[i].target, projectileArray[i]);
+        print("TargetDown!");
       }      
     }
   }   
