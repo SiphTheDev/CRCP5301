@@ -207,13 +207,18 @@ function removeEnemy(enemyToDrop) { //uses splice to take one space and replace 
 
 function fireTowers(){//Call all tower's Attacks. If != null, create a new arrow with the given enemy, and the x & y of the tower. 
   for(let i = 0; i < towerArray.length; i++){
+    if(towerArray[i].type == 0){ //for basic towers.
     //print("checkingForTargets");
-    let findTarget = towerArray[i].attack(enemyArray); //a) Check if an enemy is within range
+    let target = towerArray[i].findTarget(enemyArray); //a) Check if an enemy is within range
     //print(towerArray[i].attack(enemyArray));
     //print("target: " + findTarget);
-    if(findTarget != null){
+    if(target != null){
       //print("FoundATarget");
-      projectileArray[projectileArray.length] = new Arrow(towerArray[i].node.x + 25, towerArray[i].node.y + 25,  findTarget);
+      projectileArray[projectileArray.length] = new Arrow(towerArray[i].node.x + 25, towerArray[i].node.y + 25,  target);
+    }
+    }
+    else if(towerArray[i].type == 1){
+      
     }
   }  
 }
@@ -227,7 +232,7 @@ function updateProjectiles(){
       // 1) Move all projectiles. - Be wary of array being empty - don't check if first elem is null. 
       projectileArray[i].move();
       // 2) Check if a projectile has collided with an enemy 
-      if(dist(projectileArray[i].x, projectileArray[i].y, projectileArray[i].target.node.x+25, projectileArray[i].target.node.y+25) <= 25){
+      if(dist(projectileArray[i].x, projectileArray[i].y, projectileArray[i].target.node.x+25, projectileArray[i].target.node.y+25) <= 5){
         targetHit(projectileArray[i].target, projectileArray[i]);
         //print("TargetDown!");
       }      
@@ -270,7 +275,7 @@ if(gameState == 0){ //  gs 0 is main  menu
         //If the tile is type 3 (open to towers), places a tower if space is open and player has enough money.
         if (gridArray[i][j].type == 3) {
           if (!gridArray[i][j].hasTower && gold >= 20) { //Adds a new tower if there isn't one there.
-            towerArray[towerArray.length] = new Tower(gridArray[i][j]);
+            towerArray[towerArray.length] = new Tower(0, gridArray[i][j]);
             gridArray[i][j].hasTower = true;
             gold -= 20;
           } else if (gridArray[i][j].hasTower) { //removes a tower if there is one there
