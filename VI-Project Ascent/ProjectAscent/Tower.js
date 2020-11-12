@@ -1,10 +1,10 @@
 class Tower {
 
   constructor(type, node) { //defaults to type 0? Or ALWAYS type 0? Will need to see if it can be overwritten. 
-      this.type = type;
-      this.node = node;
+    this.type = type;
+    this.node = node;
 
-    //In future: this.type = type. Will determine what sort of tower will be placed: short range and fast, or long range but slow & strong, or a laser that doesn't aim, but goes long range. 
+    //In future: this.type = type. Will determine what sort of tower will be placed: short range and fast, or long range but slow & strong, or a laser that doesn't aim, but goes long range.
   }
 
   render() {
@@ -16,28 +16,28 @@ class Tower {
       fill(255); //generic
       size = 25;
     }
-    rectMode(CORNERS);
-    rect(this.node.x + 5, this.node.y + 5, this.node.x + size, this.node.y + size);
+    rectMode(CENTER);
+    rect(this.node.x + 25, this.node.y + 25, size, size);
     //in future: image(vals to get image from sprite sheet, scale it, and place it here.).
   }
-  
-  findTarget(enemyArray){ //will be called from main draw loop (or indirectly. Draw may call a fireTowers() method that loops through all these and checks). If frame is correct, will fire.
+
+  findTarget(enemyArray) { //will be called from main draw loop (or indirectly. Draw may call a fireTowers() method that loops through all these and checks). If frame is correct, will fire.
     let target = null;        //note: bias the check towards greatest Y. //long term could make this player controlled.
-    if(enemyArray.length != 0){
-    for(let i = enemyArray.length-1; i > -1; i--){   
-      if(dist(this.node.x, this.node.y, enemyArray[i].node.x + 25, enemyArray[i].node.y + 25)<=150){
-        target = enemyArray[i]; //this *should* target the first enemy in the array that is within range, which will generally be in the lead untill paths can be blocked & rerouted. 
+    if (enemyArray.length != 0) {
+      for (let i = enemyArray.length-1; i > -1; i--) {   
+        if (dist(this.node.x, this.node.y, enemyArray[i].node.x + 25, enemyArray[i].node.y + 25)<=150) {
+          target = enemyArray[i]; //this *should* target the first enemy in the array that is within range, which will generally be in the lead untill paths can be blocked & rerouted.
+        }
       }
     }
+    return target;
   }
-    return target;   
-  }  
 } 
 
 //Update: To adjust tower firing settings (& you should seriously refactor this later, btw):
-    //1) Look at Tower.render. It determines shape, size, & color of towers. 
-    //2) Look at Main_fireTowers. It determines projectile types & checks for foes within [a currently static]range using the findTarget method above (in Tower). 
-    
+//1) Look at Tower.render. It determines shape, size, & color of towers. 
+//2) Look at Main_fireTowers. It determines projectile types & checks for foes within [a currently static]range using the findTarget method above (in Tower). 
+
 //Tower type ideas: a) hit all adj squares. b) fire a straight line in all 4 directions. c) in some way block path. d) Fire a projectile in a random cardinal direction - but very high dmg. 
 
 
