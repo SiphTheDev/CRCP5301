@@ -13,7 +13,7 @@
  after: add enemy, tower, and projectile graphics. 
  afterwards: adjust sounds to start/stop on menus & have more reasonable volumes, etc. 
  later: refactor some of this, needs help.
-
+ 
  far beyond: put all this into a new class (lv 1 or gamePlay or the like) & make this doc fundamentaly just a scene manager. Treat it as main. 
  */
 
@@ -149,7 +149,7 @@ function runStage() {
   //a) subtract the number of frames of pause menu from the core counter, or...
   //b) Just don't increment your new custom frame count val during pause, or ...
   //c) have different music on pause screen, and somehow have the in-game song pick up where it left off when play begins again. 
-  
+
   moveEnemies();
   if (frameCount%20 == 1) {
     fireTowers();
@@ -214,43 +214,61 @@ function removeEnemy(enemyToDrop) { //uses splice to take one space and replace 
 function fireTowers() {//Call all tower's Attacks. If != null, create a new arrow with the given enemy, and the x & y of the tower. 
   for (let i = 0; i < towerArray.length; i++) {
     let target = towerArray[i].findTarget(enemyArray); //a) Check if an enemy is within range
-    if(target != null){
+    if (target != null) {
       if (towerArray[i].type == 0) { //for basic towers.
-                projectileArray[projectileArray.length] = new Arrow(towerArray[i].node.x + 25, towerArray[i].node.y + 25, target); //basic peashooter
-      } else if (towerArray[i].type == 1){
-        
+        projectileArray[projectileArray.length] = new Arrow(towerArray[i].node.x + 25, towerArray[i].node.y + 25, target); //basic arrow
+      } else if (towerArray[i].type == 1) {
+        projectileArray[projectileArray.length] = new Pulse(towerArray[i].node.x + 25, towerArray[i].node.y + 25); //pulse
       }
     }
   }
 }
 
-function updateProjectiles() {
-  if (projectileArray.length != 0) {
-    //print("Updating Projectiles!");
+function updateProjectiles() { //need to work on this for different projectile types - refactor bigtime so don't have to check type before runing - ie consitant method names.
+  if (projectileArray.length != 0) { //avoids crash if no projectiles on screen
     for (let i = 0; i < projectileArray.length; i++) {
       // 0) Render all projectiles.
       projectileArray[i].render();
-      // 1) Move all projectiles. - Be wary of array being empty - don't check if first elem is null. 
-      projectileArray[i].move();
-      // 2) Check if a projectile has collided with an enemy 
-      if (dist(projectileArray[i].x, projectileArray[i].y, projectileArray[i].target.node.x+25, projectileArray[i].target.node.y+25) <= 5) {
-        targetHit(projectileArray[i].target, projectileArray[i]);
-        //print("TargetDown!");
+      // 1) Move all projectiles.
+      if (projectileArray[i].type == 0) { //arrow
+        projectileArray[i].move();
+        // 2) Check if a projectile has collided with an enemy 
+        if (dist(projectileArray[i].x, projectileArray[i].y, projectileArray[i].target.node.x+25, projectileArray[i].target.node.y+25) <= 5) {
+          removeProjectile(projectileArray[i]);
+                    damageFoe(projectileArray[i].target, 1);
+
+          //arrowHit(projectileArray[i].target, projectileArray[i]);
+          //print("TargetDown!");
+        }
+      } else if (projectileArray[i].type == 1) { //pulse
+        for (let i = 0; i < enemyArray.length; i++) {
+          if (dist(projectileArray[i].x, projectileArray[i].y, enemyArray[i].node.x+25, enemyArray[i].node.y+25) <= 75) {
+            damageFoe(enemyArray[i], 1);
+          }
+        }
       }
     }
   }
 }
 
-function targetHit(target, arrow) {//This func will damage the enemy & remove the arrow, and adjust gold & score. Maybe also play a sound effect later.  
-  //print("SoonRemovingArrow");
-  //Make this a separate function:
+function removeProjectile(projectile) {
   for (let i = 0; i < projectileArray.length; i++) { 
     if (projectileArray.target == target.x) { //if an arrow's target is gone, the arrow also vanishess.
       projectileArray.splice(i, 1);
       i--;
     }
   }
-  target.hP --;
+}
+
+//function projectileHit(target, arrow) {//This func will damage the enemy & remove the arrow, and adjust gold & score. Maybe also play a sound effect later.  
+//  //print("SoonRemovingArrow");
+//  //Make this a separate function:
+
+//  foeHit(target);
+//}
+
+function damageFoe(target, dmg) {
+  target.hP -= dmg;
   //print(target.hP);
   if (target.hP <= 0) {
     print("hp: " + target.hp);
@@ -276,7 +294,7 @@ function mouseClicked() {
           //If the tile is type 3 (open to towers), places a tower if space is open and player has enough money.
           if (gridArray[i][j].type == 3) {
             if (!gridArray[i][j].hasTower && gold >= 20) { //Adds a new tower if there isn't one there.
-              towerArray[towerArray.length] = new Tower(0, gridArray[i][j]);
+              towerArray[towerArray.length] = new Tower(int(random(2)), gridArray[i][j]);
               gridArray[i][j].hasTower = true;
               gold -= 20;
             } else if (gridArray[i][j].hasTower) { //removes a tower if there is one there

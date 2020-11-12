@@ -9,8 +9,8 @@ class Tower {
 
   render() {
     let size = 0;
-    if (this.type == 1) {
-      fill(150, 150, 20);
+    if (this.type == 0) {
+      fill(100, 0, 20);
       size = 45;
     } else {
       fill(255); //generic

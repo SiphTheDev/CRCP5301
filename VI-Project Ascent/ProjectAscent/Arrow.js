@@ -3,6 +3,7 @@ class Arrow {
     this.x = x;
     this.y = y;
     this.target = target;
+    this.type = 0; //Arrow
   }
 
   move() {
@@ -13,8 +14,6 @@ class Arrow {
       if (this.target.node.x+25 < this.x) {
         this.x --;
       }
-
-
       if (this.target.node.y+25 > this.y) {
         this.y++;
       } 
