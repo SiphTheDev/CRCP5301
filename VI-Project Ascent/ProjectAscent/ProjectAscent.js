@@ -145,6 +145,11 @@ function runStage() {
   renderEnemies();
   //In future: these will be synced with the music.  //reset counter at 1600 for this song? Unsure. Also, can I reset frame count? //Long term, consider separate timers to creaate & to move enemies. 
   //Will pause menu break this? - because still rendering on menu, even as game doesn't move...
+  //To solve pause menu timing errors, just set an inc, that updates each frame the game is paused. Also make the base frameCount a sep variable, that just increments every frame. Then Either:
+  //a) subtract the number of frames of pause menu from the core counter, or...
+  //b) Just don't increment your new custom frame count val during pause, or ...
+  //c) have different music on pause screen, and somehow have the in-game song pick up where it left off when play begins again. 
+  
   moveEnemies();
   if (frameCount%20 == 1) {
     fireTowers();
