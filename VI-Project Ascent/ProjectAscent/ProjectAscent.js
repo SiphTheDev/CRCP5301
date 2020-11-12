@@ -4,10 +4,9 @@
 
 /*TODO:  
  
- 
- 
  next: Add new tower types per written doc.
  - fix projectiles, so they don't all vanish when one hits target. 
+ - tweak timings to actually match music - coreCounter instead of frameCount.
  - make sure to actually spawn in diff tower types (rand at first?) and enemy types. 
  then: menu with proper icons. - DON'T PUBLISH WITHOUT CITING MUSIC!!!
  after: add enemy, tower, and projectile graphics. 
@@ -217,14 +216,14 @@ function fireTowers() {//Call all tower's Attacks. If != null, create a new arro
     if (target != null) {
       if (towerArray[i].type == 0) { //for basic towers.
         projectileArray[projectileArray.length] = new Arrow(towerArray[i].node.x + 25, towerArray[i].node.y + 25, target); //basic arrow
-      } else if (towerArray[i].type == 1) {
+      } else if (towerArray[i].type == 1 && frameCount%80 == 1) { //later pass fireTowers the coreCounter, and just use that here.
         projectileArray[projectileArray.length] = new Pulse(towerArray[i].node.x + 25, towerArray[i].node.y + 25); //pulse
       }
     }
   }
 }
 
-function updateProjectiles() { //need to work on this for different projectile types - refactor bigtime so don't have to check type before runing - ie consitant method names.
+function updateProjectiles() { //need to work on this for different projectile types - refactor bigtime so don't have to check type before runing - ie consitant method names or sep projecType arrays.
   if (projectileArray.length != 0) { //avoids crash if no projectiles on screen
     for (let i = 0; i < projectileArray.length; i++) {
       // 0) Render all projectiles.
@@ -234,10 +233,10 @@ function updateProjectiles() { //need to work on this for different projectile t
         projectileArray[i].move();
         // 2) Check if a projectile has collided with an enemy 
         if (dist(projectileArray[i].x, projectileArray[i].y, projectileArray[i].target.node.x+25, projectileArray[i].target.node.y+25) <= 5) {
-          removeProjectile(projectileArray[i]);
-                    damageFoe(projectileArray[i].target, 1);
+          //removeProjectile(projectileArray[i], projectileArray[i].target);
+          //damageFoe(projectileArray[i].target, 1);
 
-          //arrowHit(projectileArray[i].target, projectileArray[i]);
+          targetHit(projectileArray[i].target, projectileArray[i]);
           //print("TargetDown!");
         }
       } else if (projectileArray[i].type == 1) { //pulse
@@ -255,21 +254,21 @@ function updateProjectiles() { //need to work on this for different projectile t
   }
 }
 
-function removeProjectile(projectile) {
-  for (let i = 0; i < projectileArray.length; i++) { 
-    if (projectileArray.target == target.x) { //if an arrow's target is gone, the arrow also vanishess.
-      projectileArray.splice(i, 1);
-      i--;
-    }
-  }
+function removeProjectile(target, projectile) {
+ for (let i = 0; i < projectileArray.length; i++) { 
+     if (projectileArray.target == target.x) { //if an arrow's target is gone, the arrow also vanishess.//TODO Why does this work? It absoultely seems like it shouldn't. //Second issue, it shouldn't
+                                                                                 //...remove other projectiles targeting the enemy unless the enemy dies. oh-no. 
+       projectileArray.splice(i, 1);
+       i--;
+     }
+   } 
+  //damageFoe(target,1);
 }
 
-//function projectileHit(target, arrow) {//This func will damage the enemy & remove the arrow, and adjust gold & score. Maybe also play a sound effect later.  
-//  //print("SoonRemovingArrow");
-//  //Make this a separate function:
-
-//  foeHit(target);
-//}
+function targetHit(target, arrow) {//This func will damage the enemy & remove the arrow, and adjust gold & score. Maybe also play a sound effect later.  
+   removeProjectile(target, arrow);
+   damageFoe(target, 1);
+}
 
 function damageFoe(target, dmg) {
   target.hP -= dmg;
