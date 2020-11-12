@@ -241,11 +241,15 @@ function updateProjectiles() { //need to work on this for different projectile t
           //print("TargetDown!");
         }
       } else if (projectileArray[i].type == 1) { //pulse
-        for (let i = 0; i < enemyArray.length; i++) {
-          if (dist(projectileArray[i].x, projectileArray[i].y, enemyArray[i].node.x+25, enemyArray[i].node.y+25) <= 75) {
-            damageFoe(enemyArray[i], 1);
+        for (let j = 0; j < enemyArray.length; j++) {
+          print("Pulsed!");
+          if (dist(projectileArray[i].x, projectileArray[i].y, enemyArray[j].node.x+25, enemyArray[j].node.y+25) <= 75) {
+            damageFoe(enemyArray[j], 1);
           }
         }
+        projectileArray.splice(i,1); //removes pulse.
+        i--;
+        print("Pulse Done!");
       }
     }
   }
