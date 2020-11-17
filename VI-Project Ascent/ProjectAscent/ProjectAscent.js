@@ -212,6 +212,18 @@ function drawCreditsMenu(){
   imageMode(CENTER);
   image(beigeBoard, width/2, height/2, width-200, height);
   returnMainBtn.render();
+
+  fill(255);
+  textFont(menuFont);
+  rectMode(CENTER);
+  textAlign(CENTER, TOP);
+  textSize(60);
+  text("Credits & Assets", width/2, height/2, width-200, height);
+  
+  fill(240);
+  textAlign(LEFT, TOP);
+  textSize(30);
+  text("Game design by Thomas Park at https://povingames.com/blog/category/siphthedev/project-ascent/\nAlkhemikal Font by Jeti at https://fontenddev.com/fonts/alkhemikal/\nBackground Tiles by Daniel Thomas Art at DanielThomasArt@gmail.com\nForest Scene by Eder Muniz at https://www.gamedevmarket.net/member/edermuniz14/\nMusic by Abstraction at http://abstractionmusic.bandcamp.com\nUI Elements by Karwisch at https://karwisch.itch.io/pxui-basic & Kenny Assets at https://kenney.nl\n",width/2, height/2, width-240, height-140);
 }
 
 function drawHelpMenu(){
