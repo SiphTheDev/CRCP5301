@@ -8,7 +8,7 @@
  then: add win condition: (once health/score displayed, have a check every loop if it <= 0. If yes, change gamestate to a game-over screen, and call a "reset arrays & score/hp/gold" method; Decrement it on enemy collision. 
  after: add enemy, tower, and projectile graphics. 
  ___________________
- beyond then: tweak timings to actually match music
+ beyond then: tweak timings to actually match music, and render smaller foes above larger ones?
  afterwards: adjust sounds to start/stop on menus & have more reasonable volumes, etc. 
  later: refactor some of this, needs help.  - coreCounter instead of frameCount.  - music separate from play button.
  even later:  - fix projectiles, so they don't all vanish when one hits target. - do over weekend?
@@ -24,6 +24,10 @@ let menuBoxBrn;
 let menuBoxBrdr;
 let menuBoxX;
 let emptyMenuBox;
+let beigeBoard;
+let underLine;
+
+
 let backgroundImg;
 let stageSong1;
 
@@ -37,7 +41,7 @@ let cols = 28;
 let rows = 14;
 
 //Game stats displayed to player
-let hP = 3;
+let hitPoints = 3;
 let gold = 120;
 
 //Arrays to store game elements that can be generated and removed
@@ -70,6 +74,8 @@ function preload() {
   menuBoxBrdr = loadImage('assets/Karwisch_PXUI/checkbox.png');
   menuBoxX = loadImage('assets/Karwisch_PXUI/checkbox_x.png');
   emptyMenuBox = loadImage('assets/Karwisch_PXUI/void.png');
+  beigeBoard = loadImage('assets/Karwisch_PXUI/BeigeBoard.png');
+  underLine = loadImage('assets/Karwisch_PXUI/UnderLine.png');
   
   //Fonts
   menuFont = loadFont('assets/Alkhemikal.ttf');
@@ -160,12 +166,12 @@ function loadMainMenu(){
 }
 
 function loadStageUI(){
-  goldButton = new Button(50, 250, 150, 150, emptyMenuBox, menuFont, 'gold', 20);
-  hPButton = new Button(50, 50, 150, 150, emptyMenuBox, menuFont, 'hP', 20);
-  stgPauseButton = new Button(width-50, height - 50, 150, 150, menuBoxX);
-  towerButton = new Button(width - 50, 50, 150, 150, emptyMenuBox, menuFont, 'Towers', 20);
-  towerAButton = new Button(width - 50, 100, 150, 150, menuBoxBrdr, menuFont, 't1', 20);
-  towerBButton = new Button(width - 50, 150, 150, 150, menuBoxBrdr, menuFont, 't2', 20);
+  goldButton = new Button(50, 250, 90, 30, underLine, menuFont, 'Gold', 20, color(165,113,78));
+  hPButton = new Button(50, 50, 90, 30, underLine, menuFont, 'HP', 20, color(165,113,78));
+  stgPauseButton = new Button(width-50, height - 50, 150, 150, menuBoxX, 'II');
+  towerButton = new Button(width - 50, 50, 90, 30, underLine, menuFont, 'Towers', 20, color(165,113,78));
+  towerAButton = new Button(width - 50, 150, 150, 150, menuBoxBrdr, menuFont, 't1', 20);
+  towerBButton = new Button(width - 50, 250, 150, 150, menuBoxBrdr, menuFont, 't2', 20);
 
 }
 
@@ -235,15 +241,27 @@ function runStage() {
 
 }
 
-function updateLvUI(){
-  //display Gold
-  goldButton.render();
-  hPButton.render();
+function updateLvUI(){  
   stgPauseButton.render();
   towerButton.render();
   towerAButton.render();
   towerBButton.render();
-  text(gold, 50, 100);
+
+  //DisplayGold
+  imageMode(CENTER);
+  image(beigeBoard, 50, 300, 90, 100);  
+  textSize(30);
+  fill(205,127,50);
+  text(gold, 50, 300);
+  goldButton.render();
+  
+  //Display HP
+  imageMode(CENTER);
+  image(beigeBoard, 50, 100, 90, 100);
+  textSize(50);
+  fill(150,0,0);
+  text(hitPoints, 50, 100);
+  hPButton.render();
 }
 
 function drawGridArray() { //Calls the render method within each gridSpace instance.
@@ -278,7 +296,7 @@ function checkEnemyAtGoal() {
   for (let i = 0; i < enemyArray.length; i++) {
     if (enemyArray[i].node == gridArray[13][12]) {//should consider making the goal a global (or at least level-wide) in scope.
       removeEnemy(enemyArray[i]);
-      hP -= 1;
+      hitPoints -= 1;
     }
   }
 }
@@ -365,7 +383,7 @@ function damageFoe(target, dmg) {
 }
 
 function mouseClicked() {
-  if (gameState == 0) { //  gs 0 is main  menu
+  if (gameState == 0) { //  gs 0 is Main Menu
     if (playButton.clicked()) {
       gameState = 4; 
       stageSong1.loop();
@@ -376,8 +394,13 @@ function mouseClicked() {
     }
     if(creditsButton.clicked()){
       print("Where it's due");
-    }
-     
+    }     
+  } else if(gameState == 1){ //gs 1 is Credits Menu
+  
+  } else if(gameState == 2){ //gs 2 is Help Menu
+  
+  } else if(gameState == 3){ //gs 3 is Pause Menu
+  
   } else if (gameState == 4) { //  gs 4 is level 1
     //Checks each tile to see if the mouse has been clicked within its bounds.
     if(stgPauseButton.clicked()){
