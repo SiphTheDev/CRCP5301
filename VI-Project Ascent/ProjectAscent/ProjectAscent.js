@@ -22,6 +22,7 @@ let gridSpriteSheet;
 let towerSprites = [];
 let enemySprites = [];
   //Images for Menus
+let helpArray = [];
 let menuFont;
 let menuBoxGrn;
 let menuBoxBrn;
@@ -80,6 +81,8 @@ function preload() {
   enemySprites[1] = loadImage('assets/CCG_Enemies/Hound/hounds.gif');//wolf
   enemySprites[2] = loadImage('assets/CCG_Enemies/Barbarian/barbs.gif');//barb
   
+  //Menu Sprites
+  
   backgroundImg = loadImage('assets/EderMuniz_Forest.png');
   menuBoxGrn = loadImage('assets/Karwisch_PXUI/panelGrn.png');
   menuBoxBrn = loadImage('assets/Karwisch_PXUI/panelBrn.png');
@@ -88,6 +91,13 @@ function preload() {
   emptyMenuBox = loadImage('assets/Karwisch_PXUI/void.png');
   beigeBoard = loadImage('assets/Karwisch_PXUI/BeigeBoard.png');
   underLine = loadImage('assets/Karwisch_PXUI/UnderLine.png');
+  
+  //Help Images
+  helpArray[0] = loadImage('assets/helpImgs/atTheGates.png');
+  helpArray[1] = loadImage('assets/helpImgs/attack!.png');
+  helpArray[2] = loadImage('assets/helpImgs/tMenuImg.png');
+  helpArray[3] = loadImage('assets/helpImgs/RunninLow.png');
+  helpArray[4] = loadImage('assets/helpImgs/pauseImg.png');
 
   //Fonts
   menuFont = loadFont('assets/Alkhemikal.ttf');
@@ -243,13 +253,19 @@ function drawHelpMenu() {
   rectMode(CENTER);
   textAlign(CENTER, TOP);
   textSize(60);
+
   text("How To Play", width/2, height/2, width-200, height);
   
   fill(240);
   textAlign(LEFT, TOP);
   textSize(20);
-  text("Your goal is to prevent any of the enemies from reaching your basecamp.\nTo do this, you can spend gold to place towers along the path that will attack them.\nYou can select different types of towers in the side menu:\nBut watch out! You only have so much gold. If you run out, kill some enemies to get more.\nIf you need a break, press the pause button in the lower right\n\nGood luck out there!", width/2, height/2, width-240, height-140);
-
+  textLeading(100);
+  text("Your goal is to prevent any of the enemies from reaching your basecamp.\nTo do this, you can spend gold to place towers along the path that will attack them.\nYou can select different types of towers in the side menu:\nBut watch out! You only have so much gold. If you run out, kill some enemies to get more or click a tower to refund it (partially).\nIf you need a break, press the pause button in the lower right\nGood luck out there!", width/2, height/2, width-240, height-140);
+  image(helpArray[0], width-(width/6), (height/6), 100, 80);  //exit with enemies
+  image(helpArray[1], width-(width/6), 1*(height/6), 100, 80);  //attacking
+  image(helpArray[3], width-(width/6), 2*(height/6), 60, 100);  //gold counter
+  image(helpArray[2], width-(width/6), 3*(height/6), 40,100);  //tower menu
+  image(helpArray[4], width-(width/6), 4*(height/6), 100,100);  //pause
 
   returnMainBtn.render();
 }
@@ -507,13 +523,13 @@ function mouseClicked() {
     }
     if (towerAButton.clicked()) { //if user selects an archer tower,
       towerType = 0;
-      towerAButton.textColor = color(165, 113, 78);
-      towerBButton.textColor = 255;
+      towerAButton.textColor = 255; //highlighted
+      towerBButton.textColor = color(165, 113, 78);
     }
     if (towerBButton.clicked()) {
       towerType = 1;
-      towerBButton.textColor = color(165, 113, 78);
-      towerAButton.textColor = 255;
+      towerBButton.textColor = 255; //highlighted
+      towerAButton.textColor = color(165, 113, 78);
     }
     if (stgPauseButton.clicked()) {
       gameState = 3;
