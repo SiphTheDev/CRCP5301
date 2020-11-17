@@ -508,7 +508,8 @@ function mouseClicked() {
     }
     if (pauseToMainBtn.clicked()) {
       gameState = 0;
-      stageSong1.pause();
+      //stageSong1.jump(0); //resets song to starting position for next playthough.
+      stageSong1.stop();
     }
   } else if (gameState == 4) { //  gs 4 is level 1
     //Checks each tile to see if the mouse has been clicked within its bounds.
