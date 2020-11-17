@@ -4,13 +4,13 @@
 
 /*TODO:  
  
- next: Add new tower types per written doc.
- - fix projectiles, so they don't all vanish when one hits target. - do over weekend?
- - tweak timings to actually match music - coreCounter instead of frameCount. 
- then: menu with proper icons. - DON'T PUBLISH WITHOUT CITING MUSIC!!!
+ next: menus (help, credits, pause, gameplay window details, game over screen [score, main menu, replay buttons.]) with proper icons. - DON'T PUBLISH WITHOUT CITING MUSIC!!! 
+ then: add win condition: (once health/score displayed, have a check every loop if it <= 0. If yes, change gamestate to a game-over screen, and call a "reset arrays & score/hp/gold" method; Decrement it on enemy collision. 
+ beyond then: tweak timings to actually match music
  after: add enemy, tower, and projectile graphics. 
  afterwards: adjust sounds to start/stop on menus & have more reasonable volumes, etc. 
- later: refactor some of this, needs help.
+ later: refactor some of this, needs help.  - coreCounter instead of frameCount. 
+ even later:  - fix projectiles, so they don't all vanish when one hits target. - do over weekend?
  
  far beyond: put all this into a new class (lv 1 or gamePlay or the like) & make this doc fundamentaly just a scene manager. Treat it as main. 
  */
@@ -145,10 +145,14 @@ function loadPauseMenu(){
 function draw() {
   if (gameState == 0) { //gs 0 is Main Menu
     drawMainMenu();
-  } else if (gameState == 1) { //gs 1 is Stage 1 
-    runStage();
-  } else if (gameState == 2) { //gs 2 is Pause Menu
-    drawPauseMenu();
+  } else if (gameState == 1) { //gs 1 Credits Screen
+
+  } else if (gameState == 2) { //gs 2 is Help Screen
+
+  } else if (gameState == 3){ //gs 3 is Pause Screen
+        drawPauseMenu();
+  } else if (gameState == 4){ //gs 4 is Stage One
+        runStage();
   }
 }
 
@@ -159,14 +163,6 @@ function drawMainMenu() {
   playButton.render();
   helpButton.render();
   creditsButton.render();
-  //fill(63, 224, 208);
-  //rectMode(CENTER);
-  //rect(width/2, height/2, 200, 100);
-  //fill(255);
-  //textAlign(CENTER);
-  //textSize(45);
-  //textFont(menuFont);
-  //text("Play!", width/2, height/2);
 }
 
 function drawPauseMenu() {
@@ -342,7 +338,7 @@ function mouseClicked() {
       print("Where it's due");
     }
      
-  } else if (gameState == 1) { //  gs 1 is level 1
+  } else if (gameState == 4) { //  gs 4 is level 1
     //Checks each tile to see if the mouse has been clicked within its bounds.
 
     for (let i = 0; i< gridArray.length; i++) { 
@@ -364,7 +360,7 @@ function mouseClicked() {
             //put elsewhere in future, doesn't really belong in this else-if nest.       
             //fill(35,35,35, 45);
             //rect(0,0,width, height);
-            gameState = 2; //ie paused.
+            gameState = 3; //ie paused.
           }
         }
       }
