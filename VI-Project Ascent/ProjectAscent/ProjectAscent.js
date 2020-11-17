@@ -221,6 +221,8 @@ function draw() {
     drawPauseMenu();
   } else if (gameState == 4) { //gs 4 is Stage One
     runStage();
+  } else if (gameState == 5) { //gs 5 is Lose Screen
+    drawLoseScreen();
   }
 }
 
@@ -294,6 +296,18 @@ function drawPauseMenu() {
   pauseToMainBtn.render();
 }
 
+function drawLoseScreen(){
+  imageMode(CENTER);
+  image(beigeBoard, width/2, height/2, width-300, height-100); 
+  
+  textAlign(CENTER, CENTER);
+  textSize(60);
+  fill(150, 0, 0);
+  text("Game Over", width/2, (height/2), 200, 200); 
+  
+  pauseToMainBtn.render();
+}
+
 //The bulk of the gameplay begins here: 
 function runStage() {
   imageMode(CORNERS);
@@ -325,6 +339,10 @@ function runStage() {
   updateProjectiles();
 
   updateLvUI();
+  
+  if(hitPoints < 0){
+    gameState = 5;
+  }
 }
 
 function updateLvUI() {  
@@ -549,6 +567,16 @@ function mouseClicked() {
     }
     if (stgPauseButton.clicked()) {
       gameState = 3;
+      drawLoseScreen();
+        if (returnMainBtn.clicked()) {
+          gameState = 0;
+        }
+    }
+  } else if(gameState == 5){ //losing screen
+      if (pauseToMainBtn.clicked()) {
+      gameState = 0;
+      stageSong1.stop();//resets song to starting position for next playthough.
+      resetLevel();
     }
   }
 }
@@ -566,7 +594,7 @@ function resetLevel(){
   enemyArray.length = 0;
   towerArray.length = 0;
   projectileArray.length = 0;
-  hP = 3;
+  hitPoints = 3;
   gold = 50;
   towerType = 0;
 }
