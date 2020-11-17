@@ -41,6 +41,7 @@ let cols = 28;
 let rows = 14;
 
 //Game stats displayed to player
+let towerType = 0;
 let hitPoints = 3;
 let gold = 120;
 
@@ -168,10 +169,10 @@ function loadMainMenu(){
 function loadStageUI(){
   goldButton = new Button(50, 250, 90, 30, underLine, menuFont, 'Gold', 20, color(165,113,78));
   hPButton = new Button(50, 50, 90, 30, underLine, menuFont, 'HP', 20, color(165,113,78));
-  stgPauseButton = new Button(width-50, height - 50, 150, 150, menuBoxX, 'II');
+  stgPauseButton = new Button(width-50, height - 50, 150, 150, menuBoxX);
   towerButton = new Button(width - 50, 50, 90, 30, underLine, menuFont, 'Towers', 20, color(165,113,78));
-  towerAButton = new Button(width - 50, 150, 150, 150, menuBoxBrdr, menuFont, 't1', 20);
-  towerBButton = new Button(width - 50, 250, 150, 150, menuBoxBrdr, menuFont, 't2', 20);
+  towerAButton = new Button(width - 50, 115, 150, 150, menuBoxBrdr, menuFont, 'Archer', 20, color(165,113,78));
+  towerBButton = new Button(width - 50, 200, 150, 150, menuBoxBrdr, menuFont, 'Mage', 20);
 
 }
 
@@ -243,6 +244,9 @@ function runStage() {
 
 function updateLvUI(){  
   stgPauseButton.render();
+  
+  imageMode(CENTER);
+  image(beigeBoard, width - 50, 200, 90, 300);  
   towerButton.render();
   towerAButton.render();
   towerBButton.render();
@@ -413,7 +417,7 @@ function mouseClicked() {
           //If the tile is type 3 (open to towers), places a tower if space is open and player has enough money.
           if (gridArray[i][j].type == 3) {
             if (!gridArray[i][j].hasTower && gold >= 20) { //Adds a new tower if there isn't one there.
-              towerArray[towerArray.length] = new Tower(int(random(2)), gridArray[i][j]);
+              towerArray[towerArray.length] = new Tower(towerType, gridArray[i][j]);
               gridArray[i][j].hasTower = true;
               gold -= 20;
             } else if (gridArray[i][j].hasTower) { //removes a tower if there is one there
@@ -431,6 +435,17 @@ function mouseClicked() {
         }
       }
     }
+    if(towerAButton.clicked()){ //if user selects an archer tower,
+      towerType = 0;
+      towerAButton.textColor = color(165,113,78);
+      towerBButton.textColor = 255;
+    }
+    if(towerBButton.clicked()){
+      towerType = 1;
+      towerBButton.textColor = color(165,113,78);
+      towerAButton.textColor = 255;
+    }
+    
   }
 }
 
