@@ -31,7 +31,9 @@ class GridSpace {
       } else if(this.c == 25 && this.r == 1){
         image(gridSpriteSheet, this.c*50, this.r*50, 50, 50, 320, 64, 128, 128);
       }else{
-        fill(this.farbe);
+        noStroke();
+        noFill();
+        //fill(this.farbe);
         rectMode(CORNER);
         rect(this.x, this.y, width/28, height/14);
       }

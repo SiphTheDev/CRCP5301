@@ -5,9 +5,8 @@
 /*TODO:  
  
  next: Add new tower types per written doc.
- - fix projectiles, so they don't all vanish when one hits target. 
- - tweak timings to actually match music - coreCounter instead of frameCount.
- - make sure to actually spawn in diff tower types (rand at first?) and enemy types. 
+ - fix projectiles, so they don't all vanish when one hits target. - do over weekend?
+ - tweak timings to actually match music - coreCounter instead of frameCount. 
  then: menu with proper icons. - DON'T PUBLISH WITHOUT CITING MUSIC!!!
  after: add enemy, tower, and projectile graphics. 
  afterwards: adjust sounds to start/stop on menus & have more reasonable volumes, etc. 
@@ -16,10 +15,15 @@
  far beyond: put all this into a new class (lv 1 or gamePlay or the like) & make this doc fundamentaly just a scene manager. Treat it as main. 
  */
 
-
-//let gridSpriteSheet;
-let gameState = 0;
+//Variables to store images and sounds to be loaded in preload()
+let gridSpriteSheet;
+let menuFont;
+let menuBoxGrn;
+let menuBoxBrn;
+let backgroundImg;
 let stageSong1;
+
+let gameState = 0;
 let gridTileMap = []; //placeholder
 let gridArray = [];
 let cols = 28;
@@ -33,8 +37,18 @@ let projectileArray = [];
 
 
 function preload() {
+  //SpriteSheets
   gridSpriteSheet = loadImage('assets/dungeonTiles.png');
+  backgroundImg = loadImage('assets/EderMuniz_Forest.png');
+  menuBoxGrn = loadImage('assets/Karwisch_PXUI/panelGrn.png');
+  menuBoxBrn = loadImage('assets/Karwisch_PXUI/panelBrn.png');
+  
+  //Fonts
+  menuFont = loadFont('assets/Alkhemikal.ttf');
+  
+  //Music
   stageSong1 = loadSound('assets/Abstraction/PixelWar1.wav');
+  
 }
 
 function setup() {
@@ -121,13 +135,14 @@ function draw() {
 }
 
 function drawMainMenu() {
-  background(255);
+  background(backgroundImg);
   fill(63, 224, 208);
   rectMode(CENTER);
   rect(width/2, height/2, 200, 100);
   fill(255);
   textAlign(CENTER);
   textSize(45);
+  textFont(menuFont);
   text("Play!", width/2, height/2);
 }
 
