@@ -46,7 +46,7 @@ let rows = 14;
 //Game stats displayed to player
 let towerType = 0;
 let hitPoints = 3;
-let gold = 120;
+let gold = 50;
 
 //Arrays to store game elements that can be generated and removed
 let towerArray = [];
