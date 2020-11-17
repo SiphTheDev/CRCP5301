@@ -55,7 +55,6 @@ let projectileArray = [];
 let titleButton;
 let playButton;
 let helpButton;
-let pauseButton;
   //Stage UI
 let goldButton;
 let hPButton;
@@ -63,8 +62,11 @@ let stgPauseButton;
 let towerButton;
 let towerAButton;
 let towerBButton;
-
-
+  //Help & Credits
+let returnMainBtn;
+  //PauseMenu
+let returnPlayBtn;
+let pauseToMainBtn;
 
 function preload() {
   //SpriteSheets
@@ -94,8 +96,8 @@ function setup() {
   
   //creating menu buttons
   loadMainMenu();
-  //loadPauseMenu();
   loadStageUI();
+  loadOtherButtons();
   
   //setting framerate to keep music synced up with activity
   frameRate(30);
@@ -173,11 +175,14 @@ function loadStageUI(){
   towerButton = new Button(width - 50, 50, 90, 30, underLine, menuFont, 'Towers', 20, color(165,113,78));
   towerAButton = new Button(width - 50, 115, 150, 150, menuBoxBrdr, menuFont, 'Archer', 20, color(165,113,78));
   towerBButton = new Button(width - 50, 200, 150, 150, menuBoxBrdr, menuFont, 'Mage', 20);
-
 }
 
-function loadPauseMenu(){
-  //do something. 
+function loadOtherButtons(){ //DON'T TEST UNTIL YOU TELL GAME TO RENDER & CHECK THESE!!!
+  //Help & Credits Buttons
+ returnMainBtn = new Button(width -50, height - 50, 75, 75, menuBoxX);
+  //PauseMenu Buttons
+ returnPlayBtn = new Button(width/2, 2*(height/5), 300, 100, menuBoxGrn, menuFont, 'Return', 20, color(165,113,78));
+ pauseToMainBtn = new Button(width/2, 3*(height/5), 200, 66, menuBoxBrn, menuFont, 'Menu', 20, color(165,113,78));
 }
 
 function draw() {
@@ -203,9 +208,23 @@ function drawMainMenu() {
   creditsButton.render();
 }
 
+function drawCreditsMenu(){
+  imageMode(CENTER);
+  image(beigeBoard, width/2, height/2, width-200, height);
+  returnMainBtn.render();
+}
+
+function drawHelpMenu(){
+  imageMode(CENTER);
+  image(beigeBoard, width/2, height/2, width-200, height); 
+   returnMainBtn.render();
+}
+
 function drawPauseMenu() {
-  //background(25,25,25,75);
-  //stageSong1.pause();
+  imageMode(CENTER);
+  image(beigeBoard, width/2, height/2, width-300, height-100); 
+   returnPlayBtn.render();
+   pauseToMainBtn.render();
 }
 
 //The bulk of the gameplay begins here: 
@@ -387,6 +406,7 @@ function damageFoe(target, dmg) {
 }
 
 function mouseClicked() {
+  print("GS: " + gameState);
   if (gameState == 0) { //  gs 0 is Main Menu
     if (playButton.clicked()) {
       gameState = 4; 
@@ -394,17 +414,29 @@ function mouseClicked() {
       //if(!stageSong1.isPlaying()){}
     }
     if(helpButton.clicked()){
-      print("I'm helping!");
+      gameState = 2;
     }
     if(creditsButton.clicked()){
-      print("Where it's due");
+      gameState = 1;
     }     
   } else if(gameState == 1){ //gs 1 is Credits Menu
-  
+    drawCreditsMenu();
+    if(returnMainBtn.clicked()){
+      gameState = 0;
+    }
   } else if(gameState == 2){ //gs 2 is Help Menu
-  
+    drawHelpMenu();
+    if(returnMainBtn.clicked()){
+      gameState = 0;
+    }
   } else if(gameState == 3){ //gs 3 is Pause Menu
-  
+    drawPauseMenu();
+    if(returnPlayBtn.clicked()){
+      gameState = 4; //will have to make more flexible upon adding more levels.
+    }
+    if(pauseToMainBtn.clicked()){
+      gameState = 0;
+    }    
   } else if (gameState == 4) { //  gs 4 is level 1
     //Checks each tile to see if the mouse has been clicked within its bounds.
     if(stgPauseButton.clicked()){
@@ -426,12 +458,7 @@ function mouseClicked() {
               gridArray[i][j].hasTower = false;
               gold += 10;
             }
-          } else if (gridArray[i][j].c == 0  && gridArray[i][j].r == 0) { //If top left clicked, pauses the game. 
-            //put elsewhere in future, doesn't really belong in this else-if nest.       
-            //fill(35,35,35, 45);
-            //rect(0,0,width, height);
-            gameState = 3; //ie paused.
-          }
+          } 
         }
       }
     }
@@ -445,7 +472,9 @@ function mouseClicked() {
       towerBButton.textColor = color(165,113,78);
       towerAButton.textColor = 255;
     }
-    
+    if(stgPauseButton.clicked()){
+      gameState = 3;
+    }
   }
 }
 
