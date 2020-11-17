@@ -6,10 +6,11 @@
  
  next: menus (help, credits, pause, gameplay window details, game over screen [score, main menu, replay buttons.]) with proper icons. - DON'T PUBLISH WITHOUT CITING MUSIC!!! 
  then: add win condition: (once health/score displayed, have a check every loop if it <= 0. If yes, change gamestate to a game-over screen, and call a "reset arrays & score/hp/gold" method; Decrement it on enemy collision. 
- beyond then: tweak timings to actually match music
  after: add enemy, tower, and projectile graphics. 
+ ___________________
+ beyond then: tweak timings to actually match music
  afterwards: adjust sounds to start/stop on menus & have more reasonable volumes, etc. 
- later: refactor some of this, needs help.  - coreCounter instead of frameCount. 
+ later: refactor some of this, needs help.  - coreCounter instead of frameCount.  - music separate from play button.
  even later:  - fix projectiles, so they don't all vanish when one hits target. - do over weekend?
  
  far beyond: put all this into a new class (lv 1 or gamePlay or the like) & make this doc fundamentaly just a scene manager. Treat it as main. 
@@ -20,15 +21,21 @@ let gridSpriteSheet;
 let menuFont;
 let menuBoxGrn;
 let menuBoxBrn;
+let menuBoxEmpty;
 let backgroundImg;
 let stageSong1;
 
+//Determines which screen is displayed
 let gameState = 0;
+
+//Store and determine size of gridSpace array
 let gridTileMap = []; //placeholder
 let gridArray = [];
 let cols = 28;
 let rows = 14;
-let score = 0;
+
+//Game stats displayed to player
+let hP = 3;
 let gold = 120;
 
 //Arrays to store game elements that can be generated and removed
@@ -37,10 +44,18 @@ let enemyArray = [];
 let projectileArray = [];
 
 //Buttons //TODO - make these not global, somehow, if that's worth doing in this case.
+  //Main Menu
 let titleButton;
 let playButton;
 let helpButton;
 let pauseButton;
+  //Stage UI
+let goldButton;
+let hPButton;
+let stgPauseButton;
+let towerButton;
+let towerAButton;
+let towerBButton;
 
 
 
@@ -50,6 +65,7 @@ function preload() {
   backgroundImg = loadImage('assets/EderMuniz_Forest.png');
   menuBoxGrn = loadImage('assets/Karwisch_PXUI/panelGrn.png');
   menuBoxBrn = loadImage('assets/Karwisch_PXUI/panelBrn.png');
+  menuBoxEmpty = loadImage('assets/Karwisch_PXUI/checkbox.png');
   
   //Fonts
   menuFont = loadFont('assets/Alkhemikal.ttf');
@@ -68,6 +84,7 @@ function setup() {
   //creating menu buttons
   loadMainMenu();
   loadPauseMenu();
+  loadStageUI();
   
   //setting framerate to keep music synced up with activity
   frameRate(30);
@@ -77,34 +94,34 @@ function createTileMap() { //temp until put this data in a json or elsewhere.
   let b = 10; //borders
   let e = 20; //enemies
   let p = 30; //players
-  gridTileMap = [b, b, b, b, b, b, b, b, b, b, b, b, b, b, 
-    b, b, b, b, b, b, b, b, b, b, b, b, b, b, 
-    b, b, b, b, b, b, b, b, b, b, b, b, b, b, 
-    b, b, p, p, p, p, p, p, p, p, p, p, e, e, 
-    b, b, p, p, p, p, p, p, p, p, p, p, e, e, 
-    b, b, p, p, e, e, e, e, e, e, p, p, e, e, 
-    b, b, p, p, e, e, e, e, e, e, p, p, e, e, 
-    b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
-    b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
-    b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
-    b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
-    b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
-    b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
-    e, e, e, e, e, e, p, p, e, e, p, p, e, e, 
-    e, e, e, e, e, e, p, p, e, e, p, p, e, e, 
-    b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
-    b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
-    b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
-    b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
-    b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
-    b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
-    b, b, p, p, e, e, p, p, e, e, p, p, e, e, 
-    b, b, p, p, e, e, p, p, e, e, e, e, e, e, 
-    b, b, p, p, e, e, e, e, e, e, e, e, e, e, 
-    b, b, p, p, e, e, e, e, e, e, p, p, e, e, 
-    b, b, b, b, b, b, b, b, b, b, b, b, b, b, 
-    b, b, b, b, b, b, b, b, b, b, b, b, b, b, 
-    b, b, b, b, b, b, b, b, b, b, b, b, b, b];//Determines what type of tile belongs in each space. Will move to JSON or XML later to allow level loading later.
+  gridTileMap = [ b, b, b, b, b, b, b, b, b, b, b, b, b, b,
+     b, b, b, b, b, b, b, b, b, b, b, b, b, b,
+     b, b, b, b, b, b, b, b, b, b, b, b, b, b,
+     b, p, p, p, p, p, p, p, p, p, p, e, e, b,
+     b, p, p, p, p, p, p, p, p, p, p, e, e, b,
+     b, p, p, e, e, e, e, e, e, p, p, e, e, b,
+     b, p, p, e, e, e, e, e, e, p, p, e, e, b,
+     b, p, p, e, e, p, p, e, e, p, p, e, e, b,
+     b, p, p, e, e, p, p, e, e, p, p, e, e, b,
+     b, p, p, e, e, p, p, e, e, p, p, e, e, b,
+     b, p, p, e, e, p, p, e, e, p, p, e, e, b,
+     b, p, p, e, e, p, p, e, e, p, p, e, e, b,
+     b, p, p, e, e, p, p, e, e, p, p, e, e, b,
+     e, e, e, e, e, p, p, e, e, p, p, e, e, b,
+     e, e, e, e, e, p, p, e, e, p, p, e, e, b,
+     b, p, p, e, e, p, p, e, e, p, p, e, e, b,
+     b, p, p, e, e, p, p, e, e, p, p, e, e, b,
+     b, p, p, e, e, p, p, e, e, p, p, e, e, b,
+     b, p, p, e, e, p, p, e, e, p, p, e, e, b,
+     b, p, p, e, e, p, p, e, e, p, p, e, e, b,
+     b, p, p, e, e, p, p, e, e, p, p, e, e, b,
+     b, p, p, e, e, p, p, e, e, p, p, e, e, b,
+     b, p, p, e, e, p, p, e, e, e, e, e, e, b,
+     b, p, p, e, e, e, e, e, e, e, e, e, e, b,
+     b, p, p, e, e, e, e, e, e, p, p, e, e, b,
+     b, b, b, b, b, b, b, b, b, b, b, b, b, b,
+     b, b, b, b, b, b, b, b, b, b, b, b, b, b,
+     b, b, b, b, b, b, b, b, b, b, b, b, b, b];//Determines what type of tile belongs in each space. Will move to JSON or XML later to allow level loading later.
 }
 
 function loadGridArray() { //Once you change the gridTileMap to a JSON, use typeNames instead of these arbitrary numbers? Or still avoid strings? WARNING: Make sure JSON presents it in column chunks, not row chunks.
@@ -142,6 +159,16 @@ function loadPauseMenu(){
   //do something. 
 }
 
+function loadStageUI(){
+  goldButton = new Button(50, 50, 150, 150, menuBoxEmpty, menuFont, 'gold', 20);
+//let hPButton;
+//let stgPauseButton;
+//let towerButton;
+//let towerAButton;
+//let towerBButton;
+
+}
+
 function draw() {
   if (gameState == 0) { //gs 0 is Main Menu
     drawMainMenu();
@@ -172,6 +199,7 @@ function drawPauseMenu() {
 
 //The bulk of the gameplay begins here: 
 function runStage() {
+  imageMode(CORNERS);
   background(backgroundImg);
   //stageSong1.play();
   drawGridArray();
@@ -192,18 +220,26 @@ function runStage() {
     checkEnemyAtGoal(); //done first to catch foes from prev loop. Gives players one more second to catch stragglers.
   }
   if (frameCount%120 == 1) { //occurs once/3 sec
-    enemyArray[enemyArray.length] = new Enemy(gridArray[13][0], gridArray[13][13], int(random(0, 3)), gridArray);  //(start node, goal node, size, type, gridArray);
+    enemyArray[enemyArray.length] = new Enemy(gridArray[13][0], gridArray[13][12], int(random(0, 3)), gridArray);  //(start node, goal node, size, type, gridArray);
     enemyArray[enemyArray.length-1].enemySetUp(); //to do this dynamically, put elsewhere & load all enemy paths simultaneously.
     print("new enemy type: " + enemyArray[enemyArray.length-1].type);
   }
 
   updateProjectiles();
 
-  fill(255);
-  textSize(32);
-  textAlign(CENTER, CENTER);
-  text("gold:", 25, 75);
-  text(gold, 25, 125);
+  updateLvUI();
+
+}
+
+function updateLvUI(){
+  //display Gold
+  goldButton.render();
+  
+  //fill(255);
+  //textSize(32);
+  //textAlign(CENTER, CENTER);
+  //text("gold:", 50, 50);
+  text(gold, 50, 100);
 }
 
 function drawGridArray() { //Calls the render method within each gridSpace instance.
@@ -236,9 +272,9 @@ function moveEnemies() { //moves each enemy based on its speed
 
 function checkEnemyAtGoal() {
   for (let i = 0; i < enemyArray.length; i++) {
-    if (enemyArray[i].node == gridArray[13][13]) {//should consider making the goal a global (or at least level-wide) in scope.
+    if (enemyArray[i].node == gridArray[13][12]) {//should consider making the goal a global (or at least level-wide) in scope.
       removeEnemy(enemyArray[i]);
-      score -= 10;
+      hP -= 1;
     }
   }
 }
@@ -320,14 +356,14 @@ function damageFoe(target, dmg) {
     print("hp: " + target.hp);
     removeEnemy(target);
     gold += 7;
-    score += 25;
+    //score += 25;
   }
 }
 
 function mouseClicked() {
   if (gameState == 0) { //  gs 0 is main  menu
     if (playButton.clicked()) {
-      gameState = 1; 
+      gameState = 4; 
       stageSong1.loop();
       //if(!stageSong1.isPlaying()){}
     }
