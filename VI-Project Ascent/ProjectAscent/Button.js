@@ -19,15 +19,13 @@ class Button {
   render() { //draw the button with the image in it & text
     imageMode(CENTER);
     image(this.img, this.x, this.y, this.sizeX, this.sizeY);
-    //rectMode(CENTER);
-    //fill(0,150);
-    //rect(this.x, this.y, this.sizeX, this.sizeY);
-    //rect(this.x - this.sizeX/3,this.y - this.sizeY/3,this.x + this.sizeX/3,this.y + this.sizeY/3);
     
-    textAlign(CENTER); 
+    textAlign(CENTER, CENTER); //aligns vertically & horizontally.
     textSize(this.textSize);
     fill(255);
-    text(text, (this.x + this.xSize/2), (this.y + this.ySize/2));
+    textSize(45);
+    textFont(menuFont);
+    text("tesstText", this.x, this.y);
     //print(text);
   }
 }
