@@ -508,8 +508,8 @@ function mouseClicked() {
     }
     if (pauseToMainBtn.clicked()) {
       gameState = 0;
-      //stageSong1.jump(0); //resets song to starting position for next playthough.
-      stageSong1.stop();
+      stageSong1.stop();//resets song to starting position for next playthough.
+      resetLevel();
     }
   } else if (gameState == 4) { //  gs 4 is level 1
     //Checks each tile to see if the mouse has been clicked within its bounds.
@@ -553,16 +553,6 @@ function mouseClicked() {
   }
 }
 
-/* In future: function pauseScreen(){
- -hanges game state, so mousePressed will detected buttons on this screen rather than the game grid.
- - renders said buttons:
- - exit to main menu
- - return to game
- - mute sound effects (if they are later implemented). Not sure why you'd do this in a music based game, but who knows. 
- }
- 
- */
-
 function removeTower(towerToDrop) { //uses splice to take one space and replace it with nothing as a means of removing a specified item from the array.  
   for (let i = 0; i < towerArray.length; i++) { 
     if (towerArray[i].node.c == towerToDrop.c && towerArray[i].node.r == towerToDrop.r) {
@@ -570,4 +560,13 @@ function removeTower(towerToDrop) { //uses splice to take one space and replace 
       i--;
     }
   }
+}
+
+function resetLevel(){
+  enemyArray.length = 0;
+  towerArray.length = 0;
+  projectileArray.length = 0;
+  hP = 3;
+  gold = 50;
+  towerType = 0;
 }
