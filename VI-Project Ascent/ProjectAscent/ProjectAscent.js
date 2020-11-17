@@ -480,6 +480,8 @@ function mouseClicked() {
     if (playButton.clicked()) {
       gameState = 4; 
       stageSong1.loop();
+      stageSong1.setVolume(1);
+      //stageSong1.play();
       //if(!stageSong1.isPlaying()){}
     }
     if (helpButton.clicked()) {
@@ -502,14 +504,17 @@ function mouseClicked() {
     drawPauseMenu();
     if (returnPlayBtn.clicked()) {
       gameState = 4; //will have to make more flexible upon adding more levels.
+      stageSong1.setVolume(1);
     }
     if (pauseToMainBtn.clicked()) {
       gameState = 0;
+      stageSong1.pause();
     }
   } else if (gameState == 4) { //  gs 4 is level 1
     //Checks each tile to see if the mouse has been clicked within its bounds.
     if (stgPauseButton.clicked()) {
       gameState = 3;
+      stageSong1.setVolume(0);
       print("Paused!");
     }
     for (let i = 0; i< gridArray.length; i++) { 
