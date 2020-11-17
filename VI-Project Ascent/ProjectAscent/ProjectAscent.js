@@ -21,7 +21,9 @@ let gridSpriteSheet;
 let menuFont;
 let menuBoxGrn;
 let menuBoxBrn;
-let menuBoxEmpty;
+let menuBoxBrdr;
+let menuBoxX;
+let emptyMenuBox;
 let backgroundImg;
 let stageSong1;
 
@@ -65,7 +67,9 @@ function preload() {
   backgroundImg = loadImage('assets/EderMuniz_Forest.png');
   menuBoxGrn = loadImage('assets/Karwisch_PXUI/panelGrn.png');
   menuBoxBrn = loadImage('assets/Karwisch_PXUI/panelBrn.png');
-  menuBoxEmpty = loadImage('assets/Karwisch_PXUI/checkbox.png');
+  menuBoxBrdr = loadImage('assets/Karwisch_PXUI/checkbox.png');
+  menuBoxX = loadImage('assets/Karwisch_PXUI/checkbox_x.png');
+  emptyMenuBox = loadImage('assets/Karwisch_PXUI/void.png');
   
   //Fonts
   menuFont = loadFont('assets/Alkhemikal.ttf');
@@ -83,7 +87,7 @@ function setup() {
   
   //creating menu buttons
   loadMainMenu();
-  loadPauseMenu();
+  //loadPauseMenu();
   loadStageUI();
   
   //setting framerate to keep music synced up with activity
@@ -155,18 +159,18 @@ function loadMainMenu(){
   creditsButton = new Button(width/2, 4*(height/5), 300, 100, menuBoxBrn, menuFont, 'credits', 50);
 }
 
-function loadPauseMenu(){
-  //do something. 
+function loadStageUI(){
+  goldButton = new Button(50, 250, 150, 150, emptyMenuBox, menuFont, 'gold', 20);
+  hPButton = new Button(50, 50, 150, 150, emptyMenuBox, menuFont, 'hP', 20);
+  stgPauseButton = new Button(width-50, height - 50, 150, 150, menuBoxX);
+  towerButton = new Button(width - 50, 50, 150, 150, emptyMenuBox, menuFont, 'Towers', 20);
+  towerAButton = new Button(width - 50, 100, 150, 150, menuBoxBrdr, menuFont, 't1', 20);
+  towerBButton = new Button(width - 50, 150, 150, 150, menuBoxBrdr, menuFont, 't2', 20);
+
 }
 
-function loadStageUI(){
-  goldButton = new Button(50, 50, 150, 150, menuBoxEmpty, menuFont, 'gold', 20);
-//let hPButton;
-//let stgPauseButton;
-//let towerButton;
-//let towerAButton;
-//let towerBButton;
-
+function loadPauseMenu(){
+  //do something. 
 }
 
 function draw() {
@@ -234,11 +238,11 @@ function runStage() {
 function updateLvUI(){
   //display Gold
   goldButton.render();
-  
-  //fill(255);
-  //textSize(32);
-  //textAlign(CENTER, CENTER);
-  //text("gold:", 50, 50);
+  hPButton.render();
+  stgPauseButton.render();
+  towerButton.render();
+  towerAButton.render();
+  towerBButton.render();
   text(gold, 50, 100);
 }
 
@@ -376,7 +380,10 @@ function mouseClicked() {
      
   } else if (gameState == 4) { //  gs 4 is level 1
     //Checks each tile to see if the mouse has been clicked within its bounds.
-
+    if(stgPauseButton.clicked()){
+      gameState = 3;
+      print("Paused!");
+    }
     for (let i = 0; i< gridArray.length; i++) { 
       for (let j = 0; j < gridArray[i].length; j++) {
         if (mouseX > gridArray[i][j].x && mouseX < (gridArray[i][j].x+(width/28)) && mouseY > gridArray[i][j].y && mouseY < (gridArray[i][j].y+(height/14))) {

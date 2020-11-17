@@ -1,5 +1,5 @@
 class Button {
-  constructor( x, y, sizeX, sizeY, img, font, text = "", textSize = 25, textColor = 255) { //setting default text, textSize & textColor if not specified elsewhere.
+  constructor( x, y, sizeX, sizeY, img, font = 'Helvetica', text = "", textSize = 25, textColor = 255) { //setting default text, textSize & textColor if not specified elsewhere.
     this.x = x;
     this.y = y;
     this.sizeX = sizeX;
