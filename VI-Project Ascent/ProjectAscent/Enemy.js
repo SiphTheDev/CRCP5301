@@ -10,6 +10,7 @@ class Enemy {
     this.sprite = 0;
     this.hP = 1;
     this.speed = 0;
+    this.size = 0;
     //In future: this.type = type. Will determine what sort of enemy will be generated: small & fast, average, slow and higher toughness. - may be better to do this in main, when deciding foeType to spawn.
   }
   
@@ -18,20 +19,24 @@ class Enemy {
       this.hP = 3;
       this.speed = 25; //moves every 2 beats.
       this.sprite = 0;
+      this.size = 50;
     }else if(this.type == 1){ //speedy wolf
       this.hP = 2;
       this.speed = 10;
       this.sprite = 1;
+      this.size = 40;
     } else if(this.type == 2){ //slow behemoth
       this.hP = 10;
       this.speed = 80;
       this.sprite = 2;
+      this.size = 80;
     } //probably also want an "else" with a generic enemy here for future error handling. 
     this.loadPath(); //occurs regardless of type;
   }
 
   render() {
-    image(this.spriteAr[sprite], this.node.x+25, this.node.y + 25, 50, 50);
+    imageMode(CENTER);
+    image(this.spriteAr[this.sprite], this.node.x+25, this.node.y + 25, this.size, this.size);
     //fill(0, 0, 0);
     //ellipse(this.node.x + 25, this.node.y + 25, this.r);
     //print("X: " + this.node.c + " Y: " + this.node.r);
