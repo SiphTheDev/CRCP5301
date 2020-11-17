@@ -22,6 +22,7 @@ class GridSpace {
       noFill();
     }  else if (this.type == 1) { //Borders & Walls
       
+      
       if(this.c == 2 && this.r == 0){ //top left corner
         image(gridSpriteSheet, this.c*50, this.r*50, 50, 50, 0, 64, 128, 128);
       } else if(this.c == 25 && this.r == 0){ //top right corner
@@ -43,6 +44,12 @@ class GridSpace {
         noFill();
         rectMode(CORNER);
         rect(this.x, this.y, width/28, height/14);
+      }
+      if(this.c == 2 && this.r == 12){ //exit
+        image(gridSpriteSheet, this.c*50, this.r*50, 50, 40, 192, 608, 128, 96);
+        print("heyo");
+      } else if (this.c == 2 && this.r == 11){
+        image(gridSpriteSheet, this.c*50, this.r*50, 50, 50, 192, 512, 128, 96);
       }
     } else if (this.type == 2) { //Enemy Terrain
       image(gridSpriteSheet, this.c*50, this.r*50, 50, 50, 128, 0, 64, 64);
