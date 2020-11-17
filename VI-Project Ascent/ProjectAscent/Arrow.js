@@ -1,9 +1,10 @@
 class Arrow {
-  constructor(x, y, target) {
+  constructor(x, y, target, sprite) {
     this.x = x;
     this.y = y;
     this.target = target;
     this.type = 0; //Arrow
+    this.sprite = sprite;
   }
 
   move() {
@@ -24,9 +25,10 @@ class Arrow {
   }
 
   render() {
-    fill(255);
-    ellipseMode(CENTER);
-    ellipse(this.x, this.y, 15);
+    image(this.sprite, this.x, this.y, 15, 15);
+    //fill(255);
+    //ellipseMode(CENTER);
+    //ellipse(this.x, this.y, 15);
     //image();
   }
 }

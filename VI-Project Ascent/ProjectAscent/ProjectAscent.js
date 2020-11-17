@@ -21,7 +21,7 @@
 let gridSpriteSheet;
 let towerSprites = [];
 let enemySprites = [];
-let magePulse;
+let magePulse = [];
 let arrowImg;
   //Images for Menus
 let helpArray = [];
@@ -82,7 +82,11 @@ function preload() {
   enemySprites[0] = loadImage('assets/CCG_Enemies/Bandit/bandits.gif'); //basic bandit
   enemySprites[1] = loadImage('assets/CCG_Enemies/Hound/hounds.gif');//wolf
   enemySprites[2] = loadImage('assets/CCG_Enemies/Barbarian/barbs.gif');//barb
-  magePulse = loadImage('assets/CCG_Enemies/Burst/gBurst.gif');//pulseProjectile
+  magePulse[0] = loadImage('assets/CCG_Enemies/Burst/gBurst2.png');//pulseProjectile
+  magePulse[1] = loadImage('assets/CCG_Enemies/Burst/gBurst3.png');//pulseProjectile
+  magePulse[2] = loadImage('assets/CCG_Enemies/Burst/gBurst4.png');//pulseProjectile
+  magePulse[3] = loadImage('assets/CCG_Enemies/Burst/gBurst3.png');//pulseProjectile
+  magePulse[4] = loadImage('assets/CCG_Enemies/Burst/gBurst2.png');//pulseProjectile
   arrowImg = loadImage('assets/CCG_Enemies/Archer/arrow1_1.png');//arrowProjectile
   
   //Menu Sprites
@@ -194,8 +198,8 @@ function loadStageUI() {
   hPButton = new Button(50, 50, 90, 30, underLine, menuFont, 'HP', 20, color(165, 113, 78));
   stgPauseButton = new Button(width-50, height - 50, 150, 150, menuBoxX);
   towerButton = new Button(width - 50, 50, 90, 30, underLine, menuFont, 'Towers', 20, color(165, 113, 78));
-  towerAButton = new Button(width - 50, 115, 150, 150, menuBoxBrdr, menuFont, 'Archer', 20, color(165, 113, 78));
-  towerBButton = new Button(width - 50, 200, 150, 150, menuBoxBrdr, menuFont, 'Mage', 20);
+  towerAButton = new Button(width - 50, 115, 150, 150, menuBoxBrdr, menuFont, 'Archer', 20);
+  towerBButton = new Button(width - 50, 200, 150, 150, menuBoxBrdr, menuFont, 'Mage', 20, color(165, 113, 78));
 }
 
 function loadOtherButtons() { //DON'T TEST UNTIL YOU TELL GAME TO RENDER & CHECK THESE!!!
@@ -401,9 +405,9 @@ function fireTowers() {//Call all tower's Attacks. If != null, create a new arro
     let target = towerArray[i].findTarget(enemyArray); //a) Check if an enemy is within range
     if (target != null) {
       if (towerArray[i].type == 0) { //for basic towers.
-        projectileArray[projectileArray.length] = new Arrow(towerArray[i].node.x + 25, towerArray[i].node.y + 25, target); //basic arrow
+        projectileArray[projectileArray.length] = new Arrow(towerArray[i].node.x + 25, towerArray[i].node.y + 25, target, arrowImg); //basic arrow
       } else if (towerArray[i].type == 1 && frameCount%80 == 1) { //later pass fireTowers the coreCounter, and just use that here.
-        projectileArray[projectileArray.length] = new Pulse(towerArray[i].node.x + 25, towerArray[i].node.y + 25); //pulse
+        projectileArray[projectileArray.length] = new Pulse(towerArray[i].node.x + 25, towerArray[i].node.y + 25, magePulse); //pulse
       }
     }
   }
@@ -428,13 +432,16 @@ function updateProjectiles() { //need to work on this for different projectile t
       } else if (projectileArray[i].type == 1) { //pulse
         for (let j = 0; j < enemyArray.length; j++) {
           print("Pulsed!");
-          if (dist(projectileArray[i].x, projectileArray[i].y, enemyArray[j].node.x+25, enemyArray[j].node.y+25) <= 75) {
+          if (dist(projectileArray[i].x, projectileArray[i].y, enemyArray[j].node.x+25, enemyArray[j].node.y+25) <= projectileArray[i].size) {
             damageFoe(enemyArray[j], 1);
           }
         }
+        projectileArray[i].size = 0;
+        if(projectileArray[i].isSpreading == false){
         projectileArray.splice(i, 1); //removes pulse.
         i--;
         print("Pulse Done!");
+        }
       }
     }
   }
