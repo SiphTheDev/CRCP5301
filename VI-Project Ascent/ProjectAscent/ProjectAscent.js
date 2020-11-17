@@ -20,6 +20,7 @@
   //Gameplay Sprites
 let gridSpriteSheet;
 let towerSprites = [];
+let enemySprites = [];
   //Images for Menus
 let menuFont;
 let menuBoxGrn;
@@ -75,6 +76,9 @@ function preload() {
   gridSpriteSheet = loadImage('assets/dungeonTiles.png');
   towerSprites[0] = loadImage('assets/CCG_Enemies/Archer/archers.gif'); //archer
   towerSprites[1] = loadImage('assets/CCG_Enemies/Mage/wizards.gif'); //mage
+  enemySprites[0] = loadImage('assets/CCG_Enemies/Bandit/bandits.gif'); //basic bandit
+  enemySprites[1] = loadImage('assets/CCG_Enemies/Hound/hounds.gif');//wolf
+  enemySprites[2] = loadImage('assets/CCG_Enemies/Barbarian/barbs.gif');//barb
   
   backgroundImg = loadImage('assets/EderMuniz_Forest.png');
   menuBoxGrn = loadImage('assets/Karwisch_PXUI/panelGrn.png');
@@ -290,7 +294,7 @@ function runStage() {
     checkEnemyAtGoal(); //done first to catch foes from prev loop. Gives players one more second to catch stragglers.
   }
   if (frameCount%120 == 1) { //occurs once/3 sec
-    enemyArray[enemyArray.length] = new Enemy(gridArray[13][0], gridArray[3][12], int(random(0, 3)), gridArray);  //(start node, goal node, size, type, gridArray);
+    enemyArray[enemyArray.length] = new Enemy(gridArray[13][0], gridArray[3][12], int(random(0, 3)), gridArray, enemySprites);  //(start node, goal node, size, type, gridArray);
     enemyArray[enemyArray.length-1].enemySetUp(); //to do this dynamically, put elsewhere & load all enemy paths simultaneously.
     print("new enemy type: " + enemyArray[enemyArray.length-1].type);
   }

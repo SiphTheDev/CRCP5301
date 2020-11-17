@@ -48,7 +48,6 @@ class GridSpace {
       }
       if(this.c == 2 && this.r == 12){ //exit
         image(this.gridSpriteSheet, this.c*50, this.r*50, 50, 40, 192, 608, 128, 96);
-        print("heyo");
       } else if (this.c == 2 && this.r == 11){
         image(this.gridSpriteSheet, this.c*50, this.r*50, 50, 50, 192, 512, 128, 96);
       }
