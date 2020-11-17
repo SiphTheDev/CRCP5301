@@ -153,7 +153,7 @@ function loadGridArray() { //Once you change the gridTileMap to a JSON, use type
         type = 3;
         farbe = color(0, 0, 255);
       }
-      gridArray[c][r] = new GridSpace(c, r, c*(width/28), r*(height/14), type, farbe); //if you make the grid only half the screen & need to shift it over, do this here via addition. 
+      gridArray[c][r] = new GridSpace(c, r, c*(width/28), r*(height/14), type, farbe, gridSpriteSheet); //if you make the grid only half the screen & need to shift it over, do this here via addition. 
       i++;
     }
   }
@@ -222,7 +222,7 @@ function drawCreditsMenu() {
   fill(240);
   textAlign(LEFT, TOP);
   textSize(30);
-  text("Game design by Thomas Park at https://povingames.com/blog/category/siphthedev/project-ascent/\nAlkhemikal Font by Jeti at https://fontenddev.com/fonts/alkhemikal/\nBackground Tiles by Daniel Thomas Art at DanielThomasArt@gmail.com\nForest Scene by Eder Muniz at https://www.gamedevmarket.net/member/edermuniz14/\nMusic by Abstraction at http://abstractionmusic.bandcamp.com\nUI Elements by Karwisch at https://karwisch.itch.io/pxui-basic & Kenny Assets at https://kenney.nl\n", width/2, height/2, width-240, height-140);
+  text("Game design by Thomas Park at https://povingames.com/blog/category/siphthedev/project-ascent/\nAlkhemikal Font by Jeti at https://fontenddev.com/fonts/alkhemikal/\nBackground Tiles by Daniel Thomas Art at DanielThomasArt@gmail.com\nForest Scene by Eder Muniz at https://www.gamedevmarket.net/member/edermuniz14/\nMusic by Abstraction at http://abstractionmusic.bandcamp.com\nUI Elements by Karwisch at https://karwisch.itch.io/pxui-basic & Kenny Assets at https://kenney.nl\nCharacter Sprites by CleanCutGames at https://cleancutgames.itch.io ", width/2, height/2, width-240, height-140);
 }
 
 function drawHelpMenu() {
@@ -285,7 +285,7 @@ function runStage() {
     checkEnemyAtGoal(); //done first to catch foes from prev loop. Gives players one more second to catch stragglers.
   }
   if (frameCount%120 == 1) { //occurs once/3 sec
-    enemyArray[enemyArray.length] = new Enemy(gridArray[13][0], gridArray[13][12], int(random(0, 3)), gridArray);  //(start node, goal node, size, type, gridArray);
+    enemyArray[enemyArray.length] = new Enemy(gridArray[13][0], gridArray[3][12], int(random(0, 3)), gridArray);  //(start node, goal node, size, type, gridArray);
     enemyArray[enemyArray.length-1].enemySetUp(); //to do this dynamically, put elsewhere & load all enemy paths simultaneously.
     print("new enemy type: " + enemyArray[enemyArray.length-1].type);
   }
@@ -351,7 +351,7 @@ function moveEnemies() { //moves each enemy based on its speed
 
 function checkEnemyAtGoal() {
   for (let i = 0; i < enemyArray.length; i++) {
-    if (enemyArray[i].node == gridArray[13][12]) {//should consider making the goal a global (or at least level-wide) in scope.
+    if (enemyArray[i].node == gridArray[3][12]) {//should consider making the goal a global (or at least level-wide) in scope.
       removeEnemy(enemyArray[i]);
       hitPoints -= 1;
     }
