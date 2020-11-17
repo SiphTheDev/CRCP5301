@@ -1,24 +1,22 @@
 class Tower {
 
-  constructor(type, node) { //defaults to type 0? Or ALWAYS type 0? Will need to see if it can be overwritten. 
+  constructor(type, node, sprites) { //defaults to type 0? Or ALWAYS type 0? Will need to see if it can be overwritten. 
     this.type = type;
     this.node = node;
+    this.sprites = sprites;
 
     //In future: this.type = type. Will determine what sort of tower will be placed: short range and fast, or long range but slow & strong, or a laser that doesn't aim, but goes long range.
   }
 
   render() {
-    let size = 0;
+    let sprite = 0;
+    //let size = 0;
     if (this.type == 0) {
-      fill(100, 0, 20);
-      size = 45;
-    } else {
-      fill(255); //generic
-      size = 25;
+      sprite = this.sprites[0]; //archer      
+    } else { 
+      sprite = this.sprites[1]; //mage (default)
     }
-    rectMode(CENTER);
-    rect(this.node.x + 25, this.node.y + 25, size, size);
-    //in future: image(vals to get image from sprite sheet, scale it, and place it here.).
+    image(sprite, this.node.c*50, this.node.r*50, 50, 50);//, 0, 0, 64, 64);
   }
 
   findTarget(enemyArray) { //will be called from main draw loop (or indirectly. Draw may call a fireTowers() method that loops through all these and checks). If frame is correct, will fire.

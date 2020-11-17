@@ -17,7 +17,10 @@
  */
 
 //Variables to store images and sounds to be loaded in preload()
+  //Gameplay Sprites
 let gridSpriteSheet;
+let towerSprites = [];
+  //Images for Menus
 let menuFont;
 let menuBoxGrn;
 let menuBoxBrn;
@@ -26,9 +29,8 @@ let menuBoxX;
 let emptyMenuBox;
 let beigeBoard;
 let underLine;
-
-
 let backgroundImg;
+  //Music
 let stageSong1;
 
 //Determines which screen is displayed
@@ -71,6 +73,9 @@ let pauseToMainBtn;
 function preload() {
   //SpriteSheets
   gridSpriteSheet = loadImage('assets/dungeonTiles.png');
+  towerSprites[0] = loadImage('assets/CCG_Enemies/Archer/archers.gif'); //archer
+  towerSprites[1] = loadImage('assets/CCG_Enemies/Mage/wizards.gif'); //mage
+  
   backgroundImg = loadImage('assets/EderMuniz_Forest.png');
   menuBoxGrn = loadImage('assets/Karwisch_PXUI/panelGrn.png');
   menuBoxBrn = loadImage('assets/Karwisch_PXUI/panelBrn.png');
@@ -483,7 +488,7 @@ function mouseClicked() {
           //If the tile is type 3 (open to towers), places a tower if space is open and player has enough money.
           if (gridArray[i][j].type == 3) {
             if (!gridArray[i][j].hasTower && gold >= 20) { //Adds a new tower if there isn't one there.
-              towerArray[towerArray.length] = new Tower(towerType, gridArray[i][j]);
+              towerArray[towerArray.length] = new Tower(towerType, gridArray[i][j], towerSprites);
               gridArray[i][j].hasTower = true;
               gold -= 20;
             } else if (gridArray[i][j].hasTower) { //removes a tower if there is one there
