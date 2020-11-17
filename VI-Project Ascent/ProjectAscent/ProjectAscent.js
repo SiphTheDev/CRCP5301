@@ -21,6 +21,8 @@
 let gridSpriteSheet;
 let towerSprites = [];
 let enemySprites = [];
+let magePulse;
+let arrowImg;
   //Images for Menus
 let helpArray = [];
 let menuFont;
@@ -80,9 +82,10 @@ function preload() {
   enemySprites[0] = loadImage('assets/CCG_Enemies/Bandit/bandits.gif'); //basic bandit
   enemySprites[1] = loadImage('assets/CCG_Enemies/Hound/hounds.gif');//wolf
   enemySprites[2] = loadImage('assets/CCG_Enemies/Barbarian/barbs.gif');//barb
+  magePulse = loadImage('assets/CCG_Enemies/Burst/gBurst.gif');//pulseProjectile
+  arrowImg = loadImage('assets/CCG_Enemies/Archer/arrow1_1.png');//arrowProjectile
   
   //Menu Sprites
-  
   backgroundImg = loadImage('assets/EderMuniz_Forest.png');
   menuBoxGrn = loadImage('assets/Karwisch_PXUI/panelGrn.png');
   menuBoxBrn = loadImage('assets/Karwisch_PXUI/panelBrn.png');
@@ -261,11 +264,11 @@ function drawHelpMenu() {
   textSize(20);
   textLeading(100);
   text("Your goal is to prevent any of the enemies from reaching your basecamp.\nTo do this, you can spend gold to place towers along the path that will attack them.\nYou can select different types of towers in the side menu:\nBut watch out! You only have so much gold. If you run out, kill some enemies to get more or click a tower to refund it (partially).\nIf you need a break, press the pause button in the lower right\nGood luck out there!", width/2, height/2, width-240, height-140);
-  image(helpArray[0], width-(width/6), (height/6), 100, 80);  //exit with enemies
-  image(helpArray[1], width-(width/6), 1*(height/6), 100, 80);  //attacking
-  image(helpArray[3], width-(width/6), 2*(height/6), 60, 100);  //gold counter
-  image(helpArray[2], width-(width/6), 3*(height/6), 40,100);  //tower menu
-  image(helpArray[4], width-(width/6), 4*(height/6), 100,100);  //pause
+  image(helpArray[0], width-(width/6), 1*(height/7), 100, 80);  //exit with enemies
+  image(helpArray[1], width-(width/6), 2*(height/7), 100, 80);  //attacking
+  image(helpArray[2], width-(width/6), 3*(height/7), 35,80);  //tower menu
+  image(helpArray[3], width-(width/6), 4*(height/7), 50, 80);  //gold counter
+  image(helpArray[4], width-(width/6), 5*(height/7), 80,80);  //pause
 
   returnMainBtn.render();
 }
