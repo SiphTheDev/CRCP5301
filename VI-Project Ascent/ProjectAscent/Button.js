@@ -1,10 +1,9 @@
 class Button {
-  constructor(x, y, sizeX, sizeY, img, text = "", textSize = 25, textColor = 255) { //setting default text, textSize & textColor if not specified elsewhere.
+  constructor( x, y, sizeX, sizeY, img, text = "", textSize = 25) { //setting default text, textSize & textColor if not specified elsewhere.
     this.x = x;
     this.y = y;
     this.sizeX = sizeX;
     this.sizeY = sizeY;
-    this.target = target;
     this.img = img;
     this.text = text;
   }
@@ -18,13 +17,13 @@ class Button {
   }
 
   render() { //draw the button with the image in it & text
-    fill(this.img);
+    image(this.img, this.x, this.y);
     rectMode(CORNERS);
     rect(this.x, this.y, this.sizeX, this.sizeY);
     
-    textMode(CENTER); 
+    textAlign(CENTER); 
     textSize(this.textSize);
-    fill(this.textColor);
+    fill(255);
     text(text, (this.x + this.xSize/2), (this.y + this.ySize/2));
   }
 }
