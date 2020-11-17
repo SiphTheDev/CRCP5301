@@ -36,7 +36,12 @@ let towerArray = [];
 let enemyArray = [];
 let projectileArray = [];
 
-//let buttonArray = [];
+//Buttons //TODO - make these not global, somehow, if that's worth doing in this case.
+let titleButton;
+let playButton;
+let helpButton;
+let pauseButton;
+
 
 
 function preload() {
@@ -126,8 +131,11 @@ function loadGridArray() { //Once you change the gridTileMap to a JSON, use type
 }
 
 function loadMainMenu(){
-  //x, y, sizeX, sizeY, img, [optional: text, textSize, textColor]);
-  playButton = new Button(width/2, height/5, 450, 150, menuBoxGrn, 'play', 50);
+  //x, y, sizeX, sizeY, img, font, [optional: text, textSize, textColor]);
+  titleButton = new Button(width/2, height/5, 650, 150, menuBoxBrn, menuFont, 'PROJECT ASCENT', 75);
+  playButton = new Button(width/2, 2*height/5, 300, 100, menuBoxGrn, menuFont, 'play', 50);
+  helpButton = new Button(width/2, 3*(height/5), 300, 100, menuBoxBrn, menuFont, 'help', 50);
+  creditsButton = new Button(width/2, 4*(height/5), 300, 100, menuBoxBrn, menuFont, 'credits', 50);
 }
 
 function loadPauseMenu(){
@@ -147,7 +155,10 @@ function draw() {
 function drawMainMenu() {
   imageMode(CORNERS);
   background(backgroundImg);
+  titleButton.render();
   playButton.render();
+  helpButton.render();
+  creditsButton.render();
   //fill(63, 224, 208);
   //rectMode(CENTER);
   //rect(width/2, height/2, 200, 100);
@@ -165,6 +176,7 @@ function drawPauseMenu() {
 
 //The bulk of the gameplay begins here: 
 function runStage() {
+  background(backgroundImg);
   //stageSong1.play();
   drawGridArray();
   renderTowers();
@@ -193,6 +205,7 @@ function runStage() {
 
   fill(255);
   textSize(32);
+  textAlign(CENTER, CENTER);
   text("gold:", 25, 75);
   text(gold, 25, 125);
 }
@@ -322,6 +335,13 @@ function mouseClicked() {
       stageSong1.loop();
       //if(!stageSong1.isPlaying()){}
     }
+    if(helpButton.clicked()){
+      print("I'm helping!");
+    }
+    if(creditsButton.clicked()){
+      print("Where it's due");
+    }
+     
   } else if (gameState == 1) { //  gs 1 is level 1
     //Checks each tile to see if the mouse has been clicked within its bounds.
 

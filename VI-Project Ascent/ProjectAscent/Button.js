@@ -1,11 +1,14 @@
 class Button {
-  constructor( x, y, sizeX, sizeY, img, text = '', textSize = 25) { //setting default text, textSize & textColor if not specified elsewhere.
+  constructor( x, y, sizeX, sizeY, img, font, text = "", textSize = 25, textColor = 255) { //setting default text, textSize & textColor if not specified elsewhere.
     this.x = x;
     this.y = y;
     this.sizeX = sizeX;
     this.sizeY = sizeY;
     this.img = img;
+    this.font = font;
     this.text = text;
+    this.textSize = textSize;
+    this.textColor = textColor;
   }
 
   clicked() { //returns true if button clicked.    
@@ -22,10 +25,9 @@ class Button {
     
     textAlign(CENTER, CENTER); //aligns vertically & horizontally.
     textSize(this.textSize);
-    fill(255);
-    textSize(45);
-    textFont(menuFont);
-    text("tesstText", this.x, this.y);
+    fill(this.textColor);
+    textFont(this.font);
+    text(this.text, this.x, this.y);
     //print(text);
   }
 }
