@@ -238,8 +238,8 @@ function drawHelpMenu() {
   
   fill(240);
   textAlign(LEFT, TOP);
-  textSize(30);
-  text("TestHello!", width/2, height/2, width-240, height-140);
+  textSize(20);
+  text("Your goal is to prevent any of the enemies from reaching your basecamp.\nTo do this, you can spend gold to place towers along the path that will attack them.\nYou can select different types of towers in the side menu:\nBut watch out! You only have so much gold. If you run out, kill some enemies to get more.\nIf you need a break, press the pause button in the lower right\n\nGood luck out there!", width/2, height/2, width-240, height-140);
 
 
   returnMainBtn.render();
