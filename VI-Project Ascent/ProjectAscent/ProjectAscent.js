@@ -31,9 +31,12 @@ let rows = 14;
 let score = 0;
 let gold = 120;
 
+//Arrays to store game elements that can be generated and removed
 let towerArray = [];
 let enemyArray = [];
 let projectileArray = [];
+
+//let buttonArray = [];
 
 
 function preload() {
@@ -53,9 +56,15 @@ function preload() {
 
 function setup() {
   createCanvas(1400, 700);
+  //Preparing the grid in which the game occurs.
   createTileMap();
   loadGridArray();
-
+  
+  //creating menu buttons
+  loadMainMenu();
+  loadPauseMenu();
+  
+  //setting framerate to keep music synced up with activity
   frameRate(30);
 }
 
@@ -116,12 +125,13 @@ function loadGridArray() { //Once you change the gridTileMap to a JSON, use type
   }
 }
 
-function drawGridArray() { //Calls the render method within each gridSpace instance.
-  for (let i = 0; i < gridArray.length; i++) {
-    for (let j = 0; j < gridArray[i].length; j++) {
-      gridArray[i][j].render();
-    }
-  }
+function loadMainMenu(){
+  //x, y, sizeX, sizeY, img, [optional: text, textSize, textColor]);
+  playButton = new Button(width/2, height/5, 450, 150, menuBoxGrn, 'play', 50);
+}
+
+function loadPauseMenu(){
+  //do something. 
 }
 
 function draw() {
@@ -135,15 +145,17 @@ function draw() {
 }
 
 function drawMainMenu() {
+  imageMode(CORNERS);
   background(backgroundImg);
-  fill(63, 224, 208);
-  rectMode(CENTER);
-  rect(width/2, height/2, 200, 100);
-  fill(255);
-  textAlign(CENTER);
-  textSize(45);
-  textFont(menuFont);
-  text("Play!", width/2, height/2);
+  playButton.render();
+  //fill(63, 224, 208);
+  //rectMode(CENTER);
+  //rect(width/2, height/2, 200, 100);
+  //fill(255);
+  //textAlign(CENTER);
+  //textSize(45);
+  //textFont(menuFont);
+  //text("Play!", width/2, height/2);
 }
 
 function drawPauseMenu() {
@@ -179,11 +191,18 @@ function runStage() {
 
   updateProjectiles();
 
-
   fill(255);
   textSize(32);
   text("gold:", 25, 75);
   text(gold, 25, 125);
+}
+
+function drawGridArray() { //Calls the render method within each gridSpace instance.
+  for (let i = 0; i < gridArray.length; i++) {
+    for (let j = 0; j < gridArray[i].length; j++) {
+      gridArray[i][j].render();
+    }
+  }
 }
 
 function renderTowers() {
@@ -298,7 +317,7 @@ function damageFoe(target, dmg) {
 
 function mouseClicked() {
   if (gameState == 0) { //  gs 0 is main  menu
-    if (mouseX < (width/2 + 100) && mouseX > (width/2 - 100) && mouseY < (height/2 + 50) && mouseY > (height/2 - 50)) {
+    if (playButton.clicked()) {
       gameState = 1; 
       stageSong1.loop();
       //if(!stageSong1.isPlaying()){}
