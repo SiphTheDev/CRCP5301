@@ -51,20 +51,20 @@ let enemyArray = [];
 let projectileArray = [];
 
 //Buttons //TODO - make these not global, somehow, if that's worth doing in this case.
-  //Main Menu
+//Main Menu
 let titleButton;
 let playButton;
 let helpButton;
-  //Stage UI
+//Stage UI
 let goldButton;
 let hPButton;
 let stgPauseButton;
 let towerButton;
 let towerAButton;
 let towerBButton;
-  //Help & Credits
+//Help & Credits
 let returnMainBtn;
-  //PauseMenu
+//PauseMenu
 let returnPlayBtn;
 let pauseToMainBtn;
 
@@ -79,13 +79,12 @@ function preload() {
   emptyMenuBox = loadImage('assets/Karwisch_PXUI/void.png');
   beigeBoard = loadImage('assets/Karwisch_PXUI/BeigeBoard.png');
   underLine = loadImage('assets/Karwisch_PXUI/UnderLine.png');
-  
+
   //Fonts
   menuFont = loadFont('assets/Alkhemikal.ttf');
-  
+
   //Music
   stageSong1 = loadSound('assets/Abstraction/PixelWar1.wav');
-  
 }
 
 function setup() {
@@ -93,12 +92,12 @@ function setup() {
   //Preparing the grid in which the game occurs.
   createTileMap();
   loadGridArray();
-  
+
   //creating menu buttons
   loadMainMenu();
   loadStageUI();
   loadOtherButtons();
-  
+
   //setting framerate to keep music synced up with activity
   frameRate(30);
 }
@@ -107,34 +106,34 @@ function createTileMap() { //temp until put this data in a json or elsewhere.
   let b = 10; //borders
   let e = 20; //enemies
   let p = 30; //players
-  gridTileMap = [ b, b, b, b, b, b, b, b, b, b, b, b, b, b,
-     b, b, b, b, b, b, b, b, b, b, b, b, b, b,
-     b, b, b, b, b, b, b, b, b, b, b, b, b, b,
-     b, p, p, p, p, p, p, p, p, p, p, e, e, b,
-     b, p, p, p, p, p, p, p, p, p, p, e, e, b,
-     b, p, p, e, e, e, e, e, e, p, p, e, e, b,
-     b, p, p, e, e, e, e, e, e, p, p, e, e, b,
-     b, p, p, e, e, p, p, e, e, p, p, e, e, b,
-     b, p, p, e, e, p, p, e, e, p, p, e, e, b,
-     b, p, p, e, e, p, p, e, e, p, p, e, e, b,
-     b, p, p, e, e, p, p, e, e, p, p, e, e, b,
-     b, p, p, e, e, p, p, e, e, p, p, e, e, b,
-     b, p, p, e, e, p, p, e, e, p, p, e, e, b,
-     e, e, e, e, e, p, p, e, e, p, p, e, e, b,
-     e, e, e, e, e, p, p, e, e, p, p, e, e, b,
-     b, p, p, e, e, p, p, e, e, p, p, e, e, b,
-     b, p, p, e, e, p, p, e, e, p, p, e, e, b,
-     b, p, p, e, e, p, p, e, e, p, p, e, e, b,
-     b, p, p, e, e, p, p, e, e, p, p, e, e, b,
-     b, p, p, e, e, p, p, e, e, p, p, e, e, b,
-     b, p, p, e, e, p, p, e, e, p, p, e, e, b,
-     b, p, p, e, e, p, p, e, e, p, p, e, e, b,
-     b, p, p, e, e, p, p, e, e, e, e, e, e, b,
-     b, p, p, e, e, e, e, e, e, e, e, e, e, b,
-     b, p, p, e, e, e, e, e, e, p, p, e, e, b,
-     b, b, b, b, b, b, b, b, b, b, b, b, b, b,
-     b, b, b, b, b, b, b, b, b, b, b, b, b, b,
-     b, b, b, b, b, b, b, b, b, b, b, b, b, b];//Determines what type of tile belongs in each space. Will move to JSON or XML later to allow level loading later.
+  gridTileMap = [ b, b, b, b, b, b, b, b, b, b, b, b, b, b, 
+    b, b, b, b, b, b, b, b, b, b, b, b, b, b, 
+    b, b, b, b, b, b, b, b, b, b, b, b, b, b, 
+    b, p, p, p, p, p, p, p, p, p, p, e, e, b, 
+    b, p, p, p, p, p, p, p, p, p, p, e, e, b, 
+    b, p, p, e, e, e, e, e, e, p, p, e, e, b, 
+    b, p, p, e, e, e, e, e, e, p, p, e, e, b, 
+    b, p, p, e, e, p, p, e, e, p, p, e, e, b, 
+    b, p, p, e, e, p, p, e, e, p, p, e, e, b, 
+    b, p, p, e, e, p, p, e, e, p, p, e, e, b, 
+    b, p, p, e, e, p, p, e, e, p, p, e, e, b, 
+    b, p, p, e, e, p, p, e, e, p, p, e, e, b, 
+    b, p, p, e, e, p, p, e, e, p, p, e, e, b, 
+    e, e, e, e, e, p, p, e, e, p, p, e, e, b, 
+    e, e, e, e, e, p, p, e, e, p, p, e, e, b, 
+    b, p, p, e, e, p, p, e, e, p, p, e, e, b, 
+    b, p, p, e, e, p, p, e, e, p, p, e, e, b, 
+    b, p, p, e, e, p, p, e, e, p, p, e, e, b, 
+    b, p, p, e, e, p, p, e, e, p, p, e, e, b, 
+    b, p, p, e, e, p, p, e, e, p, p, e, e, b, 
+    b, p, p, e, e, p, p, e, e, p, p, e, e, b, 
+    b, p, p, e, e, p, p, e, e, p, p, e, e, b, 
+    b, p, p, e, e, p, p, e, e, e, e, e, e, b, 
+    b, p, p, e, e, e, e, e, e, e, e, e, e, b, 
+    b, p, p, e, e, e, e, e, e, p, p, e, e, b, 
+    b, b, b, b, b, b, b, b, b, b, b, b, b, b, 
+    b, b, b, b, b, b, b, b, b, b, b, b, b, b, 
+    b, b, b, b, b, b, b, b, b, b, b, b, b, b];//Determines what type of tile belongs in each space. Will move to JSON or XML later to allow level loading later.
 }
 
 function loadGridArray() { //Once you change the gridTileMap to a JSON, use typeNames instead of these arbitrary numbers? Or still avoid strings? WARNING: Make sure JSON presents it in column chunks, not row chunks.
@@ -160,7 +159,7 @@ function loadGridArray() { //Once you change the gridTileMap to a JSON, use type
   }
 }
 
-function loadMainMenu(){
+function loadMainMenu() {
   //x, y, sizeX, sizeY, img, font, [optional: text, textSize, textColor]);
   titleButton = new Button(width/2, height/5, 650, 150, menuBoxBrn, menuFont, 'PROJECT ASCENT', 75);
   playButton = new Button(width/2, 2*height/5, 300, 100, menuBoxGrn, menuFont, 'play', 50);
@@ -168,34 +167,34 @@ function loadMainMenu(){
   creditsButton = new Button(width/2, 4*(height/5), 300, 100, menuBoxBrn, menuFont, 'credits', 50);
 }
 
-function loadStageUI(){
-  goldButton = new Button(50, 250, 90, 30, underLine, menuFont, 'Gold', 20, color(165,113,78));
-  hPButton = new Button(50, 50, 90, 30, underLine, menuFont, 'HP', 20, color(165,113,78));
+function loadStageUI() {
+  goldButton = new Button(50, 250, 90, 30, underLine, menuFont, 'Gold', 20, color(165, 113, 78));
+  hPButton = new Button(50, 50, 90, 30, underLine, menuFont, 'HP', 20, color(165, 113, 78));
   stgPauseButton = new Button(width-50, height - 50, 150, 150, menuBoxX);
-  towerButton = new Button(width - 50, 50, 90, 30, underLine, menuFont, 'Towers', 20, color(165,113,78));
-  towerAButton = new Button(width - 50, 115, 150, 150, menuBoxBrdr, menuFont, 'Archer', 20, color(165,113,78));
+  towerButton = new Button(width - 50, 50, 90, 30, underLine, menuFont, 'Towers', 20, color(165, 113, 78));
+  towerAButton = new Button(width - 50, 115, 150, 150, menuBoxBrdr, menuFont, 'Archer', 20, color(165, 113, 78));
   towerBButton = new Button(width - 50, 200, 150, 150, menuBoxBrdr, menuFont, 'Mage', 20);
 }
 
-function loadOtherButtons(){ //DON'T TEST UNTIL YOU TELL GAME TO RENDER & CHECK THESE!!!
+function loadOtherButtons() { //DON'T TEST UNTIL YOU TELL GAME TO RENDER & CHECK THESE!!!
   //Help & Credits Buttons
- returnMainBtn = new Button(width -50, height - 50, 75, 75, menuBoxX);
+  returnMainBtn = new Button(width -50, height - 50, 75, 75, menuBoxX);
   //PauseMenu Buttons
- returnPlayBtn = new Button(width/2, 2*(height/5), 300, 100, menuBoxGrn, menuFont, 'Return', 20, color(165,113,78));
- pauseToMainBtn = new Button(width/2, 3*(height/5), 200, 66, menuBoxBrn, menuFont, 'Menu', 20, color(165,113,78));
+  returnPlayBtn = new Button(width/2, 2*(height/5), 300, 100, menuBoxGrn, menuFont, 'Return', 20, color(165, 113, 78));
+  pauseToMainBtn = new Button(width/2, 3*(height/5), 300, 100, menuBoxBrn, menuFont, 'Menu', 20, color(165, 113, 78));
 }
 
 function draw() {
   if (gameState == 0) { //gs 0 is Main Menu
     drawMainMenu();
   } else if (gameState == 1) { //gs 1 Credits Screen
-
+    drawCreditsMenu();
   } else if (gameState == 2) { //gs 2 is Help Screen
-
-  } else if (gameState == 3){ //gs 3 is Pause Screen
-        drawPauseMenu();
-  } else if (gameState == 4){ //gs 4 is Stage One
-        runStage();
+    drawHelpMenu();
+  } else if (gameState == 3) { //gs 3 is Pause Screen
+    drawPauseMenu();
+  } else if (gameState == 4) { //gs 4 is Stage One
+    runStage();
   }
 }
 
@@ -208,7 +207,7 @@ function drawMainMenu() {
   creditsButton.render();
 }
 
-function drawCreditsMenu(){
+function drawCreditsMenu() {
   imageMode(CENTER);
   image(beigeBoard, width/2, height/2, width-200, height);
   returnMainBtn.render();
@@ -219,24 +218,48 @@ function drawCreditsMenu(){
   textAlign(CENTER, TOP);
   textSize(60);
   text("Credits & Assets", width/2, height/2, width-200, height);
+
+  fill(240);
+  textAlign(LEFT, TOP);
+  textSize(30);
+  text("Game design by Thomas Park at https://povingames.com/blog/category/siphthedev/project-ascent/\nAlkhemikal Font by Jeti at https://fontenddev.com/fonts/alkhemikal/\nBackground Tiles by Daniel Thomas Art at DanielThomasArt@gmail.com\nForest Scene by Eder Muniz at https://www.gamedevmarket.net/member/edermuniz14/\nMusic by Abstraction at http://abstractionmusic.bandcamp.com\nUI Elements by Karwisch at https://karwisch.itch.io/pxui-basic & Kenny Assets at https://kenney.nl\n", width/2, height/2, width-240, height-140);
+}
+
+function drawHelpMenu() {
+  imageMode(CENTER);
+  image(beigeBoard, width/2, height/2, width-200, height); 
+
+  fill(255);
+  textFont(menuFont);
+  rectMode(CENTER);
+  textAlign(CENTER, TOP);
+  textSize(60);
+  text("How To Play", width/2, height/2, width-200, height);
   
   fill(240);
   textAlign(LEFT, TOP);
   textSize(30);
-  text("Game design by Thomas Park at https://povingames.com/blog/category/siphthedev/project-ascent/\nAlkhemikal Font by Jeti at https://fontenddev.com/fonts/alkhemikal/\nBackground Tiles by Daniel Thomas Art at DanielThomasArt@gmail.com\nForest Scene by Eder Muniz at https://www.gamedevmarket.net/member/edermuniz14/\nMusic by Abstraction at http://abstractionmusic.bandcamp.com\nUI Elements by Karwisch at https://karwisch.itch.io/pxui-basic & Kenny Assets at https://kenney.nl\n",width/2, height/2, width-240, height-140);
+  text("TestHello!", width/2, height/2, width-240, height-140);
+
+
+  returnMainBtn.render();
 }
 
-function drawHelpMenu(){
-  imageMode(CENTER);
-  image(beigeBoard, width/2, height/2, width-200, height); 
-   returnMainBtn.render();
-}
-
-function drawPauseMenu() {
+function drawPauseMenu() { 
   imageMode(CENTER);
   image(beigeBoard, width/2, height/2, width-300, height-100); 
-   returnPlayBtn.render();
-   pauseToMainBtn.render();
+
+
+
+  fill(color(165, 113, 78)); //consider making a "menu text settings" function, with a few presets for diff text types (1 for title, 2 for body, etc).
+  textFont(menuFont);
+  rectMode(CENTER);
+  textAlign(CENTER, CENTER);
+  textSize(60);
+  text("Paused", width/2, (height/5), width, height); 
+
+  returnPlayBtn.render();
+  pauseToMainBtn.render();
 }
 
 //The bulk of the gameplay begins here: 
@@ -270,12 +293,11 @@ function runStage() {
   updateProjectiles();
 
   updateLvUI();
-
 }
 
-function updateLvUI(){  
+function updateLvUI() {  
   stgPauseButton.render();
-  
+
   imageMode(CENTER);
   image(beigeBoard, width - 50, 200, 90, 300);  
   towerButton.render();
@@ -286,15 +308,15 @@ function updateLvUI(){
   imageMode(CENTER);
   image(beigeBoard, 50, 300, 90, 100);  
   textSize(30);
-  fill(205,127,50);
+  fill(205, 127, 50);
   text(gold, 50, 300);
   goldButton.render();
-  
+
   //Display HP
   imageMode(CENTER);
   image(beigeBoard, 50, 100, 90, 100);
   textSize(50);
-  fill(150,0,0);
+  fill(150, 0, 0);
   text(hitPoints, 50, 100);
   hPButton.render();
 }
@@ -382,7 +404,7 @@ function updateProjectiles() { //need to work on this for different projectile t
             damageFoe(enemyArray[j], 1);
           }
         }
-        projectileArray.splice(i,1); //removes pulse.
+        projectileArray.splice(i, 1); //removes pulse.
         i--;
         print("Pulse Done!");
       }
@@ -391,19 +413,19 @@ function updateProjectiles() { //need to work on this for different projectile t
 }
 
 function removeProjectile(target, projectile) {
- for (let i = 0; i < projectileArray.length; i++) { 
-     if (projectileArray.target == target.x) { //if an arrow's target is gone, the arrow also vanishess.//TODO Why does this work? It absoultely seems like it shouldn't. //Second issue, it shouldn't
-                                                                                 //...remove other projectiles targeting the enemy unless the enemy dies. oh-no. 
-       projectileArray.splice(i, 1);
-       i--;
-     }
-   } 
+  for (let i = 0; i < projectileArray.length; i++) { 
+    if (projectileArray.target == target.x) { //if an arrow's target is gone, the arrow also vanishess.//TODO Why does this work? It absoultely seems like it shouldn't. //Second issue, it shouldn't
+      //...remove other projectiles targeting the enemy unless the enemy dies. oh-no. 
+      projectileArray.splice(i, 1);
+      i--;
+    }
+  } 
   //damageFoe(target,1);
 }
 
 function targetHit(target, arrow) {//This func will damage the enemy & remove the arrow, and adjust gold & score. Maybe also play a sound effect later.  
-   removeProjectile(target, arrow);
-   damageFoe(target, 1);
+  removeProjectile(target, arrow);
+  damageFoe(target, 1);
 }
 
 function damageFoe(target, dmg) {
@@ -425,33 +447,33 @@ function mouseClicked() {
       stageSong1.loop();
       //if(!stageSong1.isPlaying()){}
     }
-    if(helpButton.clicked()){
+    if (helpButton.clicked()) {
       gameState = 2;
     }
-    if(creditsButton.clicked()){
+    if (creditsButton.clicked()) {
       gameState = 1;
-    }     
-  } else if(gameState == 1){ //gs 1 is Credits Menu
+    }
+  } else if (gameState == 1) { //gs 1 is Credits Menu
     drawCreditsMenu();
-    if(returnMainBtn.clicked()){
+    if (returnMainBtn.clicked()) {
       gameState = 0;
     }
-  } else if(gameState == 2){ //gs 2 is Help Menu
+  } else if (gameState == 2) { //gs 2 is Help Menu
     drawHelpMenu();
-    if(returnMainBtn.clicked()){
+    if (returnMainBtn.clicked()) {
       gameState = 0;
     }
-  } else if(gameState == 3){ //gs 3 is Pause Menu
+  } else if (gameState == 3) { //gs 3 is Pause Menu
     drawPauseMenu();
-    if(returnPlayBtn.clicked()){
+    if (returnPlayBtn.clicked()) {
       gameState = 4; //will have to make more flexible upon adding more levels.
     }
-    if(pauseToMainBtn.clicked()){
+    if (pauseToMainBtn.clicked()) {
       gameState = 0;
-    }    
+    }
   } else if (gameState == 4) { //  gs 4 is level 1
     //Checks each tile to see if the mouse has been clicked within its bounds.
-    if(stgPauseButton.clicked()){
+    if (stgPauseButton.clicked()) {
       gameState = 3;
       print("Paused!");
     }
@@ -470,21 +492,21 @@ function mouseClicked() {
               gridArray[i][j].hasTower = false;
               gold += 10;
             }
-          } 
+          }
         }
       }
     }
-    if(towerAButton.clicked()){ //if user selects an archer tower,
+    if (towerAButton.clicked()) { //if user selects an archer tower,
       towerType = 0;
-      towerAButton.textColor = color(165,113,78);
+      towerAButton.textColor = color(165, 113, 78);
       towerBButton.textColor = 255;
     }
-    if(towerBButton.clicked()){
+    if (towerBButton.clicked()) {
       towerType = 1;
-      towerBButton.textColor = color(165,113,78);
+      towerBButton.textColor = color(165, 113, 78);
       towerAButton.textColor = 255;
     }
-    if(stgPauseButton.clicked()){
+    if (stgPauseButton.clicked()) {
       gameState = 3;
     }
   }
