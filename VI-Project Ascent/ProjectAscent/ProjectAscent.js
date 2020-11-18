@@ -300,10 +300,11 @@ function drawLoseScreen(){
   imageMode(CENTER);
   image(beigeBoard, width/2, height/2, width-300, height-100); 
   
-  textAlign(CENTER, CENTER);
+  textAlign(CENTER, TOP);
+  rectMode(CENTER);
   textSize(60);
   fill(150, 0, 0);
-  text("Game Over", width/2, (height/2), 200, 200); 
+  text("Game Over", width/2, (height/2), 500, 500); 
   
   pauseToMainBtn.render();
 }
@@ -567,10 +568,6 @@ function mouseClicked() {
     }
     if (stgPauseButton.clicked()) {
       gameState = 3;
-      drawLoseScreen();
-        if (returnMainBtn.clicked()) {
-          gameState = 0;
-        }
     }
   } else if(gameState == 5){ //losing screen
       if (pauseToMainBtn.clicked()) {
