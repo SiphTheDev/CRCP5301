@@ -50,6 +50,7 @@ let rows = 14;
 let towerType = 0;
 let hitPoints = 3;
 let gold = 50;
+let volume = 1;
 
 //Arrays to store game elements that can be generated and removed
 let towerArray = [];
@@ -73,6 +74,8 @@ let returnMainBtn;
 //PauseMenu
 let returnPlayBtn;
 let pauseToMainBtn;
+let volPlus;
+let volMin;
 
 function preload() {
   //SpriteSheets
@@ -208,6 +211,8 @@ function loadOtherButtons() { //DON'T TEST UNTIL YOU TELL GAME TO RENDER & CHECK
   //PauseMenu Buttons
   returnPlayBtn = new Button(width/2, 2*(height/5), 300, 100, menuBoxGrn, menuFont, 'Return', 20, color(165, 113, 78));
   pauseToMainBtn = new Button(width/2, 3*(height/5), 300, 100, menuBoxBrn, menuFont, 'Menu', 20, color(165, 113, 78));
+  volPlus = new Button(width/2 + 50, 4*(height/5), 100, 100, menuBoxBrdr, 'Helvetica', '+', 30, 255);
+  volMin = new Button(width/2 - 50, 4*(height/5), 100, 100, menuBoxBrdr, 'Helvetica', '-', 30, 255);
 }
 
 function draw() {
@@ -294,6 +299,10 @@ function drawPauseMenu() {
 
   returnPlayBtn.render();
   pauseToMainBtn.render();
+  volPlus.render();
+  volMin.render();
+  textSize(25);
+  text(volume, width/2, 4*(height/5));
 }
 
 function drawLoseScreen(){
@@ -498,9 +507,9 @@ function mouseClicked() {
   if (gameState == 0) { //  gs 0 is Main Menu
     if (playButton.clicked()) {
       gameState = 4; 
-      stageSong1.setVolume(0.01);
+      stageSong1.setVolume(volume/100);
       stageSong1.loop();
-      stageSong1.setVolume(0.01);
+      stageSong1.setVolume(volume/100);
       //stageSong1.play();
       //if(!stageSong1.isPlaying()){}
     }
@@ -524,12 +533,20 @@ function mouseClicked() {
     drawPauseMenu();
     if (returnPlayBtn.clicked()) {
       gameState = 4; //will have to make more flexible upon adding more levels.
-      stageSong1.setVolume(0.01);
+      stageSong1.setVolume(volume/100);
     }
     if (pauseToMainBtn.clicked()) {
       gameState = 0;
       stageSong1.stop();//resets song to starting position for next playthough.
       resetLevel();
+    }
+    if (volPlus.clicked() && volume < 10){
+      volume += 1; //= ((volume * 100) + 1)/100;
+      stage1Song.setVolume(volume/100);
+    }
+    if (volMin.clicked() && volume > 0){
+     volume -= 1; //((volume * 100) - 1)/100;
+     stage1Song.setVolume(volume/100);
     }
   } else if (gameState == 4) { //  gs 4 is level 1
     //Checks each tile to see if the mouse has been clicked within its bounds.
