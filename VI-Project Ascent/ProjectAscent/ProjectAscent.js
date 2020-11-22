@@ -498,8 +498,9 @@ function mouseClicked() {
   if (gameState == 0) { //  gs 0 is Main Menu
     if (playButton.clicked()) {
       gameState = 4; 
+      stageSong1.setVolume(0.01);
       stageSong1.loop();
-      stageSong1.setVolume(1);
+      stageSong1.setVolume(0.01);
       //stageSong1.play();
       //if(!stageSong1.isPlaying()){}
     }
@@ -523,7 +524,7 @@ function mouseClicked() {
     drawPauseMenu();
     if (returnPlayBtn.clicked()) {
       gameState = 4; //will have to make more flexible upon adding more levels.
-      stageSong1.setVolume(1);
+      stageSong1.setVolume(0.01);
     }
     if (pauseToMainBtn.clicked()) {
       gameState = 0;
