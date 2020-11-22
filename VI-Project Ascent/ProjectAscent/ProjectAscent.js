@@ -49,7 +49,7 @@ let rows = 14;
 //Game stats displayed to player
 let towerType = 0;
 let hitPoints = 3;
-let gold = 50;
+let gold = 120;
 let volume = 1;
 
 //Arrays to store game elements that can be generated and removed
@@ -563,7 +563,7 @@ function mouseClicked() {
             if (!gridArray[i][j].hasTower && gold >= 20) { //Adds a new tower if there isn't one there.
               towerArray[towerArray.length] = new Tower(towerType, gridArray[i][j], towerSprites);
               gridArray[i][j].hasTower = true;
-              gold -= 20;
+              gold -= 50;
             } else if (gridArray[i][j].hasTower) { //removes a tower if there is one there
               //print("Removing Tower!");
               removeTower(gridArray[i][j]);//A loop to search tower array, and remove only the tower at said coords - maybe make that its own func.
