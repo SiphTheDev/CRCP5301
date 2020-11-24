@@ -1,6 +1,11 @@
 # Creative Coding Capstone
  This shall be a catch-all for the various aspects of my Creative Coding Capstone Project
 ***
+## Try out the latest version here:
+https://povingames.com/siphthedev/Nov24_ProjAscent/
+
+Last updated: Nov 24, 2020.
+
 ## Preparation & Inspiration: 
 
 ### I - Brainstorming & Idea Development
